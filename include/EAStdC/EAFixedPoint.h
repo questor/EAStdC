@@ -994,6 +994,7 @@ typedef FPTemplate<uint32_t,   24,  8, 16777216,       256>    UFixed8;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/*
 #define FPDeclareTemplateSpecializations(TypeDef) \
 	template<> EASTDC_API int32_t FP_PASCAL SFixed16::FixedMul(const int32_t a, const int32_t b); \
 	template<> EASTDC_API int32_t FP_PASCAL SFixed16::FixedDiv(const int32_t a, const int32_t b); \
@@ -1001,6 +1002,7 @@ typedef FPTemplate<uint32_t,   24,  8, 16777216,       256>    UFixed8;
 
 FPDeclareTemplateSpecializations(SFixed16);
 FPDeclareTemplateSpecializations(UFixed16);
+*/
 
 } // namespace StdC
 } // namespace EA
