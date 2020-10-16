@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/EAHashString.h>
 #include <EAStdC/EAHashCRC.h>
 #include <EAStdC/EABitTricks.h>
@@ -84,8 +84,6 @@ int TestHash()
 	using namespace EA::StdC;
 
 	int nErrorCount(0);
-
-	EA::UnitTest::Report("TestHash\n");
 
 	const int kDataLength(16384); // We intentionally choose a power of 2.
 	EATEST_VERIFY((kDataLength % 8) == 0); // Code below depends on this.

@@ -16,16 +16,14 @@
 
 
 #if defined(EA_PLATFORM_MICROSOFT)
-	#ifdef _MSC_VER
-		#pragma warning(push, 0)
-		#if !(defined(EA_PLATFORM_WINDOWS) && !EA_WINAPI_FAMILY_PARTITION(EA_WINAPI_PARTITION_DESKTOP))
-			#include <winsock2.h> // for timeval
-		#endif
-		#include <Windows.h>
-		#pragma warning(pop)
+	EA_DISABLE_ALL_VC_WARNINGS()
+	#if defined(EA_PLATFORM_XBOXONE) || defined(CS_UNDEFINED_STRING)
+		#include <winsock2.h> // for timeval
 	#else
-		#include <Windows.h>
+		#include <winsock.h> // for timeval
 	#endif
+	#include <Windows.h>
+	EA_RESTORE_ALL_VC_WARNINGS()
 
 	bool GetLocaleInfoHelper(LCTYPE lcType, char* lcData, int cchData)
 	{
@@ -160,8 +158,6 @@ int TestDateTime()
 
 	int nErrorCount(0);
 
-	EA::UnitTest::Report("TestDateTime\n");
-
 	DateTime dateTimeTest(1970, 1, 1, 0, 0, 0);
 	EATEST_VERIFY(DateTimeSecondsToTimeTSeconds(dateTimeTest.GetSeconds()) == 0);
 
@@ -226,7 +222,7 @@ int TestDateTime()
 										value, (uint32_t)pTime->tm_min, dateTime2.GetSeconds(), (int64_t)nTime);
 
 			value = dateTime2.GetParameter(kParameterSecond);
-			EATEST_VERIFY_F(value == (uint32_t)pTime->tm_sec, "TestDateTime DateTime second failure: value: %u, expected: %u. DateTime seconds: %I64u, time_t: %I64d", 
+			EATEST_VERIFY_F((value - (uint32_t)pTime->tm_sec < 5), "TestDateTime DateTime second failure: value: %u, expected: %u. DateTime seconds: %I64u, time_t: %I64d", 
 										value, (uint32_t)pTime->tm_sec, dateTime2.GetSeconds(), (int64_t)nTime);
 		#endif
 	}
@@ -1690,6 +1686,7 @@ int TestDateTime()
 		// implementations of the tv_usec value are grainy and so this is the
 		// best we can validate against.
 		const uint64_t kMaxErrorNs = (EA::StdC::GetTimePrecision() < UINT64_C(100000000)) ? UINT64_C(200000000) : UINT64_C(2000000000);
+		const uint64_t kMaxErrorMs = (EA::StdC::GetTimePrecision() < UINT64_C(100000000)) ? UINT64_C(200) : UINT64_C(2000);
 
 		// Converts GetTimeOfDay output to an uint64_t representation.
 		auto GetTimeOfDayAsUInt64 = []
@@ -1705,16 +1702,21 @@ int TestDateTime()
 		// our tests are running.
 		uint64_t testStartTimeNs = GetTimeOfDayAsUInt64();
 		uint64_t dateChangedDiffNs = 0;
+		uint64_t dateChangedDiffMs = 0;
 		int failCount = 0;
 
 		for (int i = 0; i < kTestCount; i++)
 		{
 			uint64_t t1 = GetTime(); // nanoseconds
 			uint64_t t2 = GetTimeOfDayAsUInt64();
+			uint64_t t3 = GetTimeMilliseconds(); // milliseconds
+			uint64_t t1ms = t1 / 1000000;
 			const uint64_t diffNs = (t1 > t2) ? (t1 - t2) : (t2 - t1);
+			const uint64_t diffMs = (t1ms > t3) ? (t1ms - t3) : (t3 - t1ms);
 
 			// Adjust the clock if the date has been changed
 			t2 += dateChangedDiffNs;
+			t3 += dateChangedDiffMs;
 
 			// If a thread context switch happened right between the two calls above, resample t1. 
 			// We encounter this problem fairly regularly.
@@ -1725,6 +1727,7 @@ int TestDateTime()
 				if (diffNs > kSecondsPerMinute)
 				{
 					dateChangedDiffNs = t2 > testStartTimeNs ? (~diffNs) + 1 : diffNs; // take diff or two's complement of diff
+					dateChangedDiffMs = dateChangedDiffNs / 1000000;
 				}
 
 				// It's very unlikely we could get another context switch so soon.
@@ -1741,6 +1744,12 @@ int TestDateTime()
 								"%I64u ns (%I64u s)\nGetTimeOfDay: %I64u ns (%I64u s)\n",
 								i, kTestCount, diffNs, kMaxErrorNs, t1, t1 / 1000000000, t2,
 								t2 / 1000000000); // Verify that the difference is within N nanoseconds.
+
+				EATEST_VERIFY_F(diffMs <= kMaxErrorMs,
+								"GetTimeOfDay failure on run %d of %d: diffMs: %I64u ns, kMaxErrorMs: %I64u ms. GetTime: "
+								"%I64u ms (%I64u s)\nGetTimeOfDay: %I64u ms (%I64u s)\n",
+								i, kTestCount, diffMs, kMaxErrorMs, t1ms, t1ms / 1000, t3,
+								t3 / 1000); // Verify that the difference is within N nanoseconds.
 			#endif
 
 			EA::Thread::ThreadSleep(EA::Thread::ThreadTime(500)); // Sleep for N milliseconds, and test again.

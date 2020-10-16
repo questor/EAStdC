@@ -4,7 +4,7 @@
 
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/Int128_t.h>
 #include <EAStdCTest/EAStdCTest.h>
 #include <EATest/EATest.h>
@@ -22,21 +22,6 @@
 	#pragma warning(pop)
 #endif
 
-static inline double FloatAbsoluteDifference(float x1, float x2)
-{
-	return (x1 < x2) ? (x2 - x1) : (x1 - x2);
-}
-
-static inline bool FloatEqual(float x1, float x2)
-{
-	if(x1 < 1e-7f)
-		return (x2 < 1e-7f);
-	else if(x2 < 1e-7f)
-		return (x1 < 1e-7f);
-	else
-		return FloatAbsoluteDifference((x1 - x2) / x1, 1e-7f) < 1e-5f;
-}
-
 static bool CompareSelfTestResult(const char* p1, const char* p2)
 {
 	return strcmp(p1, p2) == 0;
@@ -45,8 +30,6 @@ static bool CompareSelfTestResult(const char* p1, const char* p2)
 int TestInt128()
 {
 	using namespace EA::StdC;
-
-	EA::UnitTest::Report("TestInt128\n");
 
 	int  nErrorCount(0);
 	char array[256];

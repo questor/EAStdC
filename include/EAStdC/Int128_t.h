@@ -25,7 +25,7 @@
 
 
 #include <EAStdC/internal/Config.h>
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 
 EA_DISABLE_GCC_WARNING(-Wtype-limits)
 #include <wchar.h>

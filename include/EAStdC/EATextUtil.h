@@ -7,7 +7,7 @@
 #define EASTDC_EATEXTUTIL_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/internal/Config.h>
 #include <EAStdC/EAString.h>
 
@@ -198,7 +198,7 @@ namespace StdC
 	///
 	///     do{
 	///         pLine = pLineNext;
-	///         const char* pLineEnd = GetTextLine(pLine, buffer + EAArrayCount(buffer), &pLineNext);
+	///         const char* pLineEnd = GetTextLine(pLine, buffer + EASTLArrayCount(buffer), &pLineNext);
 	///         // Use pLine - pLineEnd
 	///     }while(pLineNext != (buffer + 256));
 	///
@@ -269,7 +269,7 @@ namespace StdC
 	///    NULL        ""       NULL         false
 	///
 	///  Example usage:
-	///    const char16_t* pString = EA_CHAR16("a, b, c, d");
+	///    const char16_t* pString = EASTL_CHAR16("a, b, c, d");
 	///    char16_t pToken[16];
 	///    
 	///    while(SplitTokenDelimited(pString, kLengthNull, ',', pToken, 16, &pString))
@@ -465,7 +465,7 @@ namespace EA
 				}
 
 				// find first ( or second ) occurence of a non-separator character
-				const size_t nIndex2 = sSource.find_first_not_of(c, (typename String::size_type)nIndex1);
+				const size_t nIndex2 = sSource.findFirstNotOf(c, (typename String::size_type)nIndex1);
 
 				// if we found a non-empty string in front of separators, extract it and exit
 				if(nIndex1 > 0)

@@ -81,7 +81,7 @@
 
 
 #include <EAStdC/internal/Config.h>
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <math.h>
 
 
@@ -124,7 +124,7 @@ namespace StdC
 //
 #if defined(EA_PROCESSOR_X86) && defined(EA_ASM_STYLE_INTEL)
 	#define FP_USE_INTEL_ASM
-	#define FP_PASCAL EA_PASCAL
+	#define FP_PASCAL EASTL_PASCAL
 #else
 	#define FP_PASCAL
 #endif
@@ -283,8 +283,8 @@ struct FPTemplate
 	FPTemplate& operator^=(const FPTemplate& argValue) { value ^= argValue.value;          return *this;}
 	FPTemplate& operator^=(const int&        argValue) { value ^= (argValue<<upShiftInt);  return *this;} //Convert Fixed to int, then do operation
 
-	FPTemplate operator<<(int numBits) const { return value << numBits; }
-	FPTemplate operator>>(int numBits) const { return value << numBits; }
+	FPTemplate operator<<(int numBits) const { FPTemplate temp; temp.value = value << numBits; return temp; }
+	FPTemplate operator>>(int numBits) const { FPTemplate temp; temp.value = value >> numBits; return temp; }
 
 	FPTemplate& operator<<=(int numBits) { value <<= numBits; return *this;}
 	FPTemplate& operator>>=(int numBits) { value >>= numBits; return *this;}
@@ -994,7 +994,6 @@ typedef FPTemplate<uint32_t,   24,  8, 16777216,       256>    UFixed8;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/*
 #define FPDeclareTemplateSpecializations(TypeDef) \
 	template<> EASTDC_API int32_t FP_PASCAL SFixed16::FixedMul(const int32_t a, const int32_t b); \
 	template<> EASTDC_API int32_t FP_PASCAL SFixed16::FixedDiv(const int32_t a, const int32_t b); \
@@ -1002,7 +1001,6 @@ typedef FPTemplate<uint32_t,   24,  8, 16777216,       256>    UFixed8;
 
 FPDeclareTemplateSpecializations(SFixed16);
 FPDeclareTemplateSpecializations(UFixed16);
-*/
 
 } // namespace StdC
 } // namespace EA

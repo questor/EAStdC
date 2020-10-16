@@ -11,8 +11,8 @@
 #include <EAStdC/EAStopwatch.h>
 #include <EAStdCTest/EAStdCTest.h>
 #include <EATest/EATest.h>
-#include <EASTL/string.h>
-#include <EASTL/fixed_string.h>
+#include <eastl/string.h>
+#include <eastl/fixedString.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +25,7 @@
 #endif
 
 
-static inline bool DoubleEqual(double x1, double x2)
+static inline bool TestString_DoubleEqual(double x1, double x2)
 {
 	double difference = fabs(x1 - x2);
 	double relative   = fabs(difference / x1);
@@ -34,7 +34,7 @@ static inline bool DoubleEqual(double x1, double x2)
 		return true;
 	else
 	{
-		EA::UnitTest::Report("DoubleEqual Error: %f, %f\n", x1, x2);
+		EA::UnitTest::Report("TestString_DoubleEqual Error: %f, %f\n", x1, x2);
 		return false;
 	}
 }
@@ -399,18 +399,18 @@ static int TestStringCore()
 		EATEST_VERIFY(Strcmp(s_to, "hello world") == 0);
 	}
 	{
-		char16_t s_to[64]; Strlcpy(s_to, EA_CHAR16("hello\x0           "), EAArrayCount(s_to)); // Can't do s_to[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		const char16_t* s_from = EA_CHAR16(" world");
+		char16_t s_to[64]; Strlcpy(s_to, EASTL_CHAR16("hello\x0           "), EASTLArrayCount(s_to)); // Can't do s_to[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		const char16_t* s_from = EASTL_CHAR16(" world");
 
 		EATEST_VERIFY(Strcat(s_to, s_from) == s_to);
-		EATEST_VERIFY(Strcmp(s_to, EA_CHAR16("hello world")) == 0);
+		EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR16("hello world")) == 0);
 	}
 	{
-		char32_t s_to[64]; Strlcpy(s_to, EA_CHAR32("hello\x0           "), EAArrayCount(s_to)); // Can't do s_to[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		const char32_t* s_from = EA_CHAR32(" world");
+		char32_t s_to[64]; Strlcpy(s_to, EASTL_CHAR32("hello\x0           "), EASTLArrayCount(s_to)); // Can't do s_to[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		const char32_t* s_from = EASTL_CHAR32(" world");
 
 		EATEST_VERIFY(Strcat(s_to, s_from) == s_to);
-		EATEST_VERIFY(Strcmp(s_to, EA_CHAR32("hello world")) == 0);
+		EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR32("hello world")) == 0);
 	}
 
 
@@ -426,19 +426,19 @@ static int TestStringCore()
 		EATEST_VERIFY(s_to[9] == char(0));
 	}
 	{
-		char16_t s_to[24]; Strlcpy(s_to, EA_CHAR16("0123\x0......"), EAArrayCount(s_to)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		const char16_t* s_from = EA_CHAR16("456789");
+		char16_t s_to[24]; Strlcpy(s_to, EASTL_CHAR16("0123\x0......"), EASTLArrayCount(s_to)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		const char16_t* s_from = EASTL_CHAR16("456789");
 
 		EATEST_VERIFY(Strncat(s_to, s_from, 5) == s_to);
-		EATEST_VERIFY(Strcmp(s_to, EA_CHAR16("012345678")) == 0);
+		EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR16("012345678")) == 0);
 		EATEST_VERIFY(s_to[9] == char16_t(0));
 	}
 	{
-		char32_t s_to[24]; Strlcpy(s_to, EA_CHAR32("0123\x0......"), EAArrayCount(s_to)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		const char32_t* s_from = EA_CHAR32("456789");
+		char32_t s_to[24]; Strlcpy(s_to, EASTL_CHAR32("0123\x0......"), EASTLArrayCount(s_to)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		const char32_t* s_from = EASTL_CHAR32("456789");
 
 		EATEST_VERIFY(Strncat(s_to, s_from, 5) == s_to);
-		EATEST_VERIFY(Strcmp(s_to, EA_CHAR32("012345678")) == 0);
+		EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR32("012345678")) == 0);
 		EATEST_VERIFY(s_to[9] == char32_t(0));
 	}
 
@@ -463,22 +463,22 @@ static int TestStringCore()
 		EATEST_VERIFY(s_to[0] == '.');
 	}
 	{
-		char16_t s_to[24]; Strlcpy(s_to, EA_CHAR16("0123\x0......"), EAArrayCount(s_to)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		const char16_t* s_from = EA_CHAR16("456789");
+		char16_t s_to[24]; Strlcpy(s_to, EASTL_CHAR16("0123\x0......"), EASTLArrayCount(s_to)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		const char16_t* s_from = EASTL_CHAR16("456789");
 
 		EATEST_VERIFY(StringnCat(s_to, s_from, 5) == s_to);
-		//EATEST_VERIFY(Strcmp(s_to, EA_CHAR16("012345678..")) == 0); Disabled while we try to clarify what the expected behaviour is.
+		//EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR16("012345678..")) == 0); Disabled while we try to clarify what the expected behaviour is.
 
 		Memset16(s_to, (char16_t)'.', Strlen(s_to));
 		EATEST_VERIFY(StringnCat(s_to, s_from, 0) == s_to);
 		EATEST_VERIFY(s_to[0] == '.');
 	}
 	{
-		char32_t s_to[24]; Strlcpy(s_to, EA_CHAR32("0123\x0......"), EAArrayCount(s_to)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		const char32_t* s_from = EA_CHAR32("456789");
+		char32_t s_to[24]; Strlcpy(s_to, EASTL_CHAR32("0123\x0......"), EASTLArrayCount(s_to)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		const char32_t* s_from = EASTL_CHAR32("456789");
 
 		EATEST_VERIFY(StringnCat(s_to, s_from, 5) == s_to);
-		//EATEST_VERIFY(Strcmp(s_to, EA_CHAR32("012345678..")) == 0); Disabled while we try to clarify what the expected behaviour is.
+		//EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR32("012345678..")) == 0); Disabled while we try to clarify what the expected behaviour is.
 
 		Memset32(s_to, (char32_t)'.', Strlen(s_to));
 		EATEST_VERIFY(StringnCat(s_to, s_from, 0) == s_to);
@@ -493,25 +493,25 @@ static int TestStringCore()
 		char s_to[8] = "0123\x0..";
 		const char* s_from = "456789";
 
-		sizeResult = Strlcat(s_to, s_from, EAArrayCount(s_to));
+		sizeResult = Strlcat(s_to, s_from, EASTLArrayCount(s_to));
 		EATEST_VERIFY(sizeResult == Strlen("0123") + Strlen("456789"));
 		EATEST_VERIFY(Strcmp(s_to, "0123456") == 0);
 	}
 	{
-		char16_t s_to[8]; Strlcpy(s_to, EA_CHAR16("0123\x0.."), EAArrayCount(s_to)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		const char16_t* s_from = EA_CHAR16("456789");
+		char16_t s_to[8]; Strlcpy(s_to, EASTL_CHAR16("0123\x0.."), EASTLArrayCount(s_to)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		const char16_t* s_from = EASTL_CHAR16("456789");
 
-		sizeResult = Strlcat(s_to, s_from, EAArrayCount(s_to));
+		sizeResult = Strlcat(s_to, s_from, EASTLArrayCount(s_to));
 		EATEST_VERIFY(sizeResult == Strlen("0123") + Strlen("456789"));
-		EATEST_VERIFY(Strcmp(s_to, EA_CHAR16("0123456")) == 0);
+		EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR16("0123456")) == 0);
 	}
 	{
-		char32_t s_to[8]; Strlcpy(s_to, EA_CHAR32("0123\x0.."), EAArrayCount(s_to)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		const char32_t* s_from = EA_CHAR32("456789");
+		char32_t s_to[8]; Strlcpy(s_to, EASTL_CHAR32("0123\x0.."), EASTLArrayCount(s_to)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		const char32_t* s_from = EASTL_CHAR32("456789");
 
-		sizeResult = Strlcat(s_to, s_from, EAArrayCount(s_to));
+		sizeResult = Strlcat(s_to, s_from, EASTLArrayCount(s_to));
 		EATEST_VERIFY(sizeResult == Strlen("0123") + Strlen("456789"));
-		EATEST_VERIFY(Strcmp(s_to, EA_CHAR32("0123456")) == 0);
+		EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR32("0123456")) == 0);
 	}
 
 
@@ -519,25 +519,25 @@ static int TestStringCore()
 		char s_to[] = "01\x0........";
 		const char* s_from = "23456";
 
-		sizeResult = Strlcat(s_to, s_from, EAArrayCount(s_to));
+		sizeResult = Strlcat(s_to, s_from, EASTLArrayCount(s_to));
 		EATEST_VERIFY(sizeResult == Strlen("0123456"));
 		EATEST_VERIFY(Strcmp(s_to, "0123456") == 0);
 	}
 	{
-		char16_t s_to[16]; Strlcpy(s_to, EA_CHAR16("01\x0........"), EAArrayCount(s_to)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		const char16_t* s_from = EA_CHAR16("23456");
+		char16_t s_to[16]; Strlcpy(s_to, EASTL_CHAR16("01\x0........"), EASTLArrayCount(s_to)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		const char16_t* s_from = EASTL_CHAR16("23456");
 
-		sizeResult = Strlcat(s_to, s_from, EAArrayCount(s_to));
+		sizeResult = Strlcat(s_to, s_from, EASTLArrayCount(s_to));
 		EATEST_VERIFY(sizeResult == Strlen("0123456"));
-		EATEST_VERIFY(Strcmp(s_to, EA_CHAR16("0123456")) == 0);
+		EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR16("0123456")) == 0);
 	}
 	{
-		char32_t s_to[16]; Strlcpy(s_to, EA_CHAR32("01\x0........"), EAArrayCount(s_to)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		const char32_t* s_from = EA_CHAR32("23456");
+		char32_t s_to[16]; Strlcpy(s_to, EASTL_CHAR32("01\x0........"), EASTLArrayCount(s_to)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		const char32_t* s_from = EASTL_CHAR32("23456");
 
-		sizeResult = Strlcat(s_to, s_from, EAArrayCount(s_to));
+		sizeResult = Strlcat(s_to, s_from, EASTLArrayCount(s_to));
 		EATEST_VERIFY(sizeResult == Strlen("0123456"));
-		EATEST_VERIFY(Strcmp(s_to, EA_CHAR32("0123456")) == 0);
+		EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR32("0123456")) == 0);
 	}
 	
 	/// Regression testing for reported wchar_t array problem on 32 bits wchar_t machine.
@@ -545,7 +545,7 @@ static int TestStringCore()
 		char16_t array16[60] = { 'a', 0 };
 		char32_t array32[60] = { 'b', 0 };
 
-		sizeResult = Strlcat(array16, array32 , EAArrayCount(array16));
+		sizeResult = Strlcat(array16, array32 , EASTLArrayCount(array16));
 		EATEST_VERIFY(sizeResult == 2);
 		EATEST_VERIFY((array16[0] == 'a') && (array16[1] == 'b') && (array16[2] == 0));
 	}
@@ -553,7 +553,7 @@ static int TestStringCore()
 		char16_t array16[60] = { 'a', 0 };
 		char32_t array32[60] = { 'b', 0 };
 
-		sizeResult = Strlcat(array32, array16, EAArrayCount(array32));
+		sizeResult = Strlcat(array32, array16, EASTLArrayCount(array32));
 		EATEST_VERIFY(sizeResult == 2);
 		EATEST_VERIFY((array32[0] == 'b') && (array32[1] == 'a') && (array32[2] == 0));
 	}
@@ -570,18 +570,18 @@ static int TestStringCore()
 		EATEST_VERIFY(Strcmp(s_to, "1234567890") == 0);
 	}
 	{
-		char16_t s_to[16]; Strlcpy(s_to, EA_CHAR16("0123456789"), EAArrayCount(s_to)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		const char16_t* s_from = EA_CHAR16("1234567890");
+		char16_t s_to[16]; Strlcpy(s_to, EASTL_CHAR16("0123456789"), EASTLArrayCount(s_to)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		const char16_t* s_from = EASTL_CHAR16("1234567890");
 
 		EATEST_VERIFY(Strcpy(s_to, s_from) == s_to);
-		EATEST_VERIFY(Strcmp(s_to, EA_CHAR16("1234567890")) == 0);
+		EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR16("1234567890")) == 0);
 	}
 	{
-		char32_t s_to[16]; Strlcpy(s_to, EA_CHAR32("0123456789"), EAArrayCount(s_to)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		const char32_t* s_from = EA_CHAR32("1234567890");
+		char32_t s_to[16]; Strlcpy(s_to, EASTL_CHAR32("0123456789"), EASTLArrayCount(s_to)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		const char32_t* s_from = EASTL_CHAR32("1234567890");
 
 		EATEST_VERIFY(Strcpy(s_to, s_from) == s_to);
-		EATEST_VERIFY(Strcmp(s_to, EA_CHAR32("1234567890")) == 0);
+		EATEST_VERIFY(Strcmp(s_to, EASTL_CHAR32("1234567890")) == 0);
 	}
 
 
@@ -602,8 +602,8 @@ static int TestStringCore()
 		EATEST_VERIFY(s_to[5] == (char)'.' );
 	}
 	{
-		char16_t s_to[32]; Strlcpy(s_to, EA_CHAR16("..........................."), EAArrayCount(s_to)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		const char16_t* s_from = EA_CHAR16("l;kajjsdf;q4w3rrpoiu113<>)(");
+		char16_t s_to[32]; Strlcpy(s_to, EASTL_CHAR16("..........................."), EASTLArrayCount(s_to)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		const char16_t* s_from = EASTL_CHAR16("l;kajjsdf;q4w3rrpoiu113<>)(");
 
 		EATEST_VERIFY(Strcpy(s_to, s_from) == s_to);
 		EATEST_VERIFY(Memcmp(s_to, s_from, Strlen(s_from) * sizeof(char16_t)) == 0);
@@ -615,8 +615,8 @@ static int TestStringCore()
 		EATEST_VERIFY(s_to[5] == (char16_t)'.' );
 	}
 	{
-		char32_t s_to[32]; Strlcpy(s_to, EA_CHAR32("..........................."), EAArrayCount(s_to)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		const char32_t* s_from = EA_CHAR32("l;kajjsdf;q4w3rrpoiu113<>)(");
+		char32_t s_to[32]; Strlcpy(s_to, EASTL_CHAR32("..........................."), EASTLArrayCount(s_to)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		const char32_t* s_from = EASTL_CHAR32("l;kajjsdf;q4w3rrpoiu113<>)(");
 
 		EATEST_VERIFY(Strcpy(s_to, s_from) == s_to);
 		EATEST_VERIFY(Memcmp(s_to, s_from, Strlen(s_from) * sizeof(char32_t)) == 0);
@@ -646,8 +646,8 @@ static int TestStringCore()
 		EATEST_VERIFY(s_to[0] == '.');
 	}
 	{
-		char16_t s_to[32]; Strlcpy(s_to, EA_CHAR16(".........................."), EAArrayCount(s_to)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		const char16_t* s_from = EA_CHAR16("l;kajjsdf;q4w3rrpoiu113<>)(");
+		char16_t s_to[32]; Strlcpy(s_to, EASTL_CHAR16(".........................."), EASTLArrayCount(s_to)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		const char16_t* s_from = EASTL_CHAR16("l;kajjsdf;q4w3rrpoiu113<>)(");
 
 		EATEST_VERIFY(StringnCopy(s_to, s_from+14, 5) == s_to);
 		EATEST_VERIFY(Memcmp(s_to, s_from+14, 5 * sizeof(char16_t)) == 0);
@@ -659,8 +659,8 @@ static int TestStringCore()
 		EATEST_VERIFY(s_to[0] == '.');
 	}
 	{
-		char32_t s_to[32]; Strlcpy(s_to, EA_CHAR32(".........................."), EAArrayCount(s_to)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		const char32_t* s_from = EA_CHAR32("l;kajjsdf;q4w3rrpoiu113<>)(");
+		char32_t s_to[32]; Strlcpy(s_to, EASTL_CHAR32(".........................."), EASTLArrayCount(s_to)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		const char32_t* s_from = EASTL_CHAR32("l;kajjsdf;q4w3rrpoiu113<>)(");
 
 		EATEST_VERIFY(StringnCopy(s_to, s_from+14, 5) == s_to);
 		EATEST_VERIFY(Memcmp(s_to, s_from+14, 5 * sizeof(char32_t)) == 0);
@@ -703,7 +703,7 @@ static int TestStringCore()
 			"\xfe"        // 1 byte of an invalid sequence
 		};
 
-		for (size_t u = 0; u < EAArrayCount(kInvalidUTF8StringArray); u++)
+		for (size_t u = 0; u < EASTLArrayCount(kInvalidUTF8StringArray); u++)
 		{
 			nErrorCount += StrlcpyTest(kInvalidUTF8StringArray[u], 0, true);
 		}
@@ -808,31 +808,31 @@ static int TestStringCore()
 		EATEST_VERIFY(StrlenUTF8Decoded("\xf4\x8f\xbf\xbe \xf4\x8f\xbf\xbf") == 3);
 	}
 	{
-		EATEST_VERIFY(StrlenUTF8Encoded(EA_CHAR16("0123456789")) == 10);
-		EATEST_VERIFY(StrlenUTF8Encoded(EA_CHAR16("")) == 0);
-		EATEST_VERIFY(StrlenUTF8Encoded(EA_CHAR16("\x00a0")) == 2);
-		EATEST_VERIFY(StrlenUTF8Encoded(EA_CHAR16("\x0400")) == 2);
-		EATEST_VERIFY(StrlenUTF8Encoded(EA_CHAR16("\x0800")) == 3);
+		EATEST_VERIFY(StrlenUTF8Encoded(EASTL_CHAR16("0123456789")) == 10);
+		EATEST_VERIFY(StrlenUTF8Encoded(EASTL_CHAR16("")) == 0);
+		EATEST_VERIFY(StrlenUTF8Encoded(EASTL_CHAR16("\x00a0")) == 2);
+		EATEST_VERIFY(StrlenUTF8Encoded(EASTL_CHAR16("\x0400")) == 2);
+		EATEST_VERIFY(StrlenUTF8Encoded(EASTL_CHAR16("\x0800")) == 3);
 
 		// We have to break up the string into multiple sub-strings because the \x escape sequence has limitations in how it works.
-		eastl::fixed_string<char16_t, 32> s16; s16 = EA_CHAR16("\xffff"); s16 += EA_CHAR16("\xffff"); // We use a string object because some compilers don't support 16 bit string literals, and thus EA_CHAR16 is a function and doesn't just prepend "L" or "u" to the string.
+		eastl::fixedString<char16_t, 32> s16; s16 = EASTL_CHAR16("\xffff"); s16 += EASTL_CHAR16("\xffff"); // We use a string object because some compilers don't support 16 bit string literals, and thus EASTL_CHAR16 is a function and doesn't just prepend "L" or "u" to the string.
 		EATEST_VERIFY(StrlenUTF8Encoded(s16.c_str()) == 6);
 
-		s16 = EA_CHAR16("\xffff"); s16 += EA_CHAR16("\x0900"); s16 += EA_CHAR16("0"); s16 += EA_CHAR16("\x00a0");
+		s16 = EASTL_CHAR16("\xffff"); s16 += EASTL_CHAR16("\x0900"); s16 += EASTL_CHAR16("0"); s16 += EASTL_CHAR16("\x00a0");
 		EATEST_VERIFY(StrlenUTF8Encoded(s16.c_str()) == 9);
 	}
 	{
-		EATEST_VERIFY(StrlenUTF8Encoded(EA_CHAR32("0123456789")) == 10);
-		EATEST_VERIFY(StrlenUTF8Encoded(EA_CHAR32("")) == 0);
-		EATEST_VERIFY(StrlenUTF8Encoded(EA_CHAR32("\x00a0")) == 2);
-		EATEST_VERIFY(StrlenUTF8Encoded(EA_CHAR32("\x0400")) == 2);
-		EATEST_VERIFY(StrlenUTF8Encoded(EA_CHAR32("\x0800")) == 3);
+		EATEST_VERIFY(StrlenUTF8Encoded(EASTL_CHAR32("0123456789")) == 10);
+		EATEST_VERIFY(StrlenUTF8Encoded(EASTL_CHAR32("")) == 0);
+		EATEST_VERIFY(StrlenUTF8Encoded(EASTL_CHAR32("\x00a0")) == 2);
+		EATEST_VERIFY(StrlenUTF8Encoded(EASTL_CHAR32("\x0400")) == 2);
+		EATEST_VERIFY(StrlenUTF8Encoded(EASTL_CHAR32("\x0800")) == 3);
 
 		// We have to break up the string into multiple sub-strings because the \x escape sequence has limitations in how it works.
-		eastl::fixed_string<char32_t, 32> s32; s32 = EA_CHAR32("\xffff"); s32 += EA_CHAR32("\xffff"); // We use a string object because some compilers don't support 32 bit string literals, and thus EA_CHAR32 is a function and doesn't just prepend "L" or "u" to the string.
+		eastl::fixedString<char32_t, 32> s32; s32 = EASTL_CHAR32("\xffff"); s32 += EASTL_CHAR32("\xffff"); // We use a string object because some compilers don't support 32 bit string literals, and thus EASTL_CHAR32 is a function and doesn't just prepend "L" or "u" to the string.
 		EATEST_VERIFY(StrlenUTF8Encoded(s32.c_str()) == 6);
 
-		s32 = EA_CHAR32("\xffff"); s32 += EA_CHAR32("\x0900"); s32 += EA_CHAR32("0"); s32 += EA_CHAR32("\x00a0");
+		s32 = EASTL_CHAR32("\xffff"); s32 += EASTL_CHAR32("\x0900"); s32 += EASTL_CHAR32("0"); s32 += EASTL_CHAR32("\x00a0");
 		EATEST_VERIFY(StrlenUTF8Encoded(s32.c_str()) == 9);
 	}
 
@@ -845,11 +845,11 @@ static int TestStringCore()
 		EATEST_VERIFY(Strend(pString) == (pString + Strlen(pString)));
 	}
 	{
-		const char16_t* pString = EA_CHAR16("0123456789");
+		const char16_t* pString = EASTL_CHAR16("0123456789");
 		EATEST_VERIFY(Strend(pString) == (pString + Strlen(pString)));
 	}
 	{
-		const char32_t* pString = EA_CHAR32("0123456789");
+		const char32_t* pString = EASTL_CHAR32("0123456789");
 		EATEST_VERIFY(Strend(pString) == (pString + Strlen(pString)));
 	}
 
@@ -868,8 +868,8 @@ static int TestStringCore()
 	}
 	{
 		// To do: Make a better test.
-		char16_t s_to[32]; Strlcpy(s_to, EA_CHAR16("..........................."), EAArrayCount(s_to)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		const char16_t* s_from = EA_CHAR16("l;kajjsdf;q4w3rrpoiu113<>)(");
+		char16_t s_to[32]; Strlcpy(s_to, EASTL_CHAR16("..........................."), EASTLArrayCount(s_to)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		const char16_t* s_from = EASTL_CHAR16("l;kajjsdf;q4w3rrpoiu113<>)(");
 
 		const size_t n = Strxfrm(s_to, s_from, Strlen(s_from) + 1);
 		EATEST_VERIFY(Strcmp(s_to, s_from) == 0);
@@ -877,8 +877,8 @@ static int TestStringCore()
 	}
 	{
 		// To do: Make a better test.
-		char32_t s_to[32]; Strlcpy(s_to, EA_CHAR32("..........................."), EAArrayCount(s_to)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		const char32_t* s_from = EA_CHAR32("l;kajjsdf;q4w3rrpoiu113<>)(");
+		char32_t s_to[32]; Strlcpy(s_to, EASTL_CHAR32("..........................."), EASTLArrayCount(s_to)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		const char32_t* s_from = EASTL_CHAR32("l;kajjsdf;q4w3rrpoiu113<>)(");
 
 		const size_t n = Strxfrm(s_to, s_from, Strlen(s_from) + 1);
 		EATEST_VERIFY(Strcmp(s_to, s_from) == 0);
@@ -904,7 +904,7 @@ static int TestStringCore()
 	}
 	{
 		typedef char16_t test_type;
-		char16_t   s_from[32]; Strlcpy(s_from, EA_CHAR16("..........................."), EAArrayCount(s_from)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t   s_from[32]; Strlcpy(s_from, EASTL_CHAR16("..........................."), EASTLArrayCount(s_from)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		test_type* s_new = NULL;
 
 		EATEST_VERIFY((s_new = Strdup(s_from)) != NULL);
@@ -914,7 +914,7 @@ static int TestStringCore()
 	}
 	{
 		typedef char32_t test_type;
-		char32_t   s_from[32]; Strlcpy(s_from, EA_CHAR32("..........................."), EAArrayCount(s_from)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t   s_from[32]; Strlcpy(s_from, EASTL_CHAR32("..........................."), EASTLArrayCount(s_from)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		test_type* s_new = NULL;
 
 		EATEST_VERIFY((s_new = Strdup(s_from)) != NULL);
@@ -931,19 +931,19 @@ static int TestStringCore()
 		char s8[] = "hello world";
 
 		EATEST_VERIFY(Strupr(s8) == s8);
-		EATEST_VERIFY(Memcmp(s8, "HELLO WORLD", EAArrayCount(s8)) == 0);
+		EATEST_VERIFY(Memcmp(s8, "HELLO WORLD", EASTLArrayCount(s8)) == 0);
 	}
 	{
-		char16_t s16[16]; Strlcpy(s16, EA_CHAR16("hello world"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[16]; Strlcpy(s16, EASTL_CHAR16("hello world"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
 		EATEST_VERIFY(Strupr(s16) == s16);
-		EATEST_VERIFY(Memcmp(s16, EA_CHAR16("HELLO WORLD"), EAArrayCount(s16)) == 0);
+		EATEST_VERIFY(Memcmp(s16, EASTL_CHAR16("HELLO WORLD"), EASTLArrayCount(s16)) == 0);
 	}
 	{
-		char32_t s32[32]; Strlcpy(s32, EA_CHAR32("hello world"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[32]; Strlcpy(s32, EASTL_CHAR32("hello world"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
 		EATEST_VERIFY(Strupr(s32) == s32);
-		EATEST_VERIFY(Memcmp(s32, EA_CHAR32("HELLO WORLD"), EAArrayCount(s32)) == 0);
+		EATEST_VERIFY(Memcmp(s32, EASTL_CHAR32("HELLO WORLD"), EASTLArrayCount(s32)) == 0);
 	}
 
 
@@ -954,19 +954,19 @@ static int TestStringCore()
 		char s8[] = "HELLO WORLD";
 
 		EATEST_VERIFY(Strlwr(s8) == s8);
-		EATEST_VERIFY(Memcmp(s8, "hello world", EAArrayCount(s8)) == 0);
+		EATEST_VERIFY(Memcmp(s8, "hello world", EASTLArrayCount(s8)) == 0);
 	}
 	{
-		char16_t s16[16]; Strlcpy(s16, EA_CHAR16("HELLO WORLD"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[16]; Strlcpy(s16, EASTL_CHAR16("HELLO WORLD"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
 		EATEST_VERIFY(Strlwr(s16) == s16);
-		EATEST_VERIFY(Memcmp(s16, EA_CHAR16("hello world"), EAArrayCount(s16)) == 0);
+		EATEST_VERIFY(Memcmp(s16, EASTL_CHAR16("hello world"), EASTLArrayCount(s16)) == 0);
 	}
 	{
-		char32_t s32[32]; Strlcpy(s32, EA_CHAR32("HELLO WORLD"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[32]; Strlcpy(s32, EASTL_CHAR32("HELLO WORLD"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
 		EATEST_VERIFY(Strlwr(s32) == s32);
-		EATEST_VERIFY(Memcmp(s32, EA_CHAR32("hello world"), EAArrayCount(s32)) == 0);
+		EATEST_VERIFY(Memcmp(s32, EASTL_CHAR32("hello world"), EASTLArrayCount(s32)) == 0);
 	}
 
 
@@ -982,7 +982,7 @@ static int TestStringCore()
 		EATEST_VERIFY(Strrchr(s8, '\x0') == &s8[0x10]);
 	}
 	{
-		char16_t s16[24]; Strlcpy(s16, EA_CHAR16("012a456789abc2ef"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[24]; Strlcpy(s16, EASTL_CHAR16("012a456789abc2ef"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
 		EATEST_VERIFY(Strrchr(s16, 'a')   == &s16[0xa]);
 		EATEST_VERIFY(Strrchr(s16, '2')   == &s16[0xd]);
@@ -990,7 +990,7 @@ static int TestStringCore()
 		EATEST_VERIFY(Strrchr(s16, '\x0') == &s16[0x10]);
 	}
 	{
-		char32_t s32[24]; Strlcpy(s32, EA_CHAR32("012a456789abc2ef"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[24]; Strlcpy(s32, EASTL_CHAR32("012a456789abc2ef"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
 		EATEST_VERIFY(Strrchr(s32, 'a')   == &s32[0xa]);
 		EATEST_VERIFY(Strrchr(s32, '2')   == &s32[0xd]);
@@ -1011,20 +1011,20 @@ static int TestStringCore()
 		EATEST_VERIFY(Strcspn(s8, ";/\x0!") == 0x10);
 	}
 	{
-		char16_t s16[24]; Strlcpy(s16, EA_CHAR16("0123456789abcdef"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[24]; Strlcpy(s16, EASTL_CHAR16("0123456789abcdef"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
-		EATEST_VERIFY(Strcspn(s16, EA_CHAR16("@fa"))    == 0xa);
-		EATEST_VERIFY(Strcspn(s16, EA_CHAR16("5.a,f"))  == 0x5);
-		EATEST_VERIFY(Strcspn(s16, EA_CHAR16(":/1"))    == 0x1);
-		EATEST_VERIFY(Strcspn(s16, EA_CHAR16(";/\x0!")) == 0x10);
+		EATEST_VERIFY(Strcspn(s16, EASTL_CHAR16("@fa"))    == 0xa);
+		EATEST_VERIFY(Strcspn(s16, EASTL_CHAR16("5.a,f"))  == 0x5);
+		EATEST_VERIFY(Strcspn(s16, EASTL_CHAR16(":/1"))    == 0x1);
+		EATEST_VERIFY(Strcspn(s16, EASTL_CHAR16(";/\x0!")) == 0x10);
 	}
 	{
-		char32_t s32[24]; Strlcpy(s32, EA_CHAR32("0123456789abcdef"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[24]; Strlcpy(s32, EASTL_CHAR32("0123456789abcdef"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
-		EATEST_VERIFY(Strcspn(s32, EA_CHAR32("@fa"))    == 0xa);
-		EATEST_VERIFY(Strcspn(s32, EA_CHAR32("5.a,f"))  == 0x5);
-		EATEST_VERIFY(Strcspn(s32, EA_CHAR32(":/1"))    == 0x1);
-		EATEST_VERIFY(Strcspn(s32, EA_CHAR32(";/\x0!")) == 0x10);
+		EATEST_VERIFY(Strcspn(s32, EASTL_CHAR32("@fa"))    == 0xa);
+		EATEST_VERIFY(Strcspn(s32, EASTL_CHAR32("5.a,f"))  == 0x5);
+		EATEST_VERIFY(Strcspn(s32, EASTL_CHAR32(":/1"))    == 0x1);
+		EATEST_VERIFY(Strcspn(s32, EASTL_CHAR32(";/\x0!")) == 0x10);
 	}
 
 
@@ -1040,20 +1040,20 @@ static int TestStringCore()
 		EATEST_VERIFY(Strpbrk(s8, ";/\x0!") == NULL);
 	}
 	{
-		char16_t s16[24]; Strlcpy(s16, EA_CHAR16("0123456789abcdef"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[24]; Strlcpy(s16, EASTL_CHAR16("0123456789abcdef"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
-		EATEST_VERIFY(Strpbrk(s16, EA_CHAR16("@fa"))    == &s16[0xa]);
-		EATEST_VERIFY(Strpbrk(s16, EA_CHAR16("5.a,f"))  == &s16[0x5]);
-		EATEST_VERIFY(Strpbrk(s16, EA_CHAR16(":/1"))    == &s16[0x1]);
-		EATEST_VERIFY(Strpbrk(s16, EA_CHAR16(";/\x0!")) == NULL);
+		EATEST_VERIFY(Strpbrk(s16, EASTL_CHAR16("@fa"))    == &s16[0xa]);
+		EATEST_VERIFY(Strpbrk(s16, EASTL_CHAR16("5.a,f"))  == &s16[0x5]);
+		EATEST_VERIFY(Strpbrk(s16, EASTL_CHAR16(":/1"))    == &s16[0x1]);
+		EATEST_VERIFY(Strpbrk(s16, EASTL_CHAR16(";/\x0!")) == NULL);
 	}
 	{
-		char32_t s32[24]; Strlcpy(s32, EA_CHAR32("0123456789abcdef"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[24]; Strlcpy(s32, EASTL_CHAR32("0123456789abcdef"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
-		EATEST_VERIFY(Strpbrk(s32, EA_CHAR32("@fa"))    == &s32[0xa]);
-		EATEST_VERIFY(Strpbrk(s32, EA_CHAR32("5.a,f"))  == &s32[0x5]);
-		EATEST_VERIFY(Strpbrk(s32, EA_CHAR32(":/1"))    == &s32[0x1]);
-		EATEST_VERIFY(Strpbrk(s32, EA_CHAR32(";/\x0!")) == NULL);
+		EATEST_VERIFY(Strpbrk(s32, EASTL_CHAR32("@fa"))    == &s32[0xa]);
+		EATEST_VERIFY(Strpbrk(s32, EASTL_CHAR32("5.a,f"))  == &s32[0x5]);
+		EATEST_VERIFY(Strpbrk(s32, EASTL_CHAR32(":/1"))    == &s32[0x1]);
+		EATEST_VERIFY(Strpbrk(s32, EASTL_CHAR32(";/\x0!")) == NULL);
 	}
 
 
@@ -1069,7 +1069,7 @@ static int TestStringCore()
 		EATEST_VERIFY(Strchr(s8, '\x0') == &s8[0x10]);
 	}
 	{
-		char16_t s16[24]; Strlcpy(s16, EA_CHAR16("0123456789abcdef"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[24]; Strlcpy(s16, EASTL_CHAR16("0123456789abcdef"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
 		EATEST_VERIFY(Strchr(s16, 'z')   == NULL);
 		EATEST_VERIFY(Strchr(s16, 'a')   == &s16[0xa]);
@@ -1077,7 +1077,7 @@ static int TestStringCore()
 		EATEST_VERIFY(Strchr(s16, '\x0') == &s16[0x10]);
 	}
 	{
-		char32_t s32[24]; Strlcpy(s32, EA_CHAR32("0123456789abcdef"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[24]; Strlcpy(s32, EASTL_CHAR32("0123456789abcdef"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
 		EATEST_VERIFY(Strchr(s32, 'z')   == NULL);
 		EATEST_VERIFY(Strchr(s32, 'a')   == &s32[0xa]);
@@ -1088,8 +1088,8 @@ static int TestStringCore()
 		{
 		char s8[] = "0123456789abcdef";
 
-		EATEST_VERIFY(Strnchr(s8, 'z', EAArrayCount(s8))   == NULL);
-		EATEST_VERIFY(Strnchr(s8, 'a', EAArrayCount(s8))   == &s8[0xa]);
+		EATEST_VERIFY(Strnchr(s8, 'z', EASTLArrayCount(s8))   == NULL);
+		EATEST_VERIFY(Strnchr(s8, 'a', EASTLArrayCount(s8))   == &s8[0xa]);
 		EATEST_VERIFY(Strnchr(s8, '5', 0) == NULL);
 		EATEST_VERIFY(Strnchr(s8, '5', 1) == NULL);
 		EATEST_VERIFY(Strnchr(s8, '5', 2) == NULL);
@@ -1097,12 +1097,12 @@ static int TestStringCore()
 		EATEST_VERIFY(Strnchr(s8, '5', 6) == &s8[0x5]);
 		EATEST_VERIFY(Strnchr(s8, '5', 7) == &s8[0x5]);
 		EATEST_VERIFY(Strnchr(s8, '5', 9) == &s8[0x5]);
-		EATEST_VERIFY(Strnchr(s8, '5', EAArrayCount(s8)) == &s8[0x5]);
+		EATEST_VERIFY(Strnchr(s8, '5', EASTLArrayCount(s8)) == &s8[0x5]);
 		EATEST_VERIFY(Strnchr(s8, '0', 0) == NULL);
 		EATEST_VERIFY(Strnchr(s8, '0', 1) == &s8[0x0]);
 		EATEST_VERIFY(Strnchr(s8, '0', 2) == &s8[0x0]);
 		EATEST_VERIFY(Strnchr(s8, '0', 9) == &s8[0x0]);
-		EATEST_VERIFY(Strnchr(s8, '0', EAArrayCount(s8)) == &s8[0x0]);
+		EATEST_VERIFY(Strnchr(s8, '0', EASTLArrayCount(s8)) == &s8[0x0]);
 		EATEST_VERIFY(Strnchr(s8, 'f', 0) == NULL);
 		EATEST_VERIFY(Strnchr(s8, 'f', 1) == NULL);
 		EATEST_VERIFY(Strnchr(s8, 'f', 5) == NULL);
@@ -1117,10 +1117,10 @@ static int TestStringCore()
 		EATEST_VERIFY(Strnchr(s8, '\0', EA::StdC::Strlen(s8)+1) == &s8[0x10]); //This is the null terminator
 	}
 	{
-		char16_t s16[24]; Strlcpy(s16, EA_CHAR16("0123456789abcdef"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[24]; Strlcpy(s16, EASTL_CHAR16("0123456789abcdef"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
-		EATEST_VERIFY(Strnchr(s16, 'z', EAArrayCount(s16))   == NULL);
-		EATEST_VERIFY(Strnchr(s16, 'a', EAArrayCount(s16))   == &s16[0xa]);
+		EATEST_VERIFY(Strnchr(s16, 'z', EASTLArrayCount(s16))   == NULL);
+		EATEST_VERIFY(Strnchr(s16, 'a', EASTLArrayCount(s16))   == &s16[0xa]);
 		EATEST_VERIFY(Strnchr(s16, '5', 0) == NULL);
 		EATEST_VERIFY(Strnchr(s16, '5', 1) == NULL);
 		EATEST_VERIFY(Strnchr(s16, '5', 2) == NULL);
@@ -1128,12 +1128,12 @@ static int TestStringCore()
 		EATEST_VERIFY(Strnchr(s16, '5', 6) == &s16[0x5]);
 		EATEST_VERIFY(Strnchr(s16, '5', 7) == &s16[0x5]);
 		EATEST_VERIFY(Strnchr(s16, '5', 9) == &s16[0x5]);
-		EATEST_VERIFY(Strnchr(s16, '5', EAArrayCount(s16)) == &s16[0x5]);
+		EATEST_VERIFY(Strnchr(s16, '5', EASTLArrayCount(s16)) == &s16[0x5]);
 		EATEST_VERIFY(Strnchr(s16, '0', 0) == NULL);
 		EATEST_VERIFY(Strnchr(s16, '0', 1) == &s16[0x0]);
 		EATEST_VERIFY(Strnchr(s16, '0', 2) == &s16[0x0]);
 		EATEST_VERIFY(Strnchr(s16, '0', 9) == &s16[0x0]);
-		EATEST_VERIFY(Strnchr(s16, '0', EAArrayCount(s16)) == &s16[0x0]);
+		EATEST_VERIFY(Strnchr(s16, '0', EASTLArrayCount(s16)) == &s16[0x0]);
 		EATEST_VERIFY(Strnchr(s16, 'f', 0) == NULL);
 		EATEST_VERIFY(Strnchr(s16, 'f', 1) == NULL);
 		EATEST_VERIFY(Strnchr(s16, 'f', 5) == NULL);
@@ -1148,10 +1148,10 @@ static int TestStringCore()
 		EATEST_VERIFY(Strnchr(s16, '\0', EA::StdC::Strlen(s16)+1) == &s16[0x10]); //This is the null terminator
 	}
 	{
-		char32_t s32[24]; Strlcpy(s32, EA_CHAR32("0123456789abcdef"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[24]; Strlcpy(s32, EASTL_CHAR32("0123456789abcdef"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
-		EATEST_VERIFY(Strnchr(s32, 'z', EAArrayCount(s32))   == NULL);
-		EATEST_VERIFY(Strnchr(s32, 'a', EAArrayCount(s32))   == &s32[0xa]);
+		EATEST_VERIFY(Strnchr(s32, 'z', EASTLArrayCount(s32))   == NULL);
+		EATEST_VERIFY(Strnchr(s32, 'a', EASTLArrayCount(s32))   == &s32[0xa]);
 		EATEST_VERIFY(Strnchr(s32, '5', 0) == NULL);
 		EATEST_VERIFY(Strnchr(s32, '5', 1) == NULL);
 		EATEST_VERIFY(Strnchr(s32, '5', 2) == NULL);
@@ -1159,12 +1159,12 @@ static int TestStringCore()
 		EATEST_VERIFY(Strnchr(s32, '5', 6) == &s32[0x5]);
 		EATEST_VERIFY(Strnchr(s32, '5', 7) == &s32[0x5]);
 		EATEST_VERIFY(Strnchr(s32, '5', 9) == &s32[0x5]);
-		EATEST_VERIFY(Strnchr(s32, '5', EAArrayCount(s32)) == &s32[0x5]);
+		EATEST_VERIFY(Strnchr(s32, '5', EASTLArrayCount(s32)) == &s32[0x5]);
 		EATEST_VERIFY(Strnchr(s32, '0', 0) == NULL);
 		EATEST_VERIFY(Strnchr(s32, '0', 1) == &s32[0x0]);
 		EATEST_VERIFY(Strnchr(s32, '0', 2) == &s32[0x0]);
 		EATEST_VERIFY(Strnchr(s32, '0', 9) == &s32[0x0]);
-		EATEST_VERIFY(Strnchr(s32, '0', EAArrayCount(s32)) == &s32[0x0]);
+		EATEST_VERIFY(Strnchr(s32, '0', EASTLArrayCount(s32)) == &s32[0x0]);
 		EATEST_VERIFY(Strnchr(s32, 'f', 0) == NULL);
 		EATEST_VERIFY(Strnchr(s32, 'f', 1) == NULL);
 		EATEST_VERIFY(Strnchr(s32, 'f', 5) == NULL);
@@ -1190,18 +1190,18 @@ static int TestStringCore()
 		EATEST_VERIFY(Strspn(s8,    ":/1")  == 0);
 	}
 	{
-		char16_t s16[24]; Strlcpy(s16, EA_CHAR16("0123456789abcdef"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[24]; Strlcpy(s16, EASTL_CHAR16("0123456789abcdef"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
-		EATEST_VERIFY(Strspn(s16,    EA_CHAR16("2103")) == 4);
-		EATEST_VERIFY(Strspn(s16+10, EA_CHAR16("badc")) == 4);
-		EATEST_VERIFY(Strspn(s16,    EA_CHAR16(":/1"))  == 0);
+		EATEST_VERIFY(Strspn(s16,    EASTL_CHAR16("2103")) == 4);
+		EATEST_VERIFY(Strspn(s16+10, EASTL_CHAR16("badc")) == 4);
+		EATEST_VERIFY(Strspn(s16,    EASTL_CHAR16(":/1"))  == 0);
 	}
 	{
-		char32_t s32[24]; Strlcpy(s32, EA_CHAR32("0123456789abcdef"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[24]; Strlcpy(s32, EASTL_CHAR32("0123456789abcdef"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
-		EATEST_VERIFY(Strspn(s32,    EA_CHAR32("2103")) == 4);
-		EATEST_VERIFY(Strspn(s32+10, EA_CHAR32("badc")) == 4);
-		EATEST_VERIFY(Strspn(s32,    EA_CHAR32(":/1"))  == 0);
+		EATEST_VERIFY(Strspn(s32,    EASTL_CHAR32("2103")) == 4);
+		EATEST_VERIFY(Strspn(s32+10, EASTL_CHAR32("badc")) == 4);
+		EATEST_VERIFY(Strspn(s32,    EASTL_CHAR32(":/1"))  == 0);
 	}
 
 
@@ -1218,22 +1218,22 @@ static int TestStringCore()
 		EATEST_VERIFY(Strstr(s8, "abcd")  == &s8[3]);
 	}
 	{
-		char16_t s16[24]; Strlcpy(s16, EA_CHAR16("012abcdf89abcdef"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[24]; Strlcpy(s16, EASTL_CHAR16("012abcdf89abcdef"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
-		EATEST_VERIFY(Strstr(s16, EA_CHAR16(""))      == &s16[0]);
-		EATEST_VERIFY(Strstr(s16, EA_CHAR16("012"))   == &s16[0]);
-		EATEST_VERIFY(Strstr(s16, EA_CHAR16("abcde")) == &s16[10]);
-		EATEST_VERIFY(Strstr(s16, EA_CHAR16(":/1"))   == NULL);
-		EATEST_VERIFY(Strstr(s16, EA_CHAR16("abcd"))  == &s16[3]);
+		EATEST_VERIFY(Strstr(s16, EASTL_CHAR16(""))      == &s16[0]);
+		EATEST_VERIFY(Strstr(s16, EASTL_CHAR16("012"))   == &s16[0]);
+		EATEST_VERIFY(Strstr(s16, EASTL_CHAR16("abcde")) == &s16[10]);
+		EATEST_VERIFY(Strstr(s16, EASTL_CHAR16(":/1"))   == NULL);
+		EATEST_VERIFY(Strstr(s16, EASTL_CHAR16("abcd"))  == &s16[3]);
 	}
 	{
-		char32_t s32[24]; Strlcpy(s32, EA_CHAR32("012abcdf89abcdef"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[24]; Strlcpy(s32, EASTL_CHAR32("012abcdf89abcdef"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
-		EATEST_VERIFY(Strstr(s32, EA_CHAR32(""))      == &s32[0]);
-		EATEST_VERIFY(Strstr(s32, EA_CHAR32("012"))   == &s32[0]);
-		EATEST_VERIFY(Strstr(s32, EA_CHAR32("abcde")) == &s32[10]);
-		EATEST_VERIFY(Strstr(s32, EA_CHAR32(":/1"))   == NULL);
-		EATEST_VERIFY(Strstr(s32, EA_CHAR32("abcd"))  == &s32[3]);
+		EATEST_VERIFY(Strstr(s32, EASTL_CHAR32(""))      == &s32[0]);
+		EATEST_VERIFY(Strstr(s32, EASTL_CHAR32("012"))   == &s32[0]);
+		EATEST_VERIFY(Strstr(s32, EASTL_CHAR32("abcde")) == &s32[10]);
+		EATEST_VERIFY(Strstr(s32, EASTL_CHAR32(":/1"))   == NULL);
+		EATEST_VERIFY(Strstr(s32, EASTL_CHAR32("abcd"))  == &s32[3]);
 	}
 
 
@@ -1250,22 +1250,22 @@ static int TestStringCore()
 		EATEST_VERIFY(Stristr(s8, "")      == s8);
 	}
 	{
-		char16_t s16[24]; Strlcpy(s16, EA_CHAR16("012aBcdf89aBcDEf"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[24]; Strlcpy(s16, EASTL_CHAR16("012aBcdf89aBcDEf"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
-		EATEST_VERIFY(Stristr(s16, EA_CHAR16("012"))   == &s16[0]);
-		EATEST_VERIFY(Stristr(s16, EA_CHAR16("abcde")) == &s16[10]);
-		EATEST_VERIFY(Stristr(s16, EA_CHAR16(":/1"))   == NULL);
-		EATEST_VERIFY(Stristr(s16, EA_CHAR16("abcd"))  == &s16[3]);
-		EATEST_VERIFY(Stristr(s16, EA_CHAR16(""))      == s16);
+		EATEST_VERIFY(Stristr(s16, EASTL_CHAR16("012"))   == &s16[0]);
+		EATEST_VERIFY(Stristr(s16, EASTL_CHAR16("abcde")) == &s16[10]);
+		EATEST_VERIFY(Stristr(s16, EASTL_CHAR16(":/1"))   == NULL);
+		EATEST_VERIFY(Stristr(s16, EASTL_CHAR16("abcd"))  == &s16[3]);
+		EATEST_VERIFY(Stristr(s16, EASTL_CHAR16(""))      == s16);
 	}
 	{
-		char32_t s32[24]; Strlcpy(s32, EA_CHAR32("012aBcdf89aBcDEf"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[24]; Strlcpy(s32, EASTL_CHAR32("012aBcdf89aBcDEf"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
-		EATEST_VERIFY(Stristr(s32, EA_CHAR32("012"))   == &s32[0]);
-		EATEST_VERIFY(Stristr(s32, EA_CHAR32("abcde")) == &s32[10]);
-		EATEST_VERIFY(Stristr(s32, EA_CHAR32(":/1"))   == NULL);
-		EATEST_VERIFY(Stristr(s32, EA_CHAR32("abcd"))  == &s32[3]);
-		EATEST_VERIFY(Stristr(s32, EA_CHAR32(""))      == s32);
+		EATEST_VERIFY(Stristr(s32, EASTL_CHAR32("012"))   == &s32[0]);
+		EATEST_VERIFY(Stristr(s32, EASTL_CHAR32("abcde")) == &s32[10]);
+		EATEST_VERIFY(Stristr(s32, EASTL_CHAR32(":/1"))   == NULL);
+		EATEST_VERIFY(Stristr(s32, EASTL_CHAR32("abcd"))  == &s32[3]);
+		EATEST_VERIFY(Stristr(s32, EASTL_CHAR32(""))      == s32);
 	}
 
 
@@ -1275,8 +1275,8 @@ static int TestStringCore()
 	{
 		// To do: Make a real test. For now we merely verify that we can call the function.
 		Strrstr("Hello", "world");
-		Strrstr(EA_CHAR16("Hello"), EA_CHAR16("world"));
-		Strrstr(EA_CHAR32("Hello"), EA_CHAR32("world"));
+		Strrstr(EASTL_CHAR16("Hello"), EASTL_CHAR16("world"));
+		Strrstr(EASTL_CHAR32("Hello"), EASTL_CHAR32("world"));
 	}
 
 
@@ -1286,8 +1286,8 @@ static int TestStringCore()
 	{
 		// To do: Make a real test. For now we merely verify that we can call the function.
 		Strirstr("Hello", "world");
-		Strirstr(EA_CHAR16("Hello"), EA_CHAR16("world"));
-		Strirstr(EA_CHAR32("Hello"), EA_CHAR32("world"));
+		Strirstr(EASTL_CHAR16("Hello"), EASTL_CHAR16("world"));
+		Strirstr(EASTL_CHAR32("Hello"), EASTL_CHAR32("world"));
 	}
 
 
@@ -1313,14 +1313,14 @@ static int TestStringCore()
 		EATEST_VERIFY(r == NULL);
 	}
 	{
-		char16_t  s16[16]; Strlcpy(s16, EA_CHAR16(",.:1:2.3,4"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t  s16[16]; Strlcpy(s16, EASTL_CHAR16(",.:1:2.3,4"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		char16_t* s16ctx = s16;
-		EATEST_VERIFY(Strtok(s16, EA_CHAR16(",.:"), &s16ctx) == &s16[3]);
+		EATEST_VERIFY(Strtok(s16, EASTL_CHAR16(",.:"), &s16ctx) == &s16[3]);
 	}
 	{
-		char32_t  s32[32]; Strlcpy(s32, EA_CHAR32(",.:1:2.3,4"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t  s32[32]; Strlcpy(s32, EASTL_CHAR32(",.:1:2.3,4"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		char32_t* s32ctx = s32;
-		EATEST_VERIFY(Strtok(s32, EA_CHAR32(",.:"), &s32ctx) == &s32[3]);
+		EATEST_VERIFY(Strtok(s32, EASTL_CHAR32(",.:"), &s32ctx) == &s32[3]);
 	}
 
 	{
@@ -1382,14 +1382,14 @@ static int TestStringCore()
 		EATEST_VERIFY(pCurrent == NULL);
 	}
 	{
-		const char16_t* teststr  = EA_CHAR16("  Hello /// This/is++a test");
-		const char16_t* teststr2 = EA_CHAR16("  ///  ");
-		const char16_t* teststr3 = EA_CHAR16("  /// Hello ");
-		const char16_t* delim    = EA_CHAR16("/ %");
-		const char16_t* token1   = EA_CHAR16("Hello");
-		const char16_t* token2   = EA_CHAR16("This");
-		const char16_t* token3   = EA_CHAR16("is++a");
-		const char16_t* token4   = EA_CHAR16("test");
+		const char16_t* teststr  = EASTL_CHAR16("  Hello /// This/is++a test");
+		const char16_t* teststr2 = EASTL_CHAR16("  ///  ");
+		const char16_t* teststr3 = EASTL_CHAR16("  /// Hello ");
+		const char16_t* delim    = EASTL_CHAR16("/ %");
+		const char16_t* token1   = EASTL_CHAR16("Hello");
+		const char16_t* token2   = EASTL_CHAR16("This");
+		const char16_t* token3   = EASTL_CHAR16("is++a");
+		const char16_t* token4   = EASTL_CHAR16("test");
 		const char16_t* pCurrent;
 		size_t          n;
 
@@ -1426,14 +1426,14 @@ static int TestStringCore()
 		EATEST_VERIFY(pCurrent == NULL);
 	}
 	{
-		const char32_t* teststr  = EA_CHAR32("  Hello /// This/is++a test");
-		const char32_t* teststr2 = EA_CHAR32("  ///  ");
-		const char32_t* teststr3 = EA_CHAR32("  /// Hello ");
-		const char32_t* delim    = EA_CHAR32("/ %");
-		const char32_t* token1   = EA_CHAR32("Hello");
-		const char32_t* token2   = EA_CHAR32("This");
-		const char32_t* token3   = EA_CHAR32("is++a");
-		const char32_t* token4   = EA_CHAR32("test");
+		const char32_t* teststr  = EASTL_CHAR32("  Hello /// This/is++a test");
+		const char32_t* teststr2 = EASTL_CHAR32("  ///  ");
+		const char32_t* teststr3 = EASTL_CHAR32("  /// Hello ");
+		const char32_t* delim    = EASTL_CHAR32("/ %");
+		const char32_t* token1   = EASTL_CHAR32("Hello");
+		const char32_t* token2   = EASTL_CHAR32("This");
+		const char32_t* token3   = EASTL_CHAR32("is++a");
+		const char32_t* token4   = EASTL_CHAR32("test");
 		const char32_t* pCurrent;
 		size_t          n;
 
@@ -1481,16 +1481,16 @@ static int TestStringCore()
 		EATEST_VERIFY(Memcmp(s8, "^^^^^^^^^^", Strlen(s8)) == 0);
 	}
 	{
-		char16_t s16[16]; Strlcpy(s16, EA_CHAR16(",.:1:2.3,4"), EAArrayCount(s16)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t s16[16]; Strlcpy(s16, EASTL_CHAR16(",.:1:2.3,4"), EASTLArrayCount(s16)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
 		EATEST_VERIFY(Strset(s16, '^') == s16);
-		EATEST_VERIFY(Memcmp(s16, EA_CHAR16("^^^^^^^^^^"), Strlen(s16)) == 0);
+		EATEST_VERIFY(Memcmp(s16, EASTL_CHAR16("^^^^^^^^^^"), Strlen(s16)) == 0);
 	}
 	{
-		char32_t s32[32]; Strlcpy(s32, EA_CHAR32(",.:1:2.3,4"), EAArrayCount(s32)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t s32[32]; Strlcpy(s32, EASTL_CHAR32(",.:1:2.3,4"), EASTLArrayCount(s32)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
 		EATEST_VERIFY(Strset(s32, '^') == s32);
-		EATEST_VERIFY(Memcmp(s32, EA_CHAR32("^^^^^^^^^^"), Strlen(s32)) == 0);
+		EATEST_VERIFY(Memcmp(s32, EASTL_CHAR32("^^^^^^^^^^"), Strlen(s32)) == 0);
 	}
 
 
@@ -1537,17 +1537,17 @@ static int TestStringCore()
 
 		EATEST_VERIFY(Strlen(Strrev(sEmpty)) == 0);
 
-		Strcpy(s16, EA_CHAR16("abcdefgh"));
+		Strcpy(s16, EASTL_CHAR16("abcdefgh"));
 		EATEST_VERIFY(Strrev(s16) == s16);
-		EATEST_VERIFY(Memcmp(s16, EA_CHAR16("hgfedcba"), Strlen(s16)) == 0);
+		EATEST_VERIFY(Memcmp(s16, EASTL_CHAR16("hgfedcba"), Strlen(s16)) == 0);
 
-		Strcpy(s16, EA_CHAR16("abcdefg"));
+		Strcpy(s16, EASTL_CHAR16("abcdefg"));
 		EATEST_VERIFY(Strrev(s16) == s16);
-		EATEST_VERIFY(Memcmp(s16, EA_CHAR16("gfedcba"), Strlen(s16)) == 0);
+		EATEST_VERIFY(Memcmp(s16, EASTL_CHAR16("gfedcba"), Strlen(s16)) == 0);
 
-		Strcpy(s16, EA_CHAR16("a"));
+		Strcpy(s16, EASTL_CHAR16("a"));
 		EATEST_VERIFY(Strrev(s16) == s16);
-		EATEST_VERIFY(Memcmp(s16, EA_CHAR16("a"), Strlen(s16)) == 0);
+		EATEST_VERIFY(Memcmp(s16, EASTL_CHAR16("a"), Strlen(s16)) == 0);
 	}
 	{
 		char32_t s32[32];
@@ -1555,17 +1555,17 @@ static int TestStringCore()
 
 		EATEST_VERIFY(Strlen(Strrev(sEmpty)) == 0);
 
-		Strcpy(s32, EA_CHAR32("abcdefgh"));
+		Strcpy(s32, EASTL_CHAR32("abcdefgh"));
 		EATEST_VERIFY(Strrev(s32) == s32);
-		EATEST_VERIFY(Memcmp(s32, EA_CHAR32("hgfedcba"), Strlen(s32)) == 0);
+		EATEST_VERIFY(Memcmp(s32, EASTL_CHAR32("hgfedcba"), Strlen(s32)) == 0);
 
-		Strcpy(s32, EA_CHAR32("abcdefg"));
+		Strcpy(s32, EASTL_CHAR32("abcdefg"));
 		EATEST_VERIFY(Strrev(s32) == s32);
-		EATEST_VERIFY(Memcmp(s32, EA_CHAR32("gfedcba"), Strlen(s32)) == 0);
+		EATEST_VERIFY(Memcmp(s32, EASTL_CHAR32("gfedcba"), Strlen(s32)) == 0);
 
-		Strcpy(s32, EA_CHAR32("a"));
+		Strcpy(s32, EASTL_CHAR32("a"));
 		EATEST_VERIFY(Strrev(s32) == s32);
-		EATEST_VERIFY(Memcmp(s32, EA_CHAR32("a"), Strlen(s32)) == 0);
+		EATEST_VERIFY(Memcmp(s32, EASTL_CHAR32("a"), Strlen(s32)) == 0);
 	}
 
 
@@ -1584,9 +1584,9 @@ static int TestStringCore()
 		EATEST_VERIFY(Strcmp(buffer1, buffer2) <  0);
 	}
 	{
-		char16_t buffer1[12]; Strlcpy(buffer1, EA_CHAR16("01234567a"), EAArrayCount(buffer1)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		char16_t buffer2[12]; Strlcpy(buffer2, EA_CHAR16("01234567b"), EAArrayCount(buffer2)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		char16_t buffer3[12]; Strlcpy(buffer3, EA_CHAR16("01234567c"), EAArrayCount(buffer3)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer1[12]; Strlcpy(buffer1, EASTL_CHAR16("01234567a"), EASTLArrayCount(buffer1)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer2[12]; Strlcpy(buffer2, EASTL_CHAR16("01234567b"), EASTLArrayCount(buffer2)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer3[12]; Strlcpy(buffer3, EASTL_CHAR16("01234567c"), EASTLArrayCount(buffer3)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
 		EATEST_VERIFY(Strcmp(buffer1, buffer1) == 0);
 		EATEST_VERIFY(Strcmp(buffer2, buffer1) >  0);
@@ -1595,9 +1595,9 @@ static int TestStringCore()
 		EATEST_VERIFY(Strcmp(buffer1, buffer2) <  0);
 	}
 	{
-		char32_t buffer1[12]; Strlcpy(buffer1, EA_CHAR32("01234567a"), EAArrayCount(buffer1)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		char32_t buffer2[12]; Strlcpy(buffer2, EA_CHAR32("01234567b"), EAArrayCount(buffer2)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		char32_t buffer3[12]; Strlcpy(buffer3, EA_CHAR32("01234567c"), EAArrayCount(buffer3)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer1[12]; Strlcpy(buffer1, EASTL_CHAR32("01234567a"), EASTLArrayCount(buffer1)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer2[12]; Strlcpy(buffer2, EASTL_CHAR32("01234567b"), EASTLArrayCount(buffer2)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer3[12]; Strlcpy(buffer3, EASTL_CHAR32("01234567c"), EASTLArrayCount(buffer3)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
 		EATEST_VERIFY(Strcmp(buffer1, buffer1) == 0);
 		EATEST_VERIFY(Strcmp(buffer2, buffer1) >  0);
@@ -1633,7 +1633,7 @@ static int TestStringCore()
 				if(s1[j] == 0) // We can't have a 0 char, as that's the C string terminator char.
 					s1[j] = 'x';
 			}
-			s2.assign(s1, 0, eastl::min_alt(s1.size(), s2.size()));
+			s2.assign(s1, 0, eastl::minAlt(s1.size(), s2.size()));
 
 			if(!makeEqualValue)
 			{
@@ -1678,7 +1678,7 @@ static int TestStringCore()
 				if(s1[j] == 0) // We can't have a 0 char, as that's the C string terminator char.
 					s1[j] = 'x';
 			}
-			s2.assign(s1, 0, eastl::min_alt(s1.size(), s2.size()));
+			s2.assign(s1, 0, eastl::minAlt(s1.size(), s2.size()));
 
 			if(!makeEqualValue)
 			{
@@ -1716,9 +1716,9 @@ static int TestStringCore()
 		EATEST_VERIFY(Strncmp(buffer1, buffer2, 12) <  0);
 	}
 	{
-		char16_t buffer1[16]; Strlcpy(buffer1, EA_CHAR16("01234567abc"), EAArrayCount(buffer1)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		char16_t buffer2[16]; Strlcpy(buffer2, EA_CHAR16("01234567bbc"), EAArrayCount(buffer2)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		char16_t buffer3[16]; Strlcpy(buffer3, EA_CHAR16("01234567cbc"), EAArrayCount(buffer3)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer1[16]; Strlcpy(buffer1, EASTL_CHAR16("01234567abc"), EASTLArrayCount(buffer1)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer2[16]; Strlcpy(buffer2, EASTL_CHAR16("01234567bbc"), EASTLArrayCount(buffer2)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer3[16]; Strlcpy(buffer3, EASTL_CHAR16("01234567cbc"), EASTLArrayCount(buffer3)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
  
 		EATEST_VERIFY(Strncmp(buffer1, buffer1, 12) == 0);
 		EATEST_VERIFY(Strncmp(buffer2, buffer1, 12) >  0);
@@ -1727,9 +1727,9 @@ static int TestStringCore()
 		EATEST_VERIFY(Strncmp(buffer1, buffer2, 12) <  0);
 	}
 	{
-		char32_t buffer1[32]; Strlcpy(buffer1, EA_CHAR32("01234567abc"), EAArrayCount(buffer1)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		char32_t buffer2[32]; Strlcpy(buffer2, EA_CHAR32("01234567bbc"), EAArrayCount(buffer2)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		char32_t buffer3[32]; Strlcpy(buffer3, EA_CHAR32("01234567cbc"), EAArrayCount(buffer3)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer1[32]; Strlcpy(buffer1, EASTL_CHAR32("01234567abc"), EASTLArrayCount(buffer1)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer2[32]; Strlcpy(buffer2, EASTL_CHAR32("01234567bbc"), EASTLArrayCount(buffer2)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer3[32]; Strlcpy(buffer3, EASTL_CHAR32("01234567cbc"), EASTLArrayCount(buffer3)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
  
 		EATEST_VERIFY(Strncmp(buffer1, buffer1, 12) == 0);
 		EATEST_VERIFY(Strncmp(buffer2, buffer1, 12) >  0);
@@ -1754,9 +1754,9 @@ static int TestStringCore()
 		EATEST_VERIFY(Stricmp(buffer1, buffer2) <  0);
 	}
 	{
-		char16_t buffer1[16]; Strlcpy(buffer1, EA_CHAR16("01asdf67A"), EAArrayCount(buffer1)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		char16_t buffer2[16]; Strlcpy(buffer2, EA_CHAR16("01aSDf67b"), EAArrayCount(buffer2)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		char16_t buffer3[16]; Strlcpy(buffer3, EA_CHAR16("01AsdF67C"), EAArrayCount(buffer3)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer1[16]; Strlcpy(buffer1, EASTL_CHAR16("01asdf67A"), EASTLArrayCount(buffer1)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer2[16]; Strlcpy(buffer2, EASTL_CHAR16("01aSDf67b"), EASTLArrayCount(buffer2)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer3[16]; Strlcpy(buffer3, EASTL_CHAR16("01AsdF67C"), EASTLArrayCount(buffer3)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
 		EATEST_VERIFY(Stricmp(buffer1, buffer1) == 0);
 		EATEST_VERIFY(Stricmp(buffer2, buffer1) >  0);
@@ -1765,9 +1765,9 @@ static int TestStringCore()
 		EATEST_VERIFY(Stricmp(buffer1, buffer2) <  0);
 	}
 	{
-		char32_t buffer1[32]; Strlcpy(buffer1, EA_CHAR32("01asdf67A"), EAArrayCount(buffer1)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		char32_t buffer2[32]; Strlcpy(buffer2, EA_CHAR32("01aSDf67b"), EAArrayCount(buffer2)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		char32_t buffer3[32]; Strlcpy(buffer3, EA_CHAR32("01AsdF67C"), EAArrayCount(buffer3)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer1[32]; Strlcpy(buffer1, EASTL_CHAR32("01asdf67A"), EASTLArrayCount(buffer1)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer2[32]; Strlcpy(buffer2, EASTL_CHAR32("01aSDf67b"), EASTLArrayCount(buffer2)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer3[32]; Strlcpy(buffer3, EASTL_CHAR32("01AsdF67C"), EASTLArrayCount(buffer3)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
 		EATEST_VERIFY(Stricmp(buffer1, buffer1) == 0);
 		EATEST_VERIFY(Stricmp(buffer2, buffer1) >  0);
@@ -1792,9 +1792,9 @@ static int TestStringCore()
 		EATEST_VERIFY(Strnicmp(buffer1, buffer2, 13) <  0);
 	}
 	{
-		char16_t buffer1[24]; Strlcpy(buffer1, EA_CHAR16("01asdf67AAsWE"), EAArrayCount(buffer1)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		char16_t buffer2[24]; Strlcpy(buffer2, EA_CHAR16("01aSDf67basWe"), EAArrayCount(buffer2)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		char16_t buffer3[24]; Strlcpy(buffer3, EA_CHAR16("01AsdF67CaSwe"), EAArrayCount(buffer3)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer1[24]; Strlcpy(buffer1, EASTL_CHAR16("01asdf67AAsWE"), EASTLArrayCount(buffer1)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer2[24]; Strlcpy(buffer2, EASTL_CHAR16("01aSDf67basWe"), EASTLArrayCount(buffer2)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t buffer3[24]; Strlcpy(buffer3, EASTL_CHAR16("01AsdF67CaSwe"), EASTLArrayCount(buffer3)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 
 		EATEST_VERIFY(Strnicmp(buffer1, buffer1, 13) == 0);
 		EATEST_VERIFY(Strnicmp(buffer2, buffer1, 13) >  0);
@@ -1803,9 +1803,9 @@ static int TestStringCore()
 		EATEST_VERIFY(Strnicmp(buffer1, buffer2, 13) <  0);
 	}
 	{
-		char32_t buffer1[24]; Strlcpy(buffer1, EA_CHAR32("01asdf67AAsWE"), EAArrayCount(buffer1)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		char32_t buffer2[24]; Strlcpy(buffer2, EA_CHAR32("01aSDf67basWe"), EAArrayCount(buffer2)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		char32_t buffer3[24]; Strlcpy(buffer3, EA_CHAR32("01AsdF67CaSwe"), EAArrayCount(buffer3)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer1[24]; Strlcpy(buffer1, EASTL_CHAR32("01asdf67AAsWE"), EASTLArrayCount(buffer1)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer2[24]; Strlcpy(buffer2, EASTL_CHAR32("01aSDf67basWe"), EASTLArrayCount(buffer2)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t buffer3[24]; Strlcpy(buffer3, EASTL_CHAR32("01AsdF67CaSwe"), EASTLArrayCount(buffer3)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 
 		EATEST_VERIFY(Strnicmp(buffer1, buffer1, 13) == 0);
 		EATEST_VERIFY(Strnicmp(buffer2, buffer1, 13) >  0);
@@ -1837,22 +1837,22 @@ static int TestStringCore()
 		EATEST_VERIFY(StrcmpAlnum("44",     "044")      == 0);      // Verify that digit spans are treated as base 10 numbers.
 	}
 	{
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16(""),       EA_CHAR16(""))         == 0);
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("abc"),    EA_CHAR16("abc"))      == 0);
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("a"),      EA_CHAR16("b"))        < 0);
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("abc"),    EA_CHAR16("abcd"))     < 0);
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("abcd"),   EA_CHAR16("abc"))      > 0);
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("a"),      EA_CHAR16(""))         > 0);
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16(""),       EA_CHAR16("1"))        < 0);       // Verify numerics evaluate highest.
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("abc"),    EA_CHAR16("abd"))      < 0);
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("a"),      EA_CHAR16("1"))        < 0);
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("%"),      EA_CHAR16("1"))        < 0);       // Verify numerics evaluate highest.
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("103"),    EA_CHAR16("12"))       > 0);       // Verify that numeric compare is occuring.
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("abc12a"), EA_CHAR16("abc12b"))   < 0);
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("abc123"), EA_CHAR16("abc12a"))   > 0);
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("abc-2"),  EA_CHAR16("abc-1"))    > 0);       // Verify that '-' is not treated as a minus sign.
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("abc1.1"), EA_CHAR16("abc1.02"))  < 0);       // Verify that '.' is not treated as a decimal point.
-		EATEST_VERIFY(StrcmpAlnum(EA_CHAR16("44"),     EA_CHAR16("044"))      == 0);      // Verify that digit spans are treated as base 10 numbers.
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16(""),       EASTL_CHAR16(""))         == 0);
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("abc"),    EASTL_CHAR16("abc"))      == 0);
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("a"),      EASTL_CHAR16("b"))        < 0);
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("abc"),    EASTL_CHAR16("abcd"))     < 0);
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("abcd"),   EASTL_CHAR16("abc"))      > 0);
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("a"),      EASTL_CHAR16(""))         > 0);
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16(""),       EASTL_CHAR16("1"))        < 0);       // Verify numerics evaluate highest.
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("abc"),    EASTL_CHAR16("abd"))      < 0);
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("a"),      EASTL_CHAR16("1"))        < 0);
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("%"),      EASTL_CHAR16("1"))        < 0);       // Verify numerics evaluate highest.
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("103"),    EASTL_CHAR16("12"))       > 0);       // Verify that numeric compare is occuring.
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("abc12a"), EASTL_CHAR16("abc12b"))   < 0);
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("abc123"), EASTL_CHAR16("abc12a"))   > 0);
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("abc-2"),  EASTL_CHAR16("abc-1"))    > 0);       // Verify that '-' is not treated as a minus sign.
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("abc1.1"), EASTL_CHAR16("abc1.02"))  < 0);       // Verify that '.' is not treated as a decimal point.
+		EATEST_VERIFY(StrcmpAlnum(EASTL_CHAR16("44"),     EASTL_CHAR16("044"))      == 0);      // Verify that digit spans are treated as base 10 numbers.
 	}
 
 
@@ -1878,22 +1878,22 @@ static int TestStringCore()
 		EATEST_VERIFY(StricmpAlnum("44",     "044")      == 0);      // Verify that digit spans are treated as base 10 numbers.
 	}
 	{
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16(""),       EA_CHAR16(""))         == 0);
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("aBc"),    EA_CHAR16("abc"))      == 0);
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("a"),      EA_CHAR16("b"))        < 0);
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("ABc"),    EA_CHAR16("aBCd"))     < 0);
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("abcd"),   EA_CHAR16("abc"))      > 0);
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("a"),      EA_CHAR16(""))         > 0);
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16(""),       EA_CHAR16("1"))        < 0);       // Verify numerics evaluate highest.
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("abC"),    EA_CHAR16("aBd"))      < 0);
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("a"),      EA_CHAR16("1"))        < 0);
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("%"),      EA_CHAR16("1"))        < 0);       // Verify numerics evaluate highest.
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("103"),    EA_CHAR16("12"))       > 0);       // Verify that numeric compare is occuring.
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("abc12A"), EA_CHAR16("aBC12b"))   < 0);
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("abc123"), EA_CHAR16("abc12a"))   > 0);
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("ABc-2"),  EA_CHAR16("abc-1"))    > 0);       // Verify that '-' is not treated as a minus sign.
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("abC1.1"), EA_CHAR16("abc1.02"))  < 0);       // Verify that '.' is not treated as a decimal point.
-		EATEST_VERIFY(StricmpAlnum(EA_CHAR16("44"),     EA_CHAR16("044"))      == 0);      // Verify that digit spans are treated as base 10 numbers.
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16(""),       EASTL_CHAR16(""))         == 0);
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("aBc"),    EASTL_CHAR16("abc"))      == 0);
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("a"),      EASTL_CHAR16("b"))        < 0);
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("ABc"),    EASTL_CHAR16("aBCd"))     < 0);
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("abcd"),   EASTL_CHAR16("abc"))      > 0);
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("a"),      EASTL_CHAR16(""))         > 0);
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16(""),       EASTL_CHAR16("1"))        < 0);       // Verify numerics evaluate highest.
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("abC"),    EASTL_CHAR16("aBd"))      < 0);
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("a"),      EASTL_CHAR16("1"))        < 0);
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("%"),      EASTL_CHAR16("1"))        < 0);       // Verify numerics evaluate highest.
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("103"),    EASTL_CHAR16("12"))       > 0);       // Verify that numeric compare is occuring.
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("abc12A"), EASTL_CHAR16("aBC12b"))   < 0);
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("abc123"), EASTL_CHAR16("abc12a"))   > 0);
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("ABc-2"),  EASTL_CHAR16("abc-1"))    > 0);       // Verify that '-' is not treated as a minus sign.
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("abC1.1"), EASTL_CHAR16("abc1.02"))  < 0);       // Verify that '.' is not treated as a decimal point.
+		EATEST_VERIFY(StricmpAlnum(EASTL_CHAR16("44"),     EASTL_CHAR16("044"))      == 0);      // Verify that digit spans are treated as base 10 numbers.
 	}
 
 
@@ -1903,8 +1903,8 @@ static int TestStringCore()
 	{
 		// To do: Make a real test. For now we merely verify that we can call the function.
 		Strcoll("Hello",  "world");
-		Strcoll(EA_CHAR16("Hello"), EA_CHAR16("world"));
-		Strcoll(EA_CHAR32("Hello"), EA_CHAR32("world"));
+		Strcoll(EASTL_CHAR16("Hello"), EASTL_CHAR16("world"));
+		Strcoll(EASTL_CHAR32("Hello"), EASTL_CHAR32("world"));
 	}
 
 
@@ -1914,8 +1914,8 @@ static int TestStringCore()
 	{
 		// To do: Make a real test. For now we merely verify that we can call the function.
 		Strncoll("Hello",  "world", 1);
-		Strncoll(EA_CHAR16("Hello"), EA_CHAR16("world"), 1);
-		Strncoll(EA_CHAR32("Hello"), EA_CHAR32("world"), 1);
+		Strncoll(EASTL_CHAR16("Hello"), EASTL_CHAR16("world"), 1);
+		Strncoll(EASTL_CHAR32("Hello"), EASTL_CHAR32("world"), 1);
 	}
 
 
@@ -1925,8 +1925,8 @@ static int TestStringCore()
 	{
 		// To do: Make a real test. For now we merely verify that we can call the function.
 		Stricoll("Hello",  "world");
-		Stricoll(EA_CHAR16("Hello"), EA_CHAR16("world"));
-		Stricoll(EA_CHAR32("Hello"), EA_CHAR32("world"));
+		Stricoll(EASTL_CHAR16("Hello"), EASTL_CHAR16("world"));
+		Stricoll(EASTL_CHAR32("Hello"), EASTL_CHAR32("world"));
 	}
 
 
@@ -1936,8 +1936,8 @@ static int TestStringCore()
 	{
 		// To do: Make a real test. For now we merely verify that we can call the function.
 		Strnicoll("Hello", "world", 1);
-		Strnicoll(EA_CHAR16("Hello"), EA_CHAR16("world"), 1);
-		Strnicoll(EA_CHAR32("Hello"), EA_CHAR32("world"), 1);
+		Strnicoll(EASTL_CHAR16("Hello"), EASTL_CHAR16("world"), 1);
+		Strnicoll(EASTL_CHAR32("Hello"), EASTL_CHAR32("world"), 1);
 	}
 
 	return nErrorCount;
@@ -2055,33 +2055,33 @@ static int TestItoa()
 		char16_t sn16[32];
 
 		EATEST_VERIFY(I32toa(INT32_MIN, sn16, 10) != NULL); // Can't express INT32_MIN as a numeric constant.
-		EATEST_VERIFY_F(Strcmp(sn16, EA_CHAR16("-2147483648")) == 0, "I32toa(INT32_MIN, sn16, 10) failed; produced %I16s instead of -2147483648", sn16);
+		EATEST_VERIFY_F(Strcmp(sn16, EASTL_CHAR16("-2147483648")) == 0, "I32toa(INT32_MIN, sn16, 10) failed; produced %I16s instead of -2147483648", sn16);
 		EATEST_VERIFY(I32toa(2147483647, sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("2147483647")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("2147483647")) == 0);
 		EATEST_VERIFY(I32toa(-2000000000, sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("-2000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("-2000000000")) == 0);
 		EATEST_VERIFY(I32toa(2000000000, sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("2000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("2000000000")) == 0);
 		EATEST_VERIFY(I32toa(0x77359400, sn16, 16) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("77359400")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("77359400")) == 0);
 		EATEST_VERIFY(I32toa(0xeeee, sn16, 2) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("1110111011101110")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("1110111011101110")) == 0);
 	}
 	{
 		char32_t sn32[32];
 
 		EATEST_VERIFY(I32toa(INT32_MIN, sn32, 10) != NULL); // Can't express INT32_MIN as a numeric constant.
-		EATEST_VERIFY_F(Strcmp(sn32, EA_CHAR32("-2147483648")) == 0, "I32toa(INT32_MIN, sn32, 10) failed; produced %I16s instead of -2147483648", sn32);
+		EATEST_VERIFY_F(Strcmp(sn32, EASTL_CHAR32("-2147483648")) == 0, "I32toa(INT32_MIN, sn32, 10) failed; produced %I16s instead of -2147483648", sn32);
 		EATEST_VERIFY(I32toa(2147483647, sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("2147483647")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("2147483647")) == 0);
 		EATEST_VERIFY(I32toa(-2000000000, sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("-2000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("-2000000000")) == 0);
 		EATEST_VERIFY(I32toa(2000000000, sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("2000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("2000000000")) == 0);
 		EATEST_VERIFY(I32toa(0x77359400, sn32, 16) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("77359400")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("77359400")) == 0);
 		EATEST_VERIFY(I32toa(0xeeee, sn32, 2) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("1110111011101110")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("1110111011101110")) == 0);
 	}
 
 
@@ -2120,33 +2120,33 @@ static int TestItoa()
 		char16_t sn16[32];
 
 		EATEST_VERIFY(U32toa(0, sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("0")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("0")) == 0);
 		EATEST_VERIFY(U32toa(4294967295U, sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("4294967295")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("4294967295")) == 0);
 		EATEST_VERIFY(U32toa(UINT32_C(4000000000), sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("4000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("4000000000")) == 0);
 		EATEST_VERIFY(U32toa(2000000000, sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("2000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("2000000000")) == 0);
 		EATEST_VERIFY(U32toa(0x77359400, sn16, 16) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("77359400")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("77359400")) == 0);
 		EATEST_VERIFY(U32toa(0xeeee, sn16, 2) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("1110111011101110")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("1110111011101110")) == 0);
 	}
 	{
 		char32_t sn32[32];
 
 		EATEST_VERIFY(U32toa(0, sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("0")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("0")) == 0);
 		EATEST_VERIFY(U32toa(4294967295U, sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("4294967295")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("4294967295")) == 0);
 		EATEST_VERIFY(U32toa(UINT32_C(4000000000), sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("4000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("4000000000")) == 0);
 		EATEST_VERIFY(U32toa(2000000000, sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("2000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("2000000000")) == 0);
 		EATEST_VERIFY(U32toa(0x77359400, sn32, 16) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("77359400")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("77359400")) == 0);
 		EATEST_VERIFY(U32toa(0xeeee, sn32, 2) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("1110111011101110")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("1110111011101110")) == 0);
 	}
 
 
@@ -2185,33 +2185,33 @@ static int TestItoa()
 		char16_t sn16[128];
 
 		EATEST_VERIFY(I64toa(INT64_MIN, sn16, 10) != NULL); // Can't express INT64_MIN as a numeric constant.
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("-9223372036854775808")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("-9223372036854775808")) == 0);
 		EATEST_VERIFY(I64toa(INT64_C(9223372036854775807), sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("9223372036854775807")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("9223372036854775807")) == 0);
 		EATEST_VERIFY(I64toa(INT64_C(-20000000000000), sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("-20000000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("-20000000000000")) == 0);
 		EATEST_VERIFY(I64toa(INT64_C(20000000000000), sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("20000000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("20000000000000")) == 0);
 		EATEST_VERIFY(I64toa(INT64_C(0x7735940012345), sn16, 16) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("7735940012345")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("7735940012345")) == 0);
 		EATEST_VERIFY(I64toa(0xeeee, sn16, 2) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("1110111011101110")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("1110111011101110")) == 0);
 	}
 	{
 		char32_t sn32[128];
 
 		EATEST_VERIFY(I64toa(INT64_MIN, sn32, 10) != NULL); // Can't express INT64_MIN as a numeric constant.
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("-9223372036854775808")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("-9223372036854775808")) == 0);
 		EATEST_VERIFY(I64toa(INT64_C(9223372036854775807), sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("9223372036854775807")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("9223372036854775807")) == 0);
 		EATEST_VERIFY(I64toa(INT64_C(-20000000000000), sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("-20000000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("-20000000000000")) == 0);
 		EATEST_VERIFY(I64toa(INT64_C(20000000000000), sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("20000000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("20000000000000")) == 0);
 		EATEST_VERIFY(I64toa(INT64_C(0x7735940012345), sn32, 16) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("7735940012345")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("7735940012345")) == 0);
 		EATEST_VERIFY(I64toa(0xeeee, sn32, 2) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("1110111011101110")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("1110111011101110")) == 0);
 	}
 
 
@@ -2250,33 +2250,33 @@ static int TestItoa()
 		char16_t sn16[1216];
 
 		EATEST_VERIFY(U64toa(0, sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("0")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("0")) == 0);
 		EATEST_VERIFY(U64toa(UINT64_C(18446744073709551615), sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("18446744073709551615")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("18446744073709551615")) == 0);
 		EATEST_VERIFY(U64toa(UINT64_C(40000000000000), sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("40000000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("40000000000000")) == 0);
 		EATEST_VERIFY(U64toa(UINT64_C(20000000000000), sn16, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("20000000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("20000000000000")) == 0);
 		EATEST_VERIFY(U64toa(UINT64_C(0x7735940012345), sn16, 16) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("7735940012345")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("7735940012345")) == 0);
 		EATEST_VERIFY(U64toa(0xeeee, sn16, 2) != NULL);
-		EATEST_VERIFY(Strcmp(sn16, EA_CHAR16("1110111011101110")) == 0);
+		EATEST_VERIFY(Strcmp(sn16, EASTL_CHAR16("1110111011101110")) == 0);
 	}
 	{
 		char32_t sn32[1232];
 
 		EATEST_VERIFY(U64toa(0, sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("0")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("0")) == 0);
 		EATEST_VERIFY(U64toa(UINT64_C(18446744073709551615), sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("18446744073709551615")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("18446744073709551615")) == 0);
 		EATEST_VERIFY(U64toa(UINT64_C(40000000000000), sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("40000000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("40000000000000")) == 0);
 		EATEST_VERIFY(U64toa(UINT64_C(20000000000000), sn32, 10) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("20000000000000")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("20000000000000")) == 0);
 		EATEST_VERIFY(U64toa(UINT64_C(0x7735940012345), sn32, 16) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("7735940012345")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("7735940012345")) == 0);
 		EATEST_VERIFY(U64toa(0xeeee, sn32, 2) != NULL);
-		EATEST_VERIFY(Strcmp(sn32, EA_CHAR32("1110111011101110")) == 0);
+		EATEST_VERIFY(Strcmp(sn32, EASTL_CHAR32("1110111011101110")) == 0);
 	}
 
 	return nErrorCount;
@@ -2304,161 +2304,161 @@ static int TestStrtod()
 		//EATEST_VERIFY(0 == StrtodEnglish(p, &pEnd));
 
 		p = "-111.111";
-		EATEST_VERIFY(DoubleEqual(-111.111, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(-111.111, StrtodEnglish(p, &pEnd)));
 
 		p = "111e111";
-		EATEST_VERIFY(DoubleEqual(111e111, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(111e111, StrtodEnglish(p, &pEnd)));
 
 		p = "-111e-111";
-		EATEST_VERIFY(DoubleEqual(-111e-111, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(-111e-111, StrtodEnglish(p, &pEnd)));
 
 		p = "137";
-		EATEST_VERIFY(DoubleEqual(137, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(137, StrtodEnglish(p, &pEnd)));
 
 		p = "999999";
-		EATEST_VERIFY(DoubleEqual(999999, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(999999, StrtodEnglish(p, &pEnd)));
 
 		p = "123.456";
-		EATEST_VERIFY(DoubleEqual(123.456, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(123.456, StrtodEnglish(p, &pEnd)));
 
 		p = "123232111.000123";
-		EATEST_VERIFY(DoubleEqual(123232111.000123, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(123232111.000123, StrtodEnglish(p, &pEnd)));
 
 		p = "-888111.000123";
-		EATEST_VERIFY(DoubleEqual(-888111.000123, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(-888111.000123, StrtodEnglish(p, &pEnd)));
 
 		p = "-123.456";
-		EATEST_VERIFY(DoubleEqual(-123.456, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(-123.456, StrtodEnglish(p, &pEnd)));
 
 		p = "+999999";
-		EATEST_VERIFY(DoubleEqual(+999999, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(+999999, StrtodEnglish(p, &pEnd)));
 
 		p = "+999999e2";
-		EATEST_VERIFY(DoubleEqual(+999999e2, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(+999999e2, StrtodEnglish(p, &pEnd)));
 
 		p = "-234.567E-3";
-		EATEST_VERIFY(DoubleEqual(-234.567E-3, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(-234.567E-3, StrtodEnglish(p, &pEnd)));
 
 		p = "321654.987e11";
-		EATEST_VERIFY(DoubleEqual(321654.987e11, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(321654.987e11, StrtodEnglish(p, &pEnd)));
 
 		p = "-321654.987E0";
-		EATEST_VERIFY(DoubleEqual(-321654.987E0, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(-321654.987E0, StrtodEnglish(p, &pEnd)));
 
 		p = "+321654.987e-0";
-		EATEST_VERIFY(DoubleEqual(+321654.987e-0, StrtodEnglish(p, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(+321654.987e-0, StrtodEnglish(p, &pEnd)));
 	}
 	{
 		const char16_t* p;
 		char16_t* pEnd = NULL;
 
-		p = EA_CHAR16("");
+		p = EASTL_CHAR16("");
 		EATEST_VERIFY(0 == StrtodEnglish(p, &pEnd));
 
 		// Need a test here which results in HUGE_VAL
 		//p = "";
 		//EATEST_VERIFY(0 == StrtodEnglish(p, &pEnd));
 
-		p = EA_CHAR16("-111.111");
-		EATEST_VERIFY(DoubleEqual(-111.111, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("-111.111");
+		EATEST_VERIFY(TestString_DoubleEqual(-111.111, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("111e111");
-		EATEST_VERIFY(DoubleEqual(111e111, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("111e111");
+		EATEST_VERIFY(TestString_DoubleEqual(111e111, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("-111e-111");
-		EATEST_VERIFY(DoubleEqual(-111e-111, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("-111e-111");
+		EATEST_VERIFY(TestString_DoubleEqual(-111e-111, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("137");
-		EATEST_VERIFY(DoubleEqual(137, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("137");
+		EATEST_VERIFY(TestString_DoubleEqual(137, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("999999");
-		EATEST_VERIFY(DoubleEqual(999999, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("999999");
+		EATEST_VERIFY(TestString_DoubleEqual(999999, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("123.456");
-		EATEST_VERIFY(DoubleEqual(123.456, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("123.456");
+		EATEST_VERIFY(TestString_DoubleEqual(123.456, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("123232111.000123");
-		EATEST_VERIFY(DoubleEqual(123232111.000123, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("123232111.000123");
+		EATEST_VERIFY(TestString_DoubleEqual(123232111.000123, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("-888111.000123");
-		EATEST_VERIFY(DoubleEqual(-888111.000123, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("-888111.000123");
+		EATEST_VERIFY(TestString_DoubleEqual(-888111.000123, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("-123.456");
-		EATEST_VERIFY(DoubleEqual(-123.456, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("-123.456");
+		EATEST_VERIFY(TestString_DoubleEqual(-123.456, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("+999999");
-		EATEST_VERIFY(DoubleEqual(+999999, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("+999999");
+		EATEST_VERIFY(TestString_DoubleEqual(+999999, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("+999999e2");
-		EATEST_VERIFY(DoubleEqual(+999999e2, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("+999999e2");
+		EATEST_VERIFY(TestString_DoubleEqual(+999999e2, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("-234.567E-3");
-		EATEST_VERIFY(DoubleEqual(-234.567E-3, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("-234.567E-3");
+		EATEST_VERIFY(TestString_DoubleEqual(-234.567E-3, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("321654.987e11");
-		EATEST_VERIFY(DoubleEqual(321654.987e11, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("321654.987e11");
+		EATEST_VERIFY(TestString_DoubleEqual(321654.987e11, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("-321654.987E0");
-		EATEST_VERIFY(DoubleEqual(-321654.987E0, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("-321654.987E0");
+		EATEST_VERIFY(TestString_DoubleEqual(-321654.987E0, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR16("+321654.987e-0");
-		EATEST_VERIFY(DoubleEqual(+321654.987e-0, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR16("+321654.987e-0");
+		EATEST_VERIFY(TestString_DoubleEqual(+321654.987e-0, StrtodEnglish(p, &pEnd)));
 	}
 	{
 		const char32_t* p;
 		char32_t* pEnd = NULL;
 
-		p = EA_CHAR32("");
+		p = EASTL_CHAR32("");
 		EATEST_VERIFY(0 == StrtodEnglish(p, &pEnd));
 
 		// Need a test here which results in HUGE_VAL
 		//p = "";
 		//EATEST_VERIFY(0 == StrtodEnglish(p, &pEnd));
 
-		p = EA_CHAR32("-111.111");
-		EATEST_VERIFY(DoubleEqual(-111.111, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("-111.111");
+		EATEST_VERIFY(TestString_DoubleEqual(-111.111, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("111e111");
-		EATEST_VERIFY(DoubleEqual(111e111, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("111e111");
+		EATEST_VERIFY(TestString_DoubleEqual(111e111, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("-111e-111");
-		EATEST_VERIFY(DoubleEqual(-111e-111, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("-111e-111");
+		EATEST_VERIFY(TestString_DoubleEqual(-111e-111, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("137");
-		EATEST_VERIFY(DoubleEqual(137, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("137");
+		EATEST_VERIFY(TestString_DoubleEqual(137, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("999999");
-		EATEST_VERIFY(DoubleEqual(999999, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("999999");
+		EATEST_VERIFY(TestString_DoubleEqual(999999, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("123.456");
-		EATEST_VERIFY(DoubleEqual(123.456, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("123.456");
+		EATEST_VERIFY(TestString_DoubleEqual(123.456, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("123232111.000123");
-		EATEST_VERIFY(DoubleEqual(123232111.000123, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("123232111.000123");
+		EATEST_VERIFY(TestString_DoubleEqual(123232111.000123, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("-888111.000123");
-		EATEST_VERIFY(DoubleEqual(-888111.000123, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("-888111.000123");
+		EATEST_VERIFY(TestString_DoubleEqual(-888111.000123, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("-123.456");
-		EATEST_VERIFY(DoubleEqual(-123.456, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("-123.456");
+		EATEST_VERIFY(TestString_DoubleEqual(-123.456, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("+999999");
-		EATEST_VERIFY(DoubleEqual(+999999, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("+999999");
+		EATEST_VERIFY(TestString_DoubleEqual(+999999, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("+999999e2");
-		EATEST_VERIFY(DoubleEqual(+999999e2, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("+999999e2");
+		EATEST_VERIFY(TestString_DoubleEqual(+999999e2, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("-234.567E-3");
-		EATEST_VERIFY(DoubleEqual(-234.567E-3, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("-234.567E-3");
+		EATEST_VERIFY(TestString_DoubleEqual(-234.567E-3, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("323254.987e11");
-		EATEST_VERIFY(DoubleEqual(323254.987e11, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("323254.987e11");
+		EATEST_VERIFY(TestString_DoubleEqual(323254.987e11, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("-323254.987E0");
-		EATEST_VERIFY(DoubleEqual(-323254.987E0, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("-323254.987E0");
+		EATEST_VERIFY(TestString_DoubleEqual(-323254.987E0, StrtodEnglish(p, &pEnd)));
 
-		p = EA_CHAR32("+323254.987e-0");
-		EATEST_VERIFY(DoubleEqual(+323254.987e-0, StrtodEnglish(p, &pEnd)));
+		p = EASTL_CHAR32("+323254.987e-0");
+		EATEST_VERIFY(TestString_DoubleEqual(+323254.987e-0, StrtodEnglish(p, &pEnd)));
 	}
 
 
@@ -2468,35 +2468,35 @@ static int TestStrtod()
 	{
 		char  sn18[] = "-111.111";
 		char* pEnd = NULL;
-		EATEST_VERIFY(DoubleEqual(-111.111, Strtod(sn18, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(-111.111, Strtod(sn18, &pEnd)));
 
 		char sn28[] = "111e111";
-		EATEST_VERIFY(DoubleEqual(111e111, Strtod(sn28, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(111e111, Strtod(sn28, &pEnd)));
 
 		char sn38[] = "-111e-111";
-		EATEST_VERIFY(DoubleEqual(-111e-111, Strtod(sn38, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(-111e-111, Strtod(sn38, &pEnd)));
 	}
 	{
-		char16_t  sn18[16]; Strlcpy(sn18, EA_CHAR16("-111.111"), EAArrayCount(sn18)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t  sn18[16]; Strlcpy(sn18, EASTL_CHAR16("-111.111"), EASTLArrayCount(sn18)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		char16_t* pEnd = NULL;
-		EATEST_VERIFY(DoubleEqual(-111.111, Strtod(sn18, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(-111.111, Strtod(sn18, &pEnd)));
 
-		char16_t sn28[16]; Strlcpy(sn28, EA_CHAR16("111e111"), EAArrayCount(sn28)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		EATEST_VERIFY(DoubleEqual(111e111, Strtod(sn28, &pEnd)));
+		char16_t sn28[16]; Strlcpy(sn28, EASTL_CHAR16("111e111"), EASTLArrayCount(sn28)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		EATEST_VERIFY(TestString_DoubleEqual(111e111, Strtod(sn28, &pEnd)));
 
-		char16_t sn38[16]; Strlcpy(sn38, EA_CHAR16("-111e-111"), EAArrayCount(sn38)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-		EATEST_VERIFY(DoubleEqual(-111e-111, Strtod(sn38, &pEnd)));
+		char16_t sn38[16]; Strlcpy(sn38, EASTL_CHAR16("-111e-111"), EASTLArrayCount(sn38)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+		EATEST_VERIFY(TestString_DoubleEqual(-111e-111, Strtod(sn38, &pEnd)));
 	}
 	{
-		char32_t  sn18[32]; Strlcpy(sn18, EA_CHAR32("-111.111"), EAArrayCount(sn18)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t  sn18[32]; Strlcpy(sn18, EASTL_CHAR32("-111.111"), EASTLArrayCount(sn18)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		char32_t* pEnd = NULL;
-		EATEST_VERIFY(DoubleEqual(-111.111, Strtod(sn18, &pEnd)));
+		EATEST_VERIFY(TestString_DoubleEqual(-111.111, Strtod(sn18, &pEnd)));
 
-		char32_t sn28[32]; Strlcpy(sn28, EA_CHAR32("111e111"), EAArrayCount(sn28)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		EATEST_VERIFY(DoubleEqual(111e111, Strtod(sn28, &pEnd)));
+		char32_t sn28[32]; Strlcpy(sn28, EASTL_CHAR32("111e111"), EASTLArrayCount(sn28)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		EATEST_VERIFY(TestString_DoubleEqual(111e111, Strtod(sn28, &pEnd)));
 
-		char32_t sn38[32]; Strlcpy(sn38, EA_CHAR32("-111e-111"), EAArrayCount(sn38)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
-		EATEST_VERIFY(DoubleEqual(-111e-111, Strtod(sn38, &pEnd)));
+		char32_t sn38[32]; Strlcpy(sn38, EASTL_CHAR32("-111e-111"), EASTLArrayCount(sn38)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
+		EATEST_VERIFY(TestString_DoubleEqual(-111e-111, Strtod(sn38, &pEnd)));
 	}
 
 	return nErrorCount;
@@ -2581,14 +2581,14 @@ static int TestStrtoi()
 	{
 		int64_t result;
 
-		char16_t  sn18[32]; Strlcpy(sn18, EA_CHAR16("-1011101110111011101"), EAArrayCount(sn18)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t  sn18[32]; Strlcpy(sn18, EASTL_CHAR16("-1011101110111011101"), EASTLArrayCount(sn18)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		char16_t* pEnd = NULL;
 		EATEST_VERIFY(INT64_C(-1011101110111011101) == StrtoI64(sn18, &pEnd, 10));
 
-		char16_t sn28[24]; Strlcpy(sn28, EA_CHAR16("7fffabcdffffabcd"), EAArrayCount(sn28)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn28[24]; Strlcpy(sn28, EASTL_CHAR16("7fffabcdffffabcd"), EASTLArrayCount(sn28)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(UINT64_C(0x7fffabcdffffabcd) == StrtoI64(sn28, &pEnd, 16));
 
-		char16_t sn38[64]; Strlcpy(sn38, EA_CHAR16("101110011011101110111001010000111111100001100101"), EAArrayCount(sn38)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn38[64]; Strlcpy(sn38, EASTL_CHAR16("101110011011101110111001010000111111100001100101"), EASTLArrayCount(sn38)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(UINT64_C(0xB9BBB943F865) == StrtoI64(sn38, &pEnd, 2));
 
 		char16_t sn1[2] = { '1', 0 };
@@ -2600,10 +2600,10 @@ static int TestStrtoi()
 
 		{
 			// Exercize the ability to read extreme values for various bases.
-			char16_t pINT64_MIN_10_[24]; Strlcpy(pINT64_MIN_10_, "-9223372036854775809", EAArrayCount(pINT64_MIN_10_)); 
-			char16_t pINT64_MIN_10[24];  Strlcpy(pINT64_MIN_10 , "-9223372036854775808", EAArrayCount(pINT64_MIN_10)); 
-			char16_t pINT64_MAX_10[24];  Strlcpy(pINT64_MAX_10 , "+9223372036854775807", EAArrayCount(pINT64_MAX_10)); 
-			char16_t pINT64_MAX_10_[24]; Strlcpy(pINT64_MAX_10_, "+9223372036854775808", EAArrayCount(pINT64_MIN_10_)); 
+			char16_t pINT64_MIN_10_[24]; Strlcpy(pINT64_MIN_10_, "-9223372036854775809", EASTLArrayCount(pINT64_MIN_10_)); 
+			char16_t pINT64_MIN_10[24];  Strlcpy(pINT64_MIN_10 , "-9223372036854775808", EASTLArrayCount(pINT64_MIN_10)); 
+			char16_t pINT64_MAX_10[24];  Strlcpy(pINT64_MAX_10 , "+9223372036854775807", EASTLArrayCount(pINT64_MAX_10)); 
+			char16_t pINT64_MAX_10_[24]; Strlcpy(pINT64_MAX_10_, "+9223372036854775808", EASTLArrayCount(pINT64_MIN_10_)); 
 
 			errno = 0;
 			result =  StrtoI64(pINT64_MIN_10_, &pEnd, 10);
@@ -2622,10 +2622,10 @@ static int TestStrtoi()
 			EATEST_VERIFY((result == INT64_MAX) && (errno == ERANGE));
 
 
-			char16_t pINT64_MIN_16_[24]; Strlcpy(pINT64_MIN_16_, "-8000000000000001", EAArrayCount(pINT64_MIN_16_)); 
-			char16_t pINT64_MIN_16[24] ; Strlcpy(pINT64_MIN_16 , "-8000000000000000", EAArrayCount(pINT64_MIN_16)); 
-			char16_t pINT64_MAX_16[24] ; Strlcpy(pINT64_MAX_16 , "+7fffffffffffffff", EAArrayCount(pINT64_MAX_16)); 
-			char16_t pINT64_MAX_16_[24]; Strlcpy(pINT64_MAX_16_, "+8000000000000000", EAArrayCount(pINT64_MAX_16_)); 
+			char16_t pINT64_MIN_16_[24]; Strlcpy(pINT64_MIN_16_, "-8000000000000001", EASTLArrayCount(pINT64_MIN_16_)); 
+			char16_t pINT64_MIN_16[24] ; Strlcpy(pINT64_MIN_16 , "-8000000000000000", EASTLArrayCount(pINT64_MIN_16)); 
+			char16_t pINT64_MAX_16[24] ; Strlcpy(pINT64_MAX_16 , "+7fffffffffffffff", EASTLArrayCount(pINT64_MAX_16)); 
+			char16_t pINT64_MAX_16_[24]; Strlcpy(pINT64_MAX_16_, "+8000000000000000", EASTLArrayCount(pINT64_MAX_16_)); 
 
 			errno = 0;
 			result =  StrtoI64(pINT64_MIN_16_, &pEnd, 16);
@@ -2647,14 +2647,14 @@ static int TestStrtoi()
 	{
 		int64_t result;
  
-		char32_t  sn18[32]; Strlcpy(sn18, EA_CHAR32("-1011101110111011101"), EAArrayCount(sn18)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t  sn18[32]; Strlcpy(sn18, EASTL_CHAR32("-1011101110111011101"), EASTLArrayCount(sn18)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		char32_t* pEnd = NULL;
 		EATEST_VERIFY(INT64_C(-1011101110111011101) == StrtoI64(sn18, &pEnd, 10));
 
-		char32_t sn28[24]; Strlcpy(sn28, EA_CHAR32("7fffabcdffffabcd"), EAArrayCount(sn28)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn28[24]; Strlcpy(sn28, EASTL_CHAR32("7fffabcdffffabcd"), EASTLArrayCount(sn28)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(UINT64_C(0x7fffabcdffffabcd) == StrtoI64(sn28, &pEnd, 16));
 
-		char32_t sn38[64]; Strlcpy(sn38, EA_CHAR32("101110011011101110111001010000111111100001100101"), EAArrayCount(sn38)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn38[64]; Strlcpy(sn38, EASTL_CHAR32("101110011011101110111001010000111111100001100101"), EASTLArrayCount(sn38)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(UINT64_C(0xB9BBB943F865) == StrtoI64(sn38, &pEnd, 2));
 
 		char32_t sn1[2] = { '1', 0 };
@@ -2666,10 +2666,10 @@ static int TestStrtoi()
 
 		{
 			// Exercize the ability to read extreme values for various bases.
-			char32_t pINT64_MIN_10_[24]; Strlcpy(pINT64_MIN_10_, "-9223372036854775809", EAArrayCount(pINT64_MIN_10_)); 
-			char32_t pINT64_MIN_10[24];  Strlcpy(pINT64_MIN_10 , "-9223372036854775808", EAArrayCount(pINT64_MIN_10)); 
-			char32_t pINT64_MAX_10[24];  Strlcpy(pINT64_MAX_10 , "+9223372036854775807", EAArrayCount(pINT64_MAX_10)); 
-			char32_t pINT64_MAX_10_[24]; Strlcpy(pINT64_MAX_10_, "+9223372036854775808", EAArrayCount(pINT64_MIN_10_)); 
+			char32_t pINT64_MIN_10_[24]; Strlcpy(pINT64_MIN_10_, "-9223372036854775809", EASTLArrayCount(pINT64_MIN_10_)); 
+			char32_t pINT64_MIN_10[24];  Strlcpy(pINT64_MIN_10 , "-9223372036854775808", EASTLArrayCount(pINT64_MIN_10)); 
+			char32_t pINT64_MAX_10[24];  Strlcpy(pINT64_MAX_10 , "+9223372036854775807", EASTLArrayCount(pINT64_MAX_10)); 
+			char32_t pINT64_MAX_10_[24]; Strlcpy(pINT64_MAX_10_, "+9223372036854775808", EASTLArrayCount(pINT64_MIN_10_)); 
 
 			errno = 0;
 			result =  StrtoI64(pINT64_MIN_10_, &pEnd, 10);
@@ -2688,10 +2688,10 @@ static int TestStrtoi()
 			EATEST_VERIFY((result == INT64_MAX) && (errno == ERANGE));
 
 
-			char32_t pINT64_MIN_16_[24]; Strlcpy(pINT64_MIN_16_, "-8000000000000001", EAArrayCount(pINT64_MIN_16_)); 
-			char32_t pINT64_MIN_16[24] ; Strlcpy(pINT64_MIN_16 , "-8000000000000000", EAArrayCount(pINT64_MIN_16)); 
-			char32_t pINT64_MAX_16[24] ; Strlcpy(pINT64_MAX_16 , "+7fffffffffffffff", EAArrayCount(pINT64_MAX_16)); 
-			char32_t pINT64_MAX_16_[24]; Strlcpy(pINT64_MAX_16_, "+8000000000000000", EAArrayCount(pINT64_MAX_16_)); 
+			char32_t pINT64_MIN_16_[24]; Strlcpy(pINT64_MIN_16_, "-8000000000000001", EASTLArrayCount(pINT64_MIN_16_)); 
+			char32_t pINT64_MIN_16[24] ; Strlcpy(pINT64_MIN_16 , "-8000000000000000", EASTLArrayCount(pINT64_MIN_16)); 
+			char32_t pINT64_MAX_16[24] ; Strlcpy(pINT64_MAX_16 , "+7fffffffffffffff", EASTLArrayCount(pINT64_MAX_16)); 
+			char32_t pINT64_MAX_16_[24]; Strlcpy(pINT64_MAX_16_, "+8000000000000000", EASTLArrayCount(pINT64_MAX_16_)); 
 
 			errno = 0;
 			result =  StrtoI64(pINT64_MIN_16_, &pEnd, 16);
@@ -2778,25 +2778,25 @@ static int TestStrtoi()
 		}
 	}
 	{
-		char16_t  sn28[24]; Strlcpy(sn28, EA_CHAR16("7fffabcdffffabcd"), EAArrayCount(sn28)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t  sn28[24]; Strlcpy(sn28, EASTL_CHAR16("7fffabcdffffabcd"), EASTLArrayCount(sn28)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		char16_t* pEnd = NULL;
 		EATEST_VERIFY(UINT64_C(0x7fffabcdffffabcd) == StrtoU64(sn28, &pEnd, 16));
 
-		char16_t sn38[64]; Strlcpy(sn38, EA_CHAR16("101110011011101110111001010000111111100001100101"), EAArrayCount(sn38)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn38[64]; Strlcpy(sn38, EASTL_CHAR16("101110011011101110111001010000111111100001100101"), EASTLArrayCount(sn38)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(UINT64_C(0xB9BBB943F865) == StrtoU64(sn38, &pEnd, 2));
 
-		char16_t sn48[24]; Strlcpy(sn48, EA_CHAR16("eb59a646c232da81"), EAArrayCount(sn48)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn48[24]; Strlcpy(sn48, EASTL_CHAR16("eb59a646c232da81"), EASTLArrayCount(sn48)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(UINT64_C(0xeb59a646c232da81) == StrtoU64(sn48, &pEnd, 16));
 	}
 	{
-		char32_t  sn28[24]; Strlcpy(sn28, EA_CHAR32("7fffabcdffffabcd"), EAArrayCount(sn28)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t  sn28[24]; Strlcpy(sn28, EASTL_CHAR32("7fffabcdffffabcd"), EASTLArrayCount(sn28)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		char32_t* pEnd = NULL;
 		EATEST_VERIFY(UINT64_C(0x7fffabcdffffabcd) == StrtoU64(sn28, &pEnd, 16));
 
-		char32_t sn38[64]; Strlcpy(sn38, EA_CHAR32("101110011011101110111001010000111111100001100101"), EAArrayCount(sn38)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn38[64]; Strlcpy(sn38, EASTL_CHAR32("101110011011101110111001010000111111100001100101"), EASTLArrayCount(sn38)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(UINT64_C(0xB9BBB943F865) == StrtoU64(sn38, &pEnd, 2));
 
-		char32_t sn48[24]; Strlcpy(sn48, EA_CHAR32("eb59a646c232da81"), EAArrayCount(sn48)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn48[24]; Strlcpy(sn48, EASTL_CHAR32("eb59a646c232da81"), EASTLArrayCount(sn48)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(UINT64_C(0xeb59a646c232da81) == StrtoU64(sn48, &pEnd, 16));
 	}
 
@@ -2871,37 +2871,37 @@ static int TestStrtoi()
 		}
 	}
 	{
-		char16_t  sn18[16]; Strlcpy(sn18, EA_CHAR16("-1011101110"), EAArrayCount(sn18)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t  sn18[16]; Strlcpy(sn18, EASTL_CHAR16("-1011101110"), EASTLArrayCount(sn18)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		char16_t* pEnd = NULL;
 		EATEST_VERIFY(-1011101110 == StrtoI32(sn18, &pEnd, 10));
 
-		char16_t sn28[12]; Strlcpy(sn28, EA_CHAR16("7fffabcd"), EAArrayCount(sn28)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn28[12]; Strlcpy(sn28, EASTL_CHAR16("7fffabcd"), EASTLArrayCount(sn28)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(0x7fffabcd == StrtoI32(sn28, &pEnd, 16));
 
-		char16_t sn38[48]; Strlcpy(sn38, EA_CHAR16("00111001010000111111100001100101"), EAArrayCount(sn38)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn38[48]; Strlcpy(sn38, EASTL_CHAR16("00111001010000111111100001100101"), EASTLArrayCount(sn38)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(0x3943F865LL == StrtoI32(sn38, &pEnd, 2));
 
-		char16_t sn48[16]; Strlcpy(sn48, EA_CHAR16("BEEFEEC0DE"), EAArrayCount(sn48)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn48[16]; Strlcpy(sn48, EASTL_CHAR16("BEEFEEC0DE"), EASTLArrayCount(sn48)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(INT32_MAX == StrtoI32(sn48, &pEnd, 16));
 
-		char16_t sn58[16]; Strlcpy(sn58, EA_CHAR16("-BAEBEEC0DE"), EAArrayCount(sn58)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn58[16]; Strlcpy(sn58, EASTL_CHAR16("-BAEBEEC0DE"), EASTLArrayCount(sn58)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(INT32_MIN == StrtoI32(sn58, &pEnd, 16));
 	}
 	{
-		char32_t  sn18[32]; Strlcpy(sn18, EA_CHAR32("-1011101110"), EAArrayCount(sn18)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t  sn18[32]; Strlcpy(sn18, EASTL_CHAR32("-1011101110"), EASTLArrayCount(sn18)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		char32_t* pEnd = NULL;
 		EATEST_VERIFY(-1011101110 == StrtoI32(sn18, &pEnd, 10));
 
-		char32_t sn28[12]; Strlcpy(sn28, EA_CHAR32("7fffabcd"), EAArrayCount(sn28)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn28[12]; Strlcpy(sn28, EASTL_CHAR32("7fffabcd"), EASTLArrayCount(sn28)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(0x7fffabcd == StrtoI32(sn28, &pEnd, 16));
 
-		char32_t sn38[48]; Strlcpy(sn38, EA_CHAR32("00111001010000111111100001100101"), EAArrayCount(sn38)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn38[48]; Strlcpy(sn38, EASTL_CHAR32("00111001010000111111100001100101"), EASTLArrayCount(sn38)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(0x3943F865LL == StrtoI32(sn38, &pEnd, 2));
 
-		char32_t sn48[16]; Strlcpy(sn48, EA_CHAR32("BEEFEEC0DE"), EAArrayCount(sn48)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn48[16]; Strlcpy(sn48, EASTL_CHAR32("BEEFEEC0DE"), EASTLArrayCount(sn48)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(INT32_MAX == StrtoI32(sn48, &pEnd, 16));
 
-		char32_t sn58[16]; Strlcpy(sn58, EA_CHAR32("-BAEBEEC0DE"), EAArrayCount(sn58)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn58[16]; Strlcpy(sn58, EASTL_CHAR32("-BAEBEEC0DE"), EASTLArrayCount(sn58)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(INT32_MIN == StrtoI32(sn58, &pEnd, 16));
 	}
 
@@ -2972,25 +2972,25 @@ static int TestStrtoi()
 		}
 	}
 	{
-		char16_t  sn28[16]; Strlcpy(sn28, EA_CHAR16("7fffabcd"), EAArrayCount(sn28)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t  sn28[16]; Strlcpy(sn28, EASTL_CHAR16("7fffabcd"), EASTLArrayCount(sn28)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		char16_t* pEnd = NULL;
 		EATEST_VERIFY(0x7fffabcd == StrtoU32(sn28, &pEnd, 16));
 
-		char16_t sn38[48]; Strlcpy(sn38, EA_CHAR16("10111001010000111111100001100101"), EAArrayCount(sn38)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn38[48]; Strlcpy(sn38, EASTL_CHAR16("10111001010000111111100001100101"), EASTLArrayCount(sn38)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(0xB943F865LL == StrtoU32(sn38, &pEnd, 2));
 
-		char16_t sn48[16]; Strlcpy(sn48, EA_CHAR16("BEEFEEC0DE"), EAArrayCount(sn48)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn48[16]; Strlcpy(sn48, EASTL_CHAR16("BEEFEEC0DE"), EASTLArrayCount(sn48)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(UINT32_MAX == StrtoU32(sn48, &pEnd, 16));
 	}
 	{
-		char32_t  sn28[32]; Strlcpy(sn28, EA_CHAR32("7fffabcd"), EAArrayCount(sn28)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t  sn28[32]; Strlcpy(sn28, EASTL_CHAR32("7fffabcd"), EASTLArrayCount(sn28)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		char32_t* pEnd = NULL;
 		EATEST_VERIFY(0x7fffabcd == StrtoU32(sn28, &pEnd, 16));
 
-		char32_t sn38[48]; Strlcpy(sn38, EA_CHAR32("10111001010000111111100001100101"), EAArrayCount(sn38)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn38[48]; Strlcpy(sn38, EASTL_CHAR32("10111001010000111111100001100101"), EASTLArrayCount(sn38)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(0xB943F865LL == StrtoU32(sn38, &pEnd, 2));
 
-		char32_t sn48[16]; Strlcpy(sn48, EA_CHAR32("BEEFEEC0DE"), EAArrayCount(sn48)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn48[16]; Strlcpy(sn48, EASTL_CHAR32("BEEFEEC0DE"), EASTLArrayCount(sn48)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(UINT32_MAX == StrtoU32(sn48, &pEnd, 16));
 	}
 
@@ -3009,23 +3009,23 @@ static int TestStrtoi()
 		EATEST_VERIFY(INT32_MIN == AtoI32(sn38));
 	}
 	{
-		char16_t sn18[16]; Strlcpy(sn18, EA_CHAR16("-1011101110"), EAArrayCount(sn18)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn18[16]; Strlcpy(sn18, EASTL_CHAR16("-1011101110"), EASTLArrayCount(sn18)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(-1011101110 == AtoI32(sn18));
 
-		char16_t sn28[16]; Strlcpy(sn28, EA_CHAR16("2147483647"), EAArrayCount(sn28)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn28[16]; Strlcpy(sn28, EASTL_CHAR16("2147483647"), EASTLArrayCount(sn28)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(INT32_MAX == AtoI32(sn28));
 
-		char16_t sn38[16]; Strlcpy(sn38, EA_CHAR16("-2147483648"), EAArrayCount(sn38)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn38[16]; Strlcpy(sn38, EASTL_CHAR16("-2147483648"), EASTLArrayCount(sn38)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(INT32_MIN == AtoI32(sn38));
 	}
 	{
-		char32_t sn18[32]; Strlcpy(sn18, EA_CHAR32("-1011101110"), EAArrayCount(sn18)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn18[32]; Strlcpy(sn18, EASTL_CHAR32("-1011101110"), EASTLArrayCount(sn18)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(-1011101110 == AtoI32(sn18));
 
-		char32_t sn28[32]; Strlcpy(sn28, EA_CHAR32("2147483647"), EAArrayCount(sn28)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn28[32]; Strlcpy(sn28, EASTL_CHAR32("2147483647"), EASTLArrayCount(sn28)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(INT32_MAX == AtoI32(sn28));
 
-		char32_t sn38[32]; Strlcpy(sn38, EA_CHAR32("-2147483648"), EAArrayCount(sn38)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn38[32]; Strlcpy(sn38, EASTL_CHAR32("-2147483648"), EASTLArrayCount(sn38)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(INT32_MIN == AtoI32(sn38));
 	}
 
@@ -3038,11 +3038,11 @@ static int TestStrtoi()
 		EATEST_VERIFY(UINT32_MAX == AtoU32(sn28));
 	}
 	{
-		char16_t sn28[12]; Strlcpy(sn28, EA_CHAR16("4294967295"), EAArrayCount(sn28)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn28[12]; Strlcpy(sn28, EASTL_CHAR16("4294967295"), EASTLArrayCount(sn28)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(UINT32_MAX == AtoU32(sn28));
 	}
 	{
-		char32_t sn28[12]; Strlcpy(sn28, EA_CHAR32("4294967295"), EAArrayCount(sn28)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn28[12]; Strlcpy(sn28, EASTL_CHAR32("4294967295"), EASTLArrayCount(sn28)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(UINT32_MAX == AtoU32(sn28));
 	}
 
@@ -3061,23 +3061,23 @@ static int TestStrtoi()
 		EATEST_VERIFY(INT64_MIN == AtoI64(sn38));
 	}
 	{
-		char16_t sn18[24]; Strlcpy(sn18, EA_CHAR16("-1011101110111011101"), EAArrayCount(sn18)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn18[24]; Strlcpy(sn18, EASTL_CHAR16("-1011101110111011101"), EASTLArrayCount(sn18)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(-1011101110111011101LL == AtoI64(sn18));
 
-		char16_t sn28[24]; Strlcpy(sn28, EA_CHAR16("9223372036854775807"), EAArrayCount(sn28)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn28[24]; Strlcpy(sn28, EASTL_CHAR16("9223372036854775807"), EASTLArrayCount(sn28)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(INT64_MAX == AtoI64(sn28));
 
-		char16_t sn38[24]; Strlcpy(sn38, EA_CHAR16("-9223372036854775808"), EAArrayCount(sn38)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn38[24]; Strlcpy(sn38, EASTL_CHAR16("-9223372036854775808"), EASTLArrayCount(sn38)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(INT64_MIN == AtoI64(sn38));
 	}
 	{
-		char32_t sn18[24]; Strlcpy(sn18, EA_CHAR32("-1011101110111011101"), EAArrayCount(sn18)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn18[24]; Strlcpy(sn18, EASTL_CHAR32("-1011101110111011101"), EASTLArrayCount(sn18)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(-1011101110111011101LL == AtoI64(sn18));
 
-		char32_t sn28[24]; Strlcpy(sn28, EA_CHAR32("9223372036854775807"), EAArrayCount(sn28)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn28[24]; Strlcpy(sn28, EASTL_CHAR32("9223372036854775807"), EASTLArrayCount(sn28)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(INT64_MAX == AtoI64(sn28));
 
-		char32_t sn38[24]; Strlcpy(sn38, EA_CHAR32("-9223372036854775808"), EAArrayCount(sn38)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn38[24]; Strlcpy(sn38, EASTL_CHAR32("-9223372036854775808"), EASTLArrayCount(sn38)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(INT64_MIN == AtoI64(sn38));
 	}
 
@@ -3090,11 +3090,11 @@ static int TestStrtoi()
 		EATEST_VERIFY(UINT64_MAX == AtoU64(sn28));
 	}
 	{
-		char16_t sn28[24]; Strlcpy(sn28, EA_CHAR16("18446744073709551615"), EAArrayCount(sn28)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+		char16_t sn28[24]; Strlcpy(sn28, EASTL_CHAR16("18446744073709551615"), EASTLArrayCount(sn28)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 		EATEST_VERIFY(UINT64_MAX == AtoU64(sn28));
 	}
 	{
-		char32_t sn28[24]; Strlcpy(sn28, EA_CHAR32("18446744073709553215"), EAArrayCount(sn28)); // Can't do char32_t variable[64] = EA_CHAR32(...) because some compilers don't support 32 bit string literals.
+		char32_t sn28[24]; Strlcpy(sn28, EASTL_CHAR32("18446744073709553215"), EASTLArrayCount(sn28)); // Can't do char32_t variable[64] = EASTL_CHAR32(...) because some compilers don't support 32 bit string literals.
 		EATEST_VERIFY(UINT64_MAX == AtoU64(sn28));
 	}
 
@@ -3120,28 +3120,28 @@ static int TestAtof()
 
 		{
 			double d = Atof(kStrMax);
-			EATEST_VERIFY(DoubleEqual(d, kValMax));
+			EATEST_VERIFY(TestString_DoubleEqual(d, kValMax));
 
 			d = Atof(kStrMin);
-			EATEST_VERIFY(DoubleEqual(d, kValMin));
+			EATEST_VERIFY(TestString_DoubleEqual(d, kValMin));
 		}
 		{
-			char16_t sn18[32]; Strlcpy(sn18, kStrMax, EAArrayCount(sn18)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
+			char16_t sn18[32]; Strlcpy(sn18, kStrMax, EASTLArrayCount(sn18)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
 			double  d = Atof(sn18);
-			EATEST_VERIFY(DoubleEqual(d, kValMax));
+			EATEST_VERIFY(TestString_DoubleEqual(d, kValMax));
 
-			char16_t sn28[32]; Strlcpy(sn28, kStrMin, EAArrayCount(sn28));
+			char16_t sn28[32]; Strlcpy(sn28, kStrMin, EASTLArrayCount(sn28));
 			d = Atof(sn28);
-			EATEST_VERIFY(DoubleEqual(d, kValMin));
+			EATEST_VERIFY(TestString_DoubleEqual(d, kValMin));
 		}
 		{
-			char32_t sn18[32]; Strlcpy(sn18, kStrMax, EAArrayCount(sn18));
+			char32_t sn18[32]; Strlcpy(sn18, kStrMax, EASTLArrayCount(sn18));
 			double d = Atof(sn18);
-			EATEST_VERIFY(DoubleEqual(d, kValMax));
+			EATEST_VERIFY(TestString_DoubleEqual(d, kValMax));
 
-			char32_t sn28[32]; Strlcpy(sn28, kStrMin, EAArrayCount(sn28));
+			char32_t sn28[32]; Strlcpy(sn28, kStrMin, EASTLArrayCount(sn28));
 			d = Atof(sn28);
-			EATEST_VERIFY(DoubleEqual(d, kValMin));
+			EATEST_VERIFY(TestString_DoubleEqual(d, kValMin));
 		}
 	}
 
@@ -3159,23 +3159,23 @@ static int TestAtof()
 		const double   kValMax =  1.7976931348622e+307;
 
 		{
-			EATEST_VERIFY(DoubleEqual(kValMin, AtofEnglish(kStrMin)));
+			EATEST_VERIFY(TestString_DoubleEqual(kValMin, AtofEnglish(kStrMin)));
 
-			EATEST_VERIFY(DoubleEqual(kValMax, AtofEnglish(kStrMax)));
+			EATEST_VERIFY(TestString_DoubleEqual(kValMax, AtofEnglish(kStrMax)));
 		}
 		{
-			char16_t sn18[32]; Strlcpy(sn18, kStrMin, EAArrayCount(sn18)); // Can't do char16_t variable[64] = EA_CHAR16(...) because some compilers don't support 16 bit string literals.
-			EATEST_VERIFY(DoubleEqual(kValMin, AtofEnglish(sn18)));
+			char16_t sn18[32]; Strlcpy(sn18, kStrMin, EASTLArrayCount(sn18)); // Can't do char16_t variable[64] = EASTL_CHAR16(...) because some compilers don't support 16 bit string literals.
+			EATEST_VERIFY(TestString_DoubleEqual(kValMin, AtofEnglish(sn18)));
 
-			char16_t sn28[32]; Strlcpy(sn28, kStrMax, EAArrayCount(sn28));
-			EATEST_VERIFY(DoubleEqual(kValMax, AtofEnglish(sn28)));
+			char16_t sn28[32]; Strlcpy(sn28, kStrMax, EASTLArrayCount(sn28));
+			EATEST_VERIFY(TestString_DoubleEqual(kValMax, AtofEnglish(sn28)));
 		}
 		{
-			char32_t sn18[32]; Strlcpy(sn18, kStrMin, EAArrayCount(sn18));
-			EATEST_VERIFY(DoubleEqual(kValMin, AtofEnglish(sn18)));
+			char32_t sn18[32]; Strlcpy(sn18, kStrMin, EASTLArrayCount(sn18));
+			EATEST_VERIFY(TestString_DoubleEqual(kValMin, AtofEnglish(sn18)));
 
-			char32_t sn28[32]; Strlcpy(sn28, kStrMax, EAArrayCount(sn28));
-			EATEST_VERIFY(DoubleEqual(kValMax, AtofEnglish(sn28)));
+			char32_t sn28[32]; Strlcpy(sn28, kStrMax, EASTLArrayCount(sn28));
+			EATEST_VERIFY(TestString_DoubleEqual(kValMax, AtofEnglish(sn28)));
 		}
 	}
 
@@ -3227,62 +3227,62 @@ static int TestFtoa()
 		char16_t sn18[128];
 
 		Ftoa(-1.7976931, sn18, 128, 7, false);
-		if(Strcmp(EA_CHAR16("-1.7976931"), sn18) != 0)
+		if(Strcmp(EASTL_CHAR16("-1.7976931"), sn18) != 0)
 		{
 			EA::UnitTest::Report("%ls\n", sn18);
-			EATEST_VERIFY(Strcmp(EA_CHAR16("-1.7976931"), sn18) == 0);
+			EATEST_VERIFY(Strcmp(EASTL_CHAR16("-1.7976931"), sn18) == 0);
 		}
 
 		Ftoa(10.7976931e299, sn18, 128, 5, true);
-		if(Strcmp(EA_CHAR16("1.07977e+300"), sn18) != 0)
+		if(Strcmp(EASTL_CHAR16("1.07977e+300"), sn18) != 0)
 		{
 			EA::UnitTest::Report("%ls\n", sn18);
-			EATEST_VERIFY(Strcmp(EA_CHAR16("1.07977e+300"), sn18) == 0);
+			EATEST_VERIFY(Strcmp(EASTL_CHAR16("1.07977e+300"), sn18) == 0);
 		}
 
 		Ftoa(-1.7976931, sn18, 128, 4, false);
-		if(Strcmp(EA_CHAR16("-1.7977"), sn18) != 0)
+		if(Strcmp(EASTL_CHAR16("-1.7977"), sn18) != 0)
 		{
 			EA::UnitTest::Report("%ls\n", sn18);
-			EATEST_VERIFY(Strcmp(EA_CHAR16("-1.7977"), sn18) == 0);
+			EATEST_VERIFY(Strcmp(EASTL_CHAR16("-1.7977"), sn18) == 0);
 		}
 
 		Ftoa(0.107976931e-299, sn18, 128, 5, true);
-		if(Strcmp(EA_CHAR16("1.07977e-300"), sn18) != 0)
+		if(Strcmp(EASTL_CHAR16("1.07977e-300"), sn18) != 0)
 		{
 			EA::UnitTest::Report("%ls\n", sn18);
-			EATEST_VERIFY(Strcmp(EA_CHAR16("1.07977e-300"), sn18) == 0);
+			EATEST_VERIFY(Strcmp(EASTL_CHAR16("1.07977e-300"), sn18) == 0);
 		}
 	}
 	{
 		char32_t sn18[128];
 
 		Ftoa(-1.7976931, sn18, 128, 7, false);
-		if(Strcmp(EA_CHAR32("-1.7976931"), sn18) != 0)
+		if(Strcmp(EASTL_CHAR32("-1.7976931"), sn18) != 0)
 		{
 			EA::UnitTest::Report("%ls\n", sn18);
-			EATEST_VERIFY(Strcmp(EA_CHAR32("-1.7976931"), sn18) == 0);
+			EATEST_VERIFY(Strcmp(EASTL_CHAR32("-1.7976931"), sn18) == 0);
 		}
 
 		Ftoa(10.7976931e299, sn18, 128, 5, true);
-		if(Strcmp(EA_CHAR32("1.07977e+300"), sn18) != 0)
+		if(Strcmp(EASTL_CHAR32("1.07977e+300"), sn18) != 0)
 		{
 			EA::UnitTest::Report("%ls\n", sn18);
-			EATEST_VERIFY(Strcmp(EA_CHAR32("1.07977e+300"), sn18) == 0);
+			EATEST_VERIFY(Strcmp(EASTL_CHAR32("1.07977e+300"), sn18) == 0);
 		}
 
 		Ftoa(-1.7976931, sn18, 128, 4, false);
-		if(Strcmp(EA_CHAR32("-1.7977"), sn18) != 0)
+		if(Strcmp(EASTL_CHAR32("-1.7977"), sn18) != 0)
 		{
 			EA::UnitTest::Report("%ls\n", sn18);
-			EATEST_VERIFY(Strcmp(EA_CHAR32("-1.7977"), sn18) == 0);
+			EATEST_VERIFY(Strcmp(EASTL_CHAR32("-1.7977"), sn18) == 0);
 		}
 
 		Ftoa(0.107976931e-299, sn18, 128, 5, true);
-		if(Strcmp(EA_CHAR32("1.07977e-300"), sn18) != 0)
+		if(Strcmp(EASTL_CHAR32("1.07977e-300"), sn18) != 0)
 		{
 			EA::UnitTest::Report("%ls\n", sn18);
-			EATEST_VERIFY(Strcmp(EA_CHAR32("1.07977e-300"), sn18) == 0);
+			EATEST_VERIFY(Strcmp(EASTL_CHAR32("1.07977e-300"), sn18) == 0);
 		}
 	}
 
@@ -3350,110 +3350,110 @@ static int TestFtoa()
 		char16_t* pResult;
 
 		pResult = FtoaEnglish(-1.7976931, sn18, 128, 7, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("-1.7976931"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("-1.7976931"), sn18) == 0));
 
 		pResult = FtoaEnglish(10.7976931e299, sn18, 128, 5, true);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("1.07977e+300"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("1.07977e+300"), sn18) == 0));
 
 		pResult = FtoaEnglish(-1.7976931, sn18, 128, 4, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("-1.7977"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("-1.7977"), sn18) == 0));
 
 		pResult = FtoaEnglish(0.107976931e-299, sn18, 128, 5, true);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("1.07977e-300"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("1.07977e-300"), sn18) == 0));
 
 		pResult = FtoaEnglish(10000, sn18, 1, 0, false);
-		EATEST_VERIFY(!pResult && (Strcmp(EA_CHAR16(""), sn18) == 0));
+		EATEST_VERIFY(!pResult && (Strcmp(EASTL_CHAR16(""), sn18) == 0));
 
 		pResult = FtoaEnglish(10000, sn18, 10, 0, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("10000"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("10000"), sn18) == 0));
 
 		pResult = FtoaEnglish(10000.003, sn18, 10, 0, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("10000"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("10000"), sn18) == 0));
 
 		pResult = FtoaEnglish(10000.003, sn18, 6, 10, false);
 		EATEST_VERIFY(pResult == NULL);
 
 		pResult = FtoaEnglish(10000.12345, sn18, 20, 3, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("10000.123"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("10000.123"), sn18) == 0));
 
 		pResult = FtoaEnglish(10000.12348, sn18, 20, 8, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("10000.12348"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("10000.12348"), sn18) == 0));
 
 		pResult = FtoaEnglish(0.0, sn18, 20, 3, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("0"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("0"), sn18) == 0));
 
 		pResult = FtoaEnglish(0.0, sn18, 20, 3, true);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("0"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("0"), sn18) == 0));
 
 		pResult = FtoaEnglish(0.0001, sn18, 20, 4, true);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("0.0001"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("0.0001"), sn18) == 0));
 
 		pResult = FtoaEnglish(.12345, sn18, 20, 2, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("0.12"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("0.12"), sn18) == 0));
 
 		pResult = FtoaEnglish(.012345, sn18, 20, 3, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("0.012"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("0.012"), sn18) == 0));
 
 		pResult = FtoaEnglish(.0012345, sn18, 20, 2, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("0"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("0"), sn18) == 0));
 
 		pResult = FtoaEnglish(.123450000, sn18, 20, 17, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR16("0.12345"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR16("0.12345"), sn18) == 0));
 	}
 	{
 		char32_t  sn18[128];
 		char32_t* pResult;
 
 		pResult = FtoaEnglish(-1.7976931, sn18, 128, 7, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("-1.7976931"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("-1.7976931"), sn18) == 0));
 
 		pResult = FtoaEnglish(10.7976931e299, sn18, 128, 5, true);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("1.07977e+300"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("1.07977e+300"), sn18) == 0));
 
 		pResult = FtoaEnglish(-1.7976931, sn18, 128, 4, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("-1.7977"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("-1.7977"), sn18) == 0));
 
 		pResult = FtoaEnglish(0.107976931e-299, sn18, 128, 5, true);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("1.07977e-300"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("1.07977e-300"), sn18) == 0));
 
 		pResult = FtoaEnglish(10000, sn18, 1, 0, false);
-		EATEST_VERIFY(!pResult && (Strcmp(EA_CHAR32(""), sn18) == 0));
+		EATEST_VERIFY(!pResult && (Strcmp(EASTL_CHAR32(""), sn18) == 0));
 
 		pResult = FtoaEnglish(10000, sn18, 10, 0, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("10000"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("10000"), sn18) == 0));
 
 		pResult = FtoaEnglish(10000.003, sn18, 10, 0, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("10000"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("10000"), sn18) == 0));
 
 		pResult = FtoaEnglish(10000.003, sn18, 6, 10, false);
 		EATEST_VERIFY(pResult == NULL);
 
 		pResult = FtoaEnglish(10000.12345, sn18, 20, 3, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("10000.123"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("10000.123"), sn18) == 0));
 
 		pResult = FtoaEnglish(10000.12348, sn18, 20, 8, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("10000.12348"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("10000.12348"), sn18) == 0));
 
 		pResult = FtoaEnglish(0.0, sn18, 20, 3, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("0"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("0"), sn18) == 0));
 
 		pResult = FtoaEnglish(0.0, sn18, 20, 3, true);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("0"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("0"), sn18) == 0));
 
 		pResult = FtoaEnglish(0.0001, sn18, 20, 4, true);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("0.0001"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("0.0001"), sn18) == 0));
 
 		pResult = FtoaEnglish(.12345, sn18, 20, 2, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("0.12"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("0.12"), sn18) == 0));
 
 		pResult = FtoaEnglish(.012345, sn18, 20, 3, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("0.012"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("0.012"), sn18) == 0));
 
 		pResult = FtoaEnglish(.0012345, sn18, 20, 2, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("0"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("0"), sn18) == 0));
 
 		pResult = FtoaEnglish(.123450000, sn18, 20, 17, false);
-		EATEST_VERIFY(pResult && (Strcmp(EA_CHAR32("0.12345"), sn18) == 0));
+		EATEST_VERIFY(pResult && (Strcmp(EASTL_CHAR32("0.12345"), sn18) == 0));
 	}
 
 	return nErrorCount;
@@ -3521,97 +3521,97 @@ static int TestReduceFloatString()
 		char16_t pBuffer[64];
 		size_t   n;
 
-		Strcpy(pBuffer, EA_CHAR16("2.3400"));
+		Strcpy(pBuffer, EASTL_CHAR16("2.3400"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16("2.34"))) && (Strcmp(EA_CHAR16("2.34"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16("2.34"))) && (Strcmp(EASTL_CHAR16("2.34"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR16("00000"));
+		Strcpy(pBuffer, EASTL_CHAR16("00000"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16("0"))) && (Strcmp(EA_CHAR16("0"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16("0"))) && (Strcmp(EASTL_CHAR16("0"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR16(".0000"));
+		Strcpy(pBuffer, EASTL_CHAR16(".0000"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16("0"))) && (Strcmp(EA_CHAR16("0"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16("0"))) && (Strcmp(EASTL_CHAR16("0"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR16("000.0000"));
+		Strcpy(pBuffer, EASTL_CHAR16("000.0000"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16("0"))) && (Strcmp(EA_CHAR16("0"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16("0"))) && (Strcmp(EASTL_CHAR16("0"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR16("-0.0000"));
+		Strcpy(pBuffer, EASTL_CHAR16("-0.0000"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16("-0"))) && (Strcmp(EA_CHAR16("-0"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16("-0"))) && (Strcmp(EASTL_CHAR16("-0"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR16("23.430000e10"));
+		Strcpy(pBuffer, EASTL_CHAR16("23.430000e10"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16("23.43e10"))) && (Strcmp(EA_CHAR16("23.43e10"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16("23.43e10"))) && (Strcmp(EASTL_CHAR16("23.43e10"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR16("2.34001"));
+		Strcpy(pBuffer, EASTL_CHAR16("2.34001"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16("2.34001"))) && (Strcmp(EA_CHAR16("2.34001"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16("2.34001"))) && (Strcmp(EASTL_CHAR16("2.34001"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR16("0.00001"));
+		Strcpy(pBuffer, EASTL_CHAR16("0.00001"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16(".00001"))) && (Strcmp(EA_CHAR16(".00001"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16(".00001"))) && (Strcmp(EASTL_CHAR16(".00001"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR16("-0.00001"));
+		Strcpy(pBuffer, EASTL_CHAR16("-0.00001"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16("-0.00001"))) && (Strcmp(EA_CHAR16("-0.00001"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16("-0.00001"))) && (Strcmp(EASTL_CHAR16("-0.00001"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR16("23.43e10"));
+		Strcpy(pBuffer, EASTL_CHAR16("23.43e10"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16("23.43e10"))) && (Strcmp(EA_CHAR16("23.43e10"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16("23.43e10"))) && (Strcmp(EASTL_CHAR16("23.43e10"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR16("15e-0"));
+		Strcpy(pBuffer, EASTL_CHAR16("15e-0"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR16("15e-0"))) && (Strcmp(EA_CHAR16("15e-0"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR16("15e-0"))) && (Strcmp(EASTL_CHAR16("15e-0"), pBuffer) == 0));
 	}
 	{
 		char32_t pBuffer[64];
 		size_t   n;
 
-		Strcpy(pBuffer, EA_CHAR32("2.3400"));
+		Strcpy(pBuffer, EASTL_CHAR32("2.3400"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32("2.34"))) && (Strcmp(EA_CHAR32("2.34"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32("2.34"))) && (Strcmp(EASTL_CHAR32("2.34"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR32("00000"));
+		Strcpy(pBuffer, EASTL_CHAR32("00000"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32("0"))) && (Strcmp(EA_CHAR32("0"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32("0"))) && (Strcmp(EASTL_CHAR32("0"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR32(".0000"));
+		Strcpy(pBuffer, EASTL_CHAR32(".0000"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32("0"))) && (Strcmp(EA_CHAR32("0"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32("0"))) && (Strcmp(EASTL_CHAR32("0"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR32("000.0000"));
+		Strcpy(pBuffer, EASTL_CHAR32("000.0000"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32("0"))) && (Strcmp(EA_CHAR32("0"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32("0"))) && (Strcmp(EASTL_CHAR32("0"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR32("-0.0000"));
+		Strcpy(pBuffer, EASTL_CHAR32("-0.0000"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32("-0"))) && (Strcmp(EA_CHAR32("-0"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32("-0"))) && (Strcmp(EASTL_CHAR32("-0"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR32("23.430000e10"));
+		Strcpy(pBuffer, EASTL_CHAR32("23.430000e10"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32("23.43e10"))) && (Strcmp(EA_CHAR32("23.43e10"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32("23.43e10"))) && (Strcmp(EASTL_CHAR32("23.43e10"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR32("2.34001"));
+		Strcpy(pBuffer, EASTL_CHAR32("2.34001"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32("2.34001"))) && (Strcmp(EA_CHAR32("2.34001"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32("2.34001"))) && (Strcmp(EASTL_CHAR32("2.34001"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR32("0.00001"));
+		Strcpy(pBuffer, EASTL_CHAR32("0.00001"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32(".00001"))) && (Strcmp(EA_CHAR32(".00001"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32(".00001"))) && (Strcmp(EASTL_CHAR32(".00001"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR32("-0.00001"));
+		Strcpy(pBuffer, EASTL_CHAR32("-0.00001"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32("-0.00001"))) && (Strcmp(EA_CHAR32("-0.00001"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32("-0.00001"))) && (Strcmp(EASTL_CHAR32("-0.00001"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR32("23.43e10"));
+		Strcpy(pBuffer, EASTL_CHAR32("23.43e10"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32("23.43e10"))) && (Strcmp(EA_CHAR32("23.43e10"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32("23.43e10"))) && (Strcmp(EASTL_CHAR32("23.43e10"), pBuffer) == 0));
 
-		Strcpy(pBuffer, EA_CHAR32("15e-0"));
+		Strcpy(pBuffer, EASTL_CHAR32("15e-0"));
 		n = ReduceFloatString(pBuffer);
-		EATEST_VERIFY((n == Strlen(EA_CHAR32("15e-0"))) && (Strcmp(EA_CHAR32("15e-0"), pBuffer) == 0));
+		EATEST_VERIFY((n == Strlen(EASTL_CHAR32("15e-0"))) && (Strcmp(EASTL_CHAR32("15e-0"), pBuffer) == 0));
 	}
 
 	return nErrorCount;
@@ -3634,7 +3634,7 @@ static int TestConvertString()
 	{
 		// 8 -> 16
 		EA::StdC::Strlcpy(s16, s8);
-		EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+		EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 		s8.clear();
 
 		// 16 -> 8
@@ -3647,12 +3647,12 @@ static int TestConvertString()
 		// Note that using this non-const string causes this specialization to be called instead of the specialization that takes const Source*.
 		char pNonConstString8[] = "hello world";
 		EA::StdC::Strlcpy(s16, pNonConstString8);
-		EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+		EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 		s8.clear();
 
 		// 16 -> 8
 		// Note that using this non-const string causes this specialization to be called instead of the specialization that takes const Source*.
-		char16_t pNonConstString16[] = EA_CHAR16("hello world");
+		char16_t pNonConstString16[] = EASTL_CHAR16("hello world");
 		EA::StdC::Strlcpy(s8, pNonConstString16);
 		EATEST_VERIFY(s8 == EA_CHAR8("hello world"));
 		s16.clear();
@@ -3660,7 +3660,7 @@ static int TestConvertString()
 	{
 		// 8 -> 32
 		EA::StdC::Strlcpy(s32, s8);
-		EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+		EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 		s8.clear();
 
 		// 32 -> 8
@@ -3675,13 +3675,13 @@ static int TestConvertString()
 		s8.clear();
 
 		// 16 -> 16
-		EA::StdC::Strlcpy<eastl::string16, eastl::string16>(s16, eastl::string16(EA_CHAR16("hello world")));
-		EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+		EA::StdC::Strlcpy<eastl::string16, eastl::string16>(s16, eastl::string16(EASTL_CHAR16("hello world")));
+		EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 		s16.clear();
 
 		// 32 -> 32
-		EA::StdC::Strlcpy<eastl::string32, eastl::string32>(s32, eastl::string32(EA_CHAR32("hello world")));
-		EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+		EA::StdC::Strlcpy<eastl::string32, eastl::string32>(s32, eastl::string32(EASTL_CHAR32("hello world")));
+		EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 		s32.clear();
 	}
 
@@ -3692,7 +3692,7 @@ static int TestConvertString()
 		// 8 -> 16
 		s8 = EA_CHAR8("hello world");
 		EA::StdC::Strlcpy(s16, s8.c_str(), s8.length());
-		EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+		EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 		s8.clear();
 
 		// 16 -> 8
@@ -3703,7 +3703,7 @@ static int TestConvertString()
 	{
 		// 8 -> 32
 		EA::StdC::Strlcpy(s32, s8.c_str(), s8.length());
-		EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+		EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 		s8.clear();
 
 		// 32 -> 8
@@ -3718,13 +3718,13 @@ static int TestConvertString()
 		s8.clear();
 
 		// 16 -> 16
-		EA::StdC::Strlcpy(s16, EA_CHAR16("hello world"), 11);
-		EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+		EA::StdC::Strlcpy(s16, EASTL_CHAR16("hello world"), 11);
+		EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 		s32.clear();
 
 		// 32 -> 32
-		EA::StdC::Strlcpy(s32, EA_CHAR32("hello world"), 11);
-		EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+		EA::StdC::Strlcpy(s32, EASTL_CHAR32("hello world"), 11);
+		EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 		s32.clear();
 	}
 
@@ -3735,7 +3735,7 @@ static int TestConvertString()
 		// 8 -> 16
 		s8 = EA_CHAR8("hello world");
 		s16 = EA::StdC::Strlcpy<eastl::string16,  eastl::string8>(s8);
-		EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+		EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 		s8.clear();
 
 		// 16 -> 8
@@ -3746,7 +3746,7 @@ static int TestConvertString()
 	{
 		// 8 -> 32
 		s32 = EA::StdC::Strlcpy<eastl::string32, eastl::string8>(s8);
-		EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+		EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 		s8.clear();
 
 		// 32 -> 8
@@ -3761,13 +3761,13 @@ static int TestConvertString()
 		s8.clear();
 
 		// 16 -> 16
-		s16 = EA::StdC::Strlcpy<eastl::string16, eastl::string16>(eastl::string16(EA_CHAR16("hello world")));
-		EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+		s16 = EA::StdC::Strlcpy<eastl::string16, eastl::string16>(eastl::string16(EASTL_CHAR16("hello world")));
+		EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 		s16.clear();
 
 		// 32 -> 32
-		s32 = EA::StdC::Strlcpy<eastl::string32, eastl::string32>(eastl::string32(EA_CHAR32("hello world")));
-		EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+		s32 = EA::StdC::Strlcpy<eastl::string32, eastl::string32>(eastl::string32(EASTL_CHAR32("hello world")));
+		EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 		s32.clear();
 	}
 
@@ -3776,22 +3776,22 @@ static int TestConvertString()
 	{
 		// 8 -> 16
 		s16 = EA::StdC::Strlcpy<eastl::string16, char>("hello world", 11);
-		EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+		EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 		s8.clear();
 
 		// 16 -> 8
-		s8 = EA::StdC::Strlcpy<eastl::string8, char16_t>(EA_CHAR16("hello world"), 11);
+		s8 = EA::StdC::Strlcpy<eastl::string8, char16_t>(EASTL_CHAR16("hello world"), 11);
 		EATEST_VERIFY(s8 == EA_CHAR8("hello world"));
 		s16.clear();
 	}
 	{
 		// 8 -> 32
 		s32 = EA::StdC::Strlcpy<eastl::string32, char>("hello world", 11);
-		EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+		EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 		s8.clear();
 
 		// 32 -> 8
-		s8 = EA::StdC::Strlcpy<eastl::string8, char32_t>(EA_CHAR32("hello world"), 11);
+		s8 = EA::StdC::Strlcpy<eastl::string8, char32_t>(EASTL_CHAR32("hello world"), 11);
 		EATEST_VERIFY(s8 == EA_CHAR8("hello world"));
 		s32.clear();
 	}
@@ -3802,13 +3802,13 @@ static int TestConvertString()
 		s8.clear();
 
 		// 16 -> 16
-		s16 = EA::StdC::Strlcpy<eastl::string16, char16_t>(EA_CHAR16("hello world"), 11);
-		EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+		s16 = EA::StdC::Strlcpy<eastl::string16, char16_t>(EASTL_CHAR16("hello world"), 11);
+		EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 		s16.clear();
 
 		// 32 -> 32
-		s32 = EA::StdC::Strlcpy<eastl::string32, char32_t>(EA_CHAR32("hello world"), 11);
-		EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+		s32 = EA::StdC::Strlcpy<eastl::string32, char32_t>(EASTL_CHAR32("hello world"), 11);
+		EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 		s32.clear();
 	}
 
@@ -3817,24 +3817,24 @@ static int TestConvertString()
 	// inline bool Strlcat(Dest& d, const Source& s);
 	{
 		// 8 -> 16
-		s16 = EA_CHAR16("abc ");
+		s16 = EASTL_CHAR16("abc ");
 		EA::StdC::Strlcat(s16, eastl::string8(EA_CHAR8("hello world")));
-		EATEST_VERIFY(s16 == EA_CHAR16("abc hello world"));
+		EATEST_VERIFY(s16 == EASTL_CHAR16("abc hello world"));
 
 		// 16 -> 8
 		s8 = EA_CHAR8("abc ");
-		EA::StdC::Strlcat(s8, eastl::string16(EA_CHAR16("hello world")));
+		EA::StdC::Strlcat(s8, eastl::string16(EASTL_CHAR16("hello world")));
 		EATEST_VERIFY(s8 == EA_CHAR8("abc hello world"));
 	}
 	{
 		// 8 -> 32
-		s32 = EA_CHAR32("abc ");
+		s32 = EASTL_CHAR32("abc ");
 		EA::StdC::Strlcat(s32, eastl::string8(EA_CHAR8("hello world")));
-		EATEST_VERIFY(s32 == EA_CHAR32("abc hello world"));
+		EATEST_VERIFY(s32 == EASTL_CHAR32("abc hello world"));
 
 		// 32 -> 8
 		s8 = EA_CHAR8("abc ");
-		EA::StdC::Strlcat(s8, eastl::string32(EA_CHAR32("hello world")));
+		EA::StdC::Strlcat(s8, eastl::string32(EASTL_CHAR32("hello world")));
 		EATEST_VERIFY(s8 == EA_CHAR8("abc hello world"));
 	}
 	{
@@ -3845,15 +3845,15 @@ static int TestConvertString()
 		s8.clear();
 
 		// 16 -> 16
-		s16 = EA_CHAR16("abc ");
-		EA::StdC::Strlcat(s16, eastl::string16(EA_CHAR16("hello world")));
-		EATEST_VERIFY(s16 == EA_CHAR16("abc hello world"));
+		s16 = EASTL_CHAR16("abc ");
+		EA::StdC::Strlcat(s16, eastl::string16(EASTL_CHAR16("hello world")));
+		EATEST_VERIFY(s16 == EASTL_CHAR16("abc hello world"));
 		s16.clear();
 
 		// 32 -> 32
-		s32 = EA_CHAR32("abc ");
-		EA::StdC::Strlcat(s32, eastl::string32(EA_CHAR32("hello world")));
-		EATEST_VERIFY(s32 == EA_CHAR32("abc hello world"));
+		s32 = EASTL_CHAR32("abc ");
+		EA::StdC::Strlcat(s32, eastl::string32(EASTL_CHAR32("hello world")));
+		EATEST_VERIFY(s32 == EASTL_CHAR32("abc hello world"));
 		s32.clear();
 	}
 
@@ -3862,24 +3862,24 @@ static int TestConvertString()
 	// inline bool Strlcat(Dest& d, const Source* s, size_t sourceLength = (size_t)~0);
 	{
 		// 8 -> 16
-		s16 = EA_CHAR16("abc ");
+		s16 = EASTL_CHAR16("abc ");
 		EA::StdC::Strlcat(s16, "hello world", 11);
-		EATEST_VERIFY(s16 == EA_CHAR16("abc hello world"));
+		EATEST_VERIFY(s16 == EASTL_CHAR16("abc hello world"));
 
 		// 16 -> 8
 		s8 = EA_CHAR8("abc ");
-		EA::StdC::Strlcat(s8, EA_CHAR16("hello world"), 11);
+		EA::StdC::Strlcat(s8, EASTL_CHAR16("hello world"), 11);
 		EATEST_VERIFY(s8 == EA_CHAR8("abc hello world"));
 	}
 	{
 		// 8 -> 32
-		s32 = EA_CHAR32("abc ");
+		s32 = EASTL_CHAR32("abc ");
 		EA::StdC::Strlcat(s32, "hello world", 11);
-		EATEST_VERIFY(s32 == EA_CHAR32("abc hello world"));
+		EATEST_VERIFY(s32 == EASTL_CHAR32("abc hello world"));
 
 		// 32 -> 8
 		s8 = EA_CHAR8("abc ");
-		EA::StdC::Strlcat(s8, EA_CHAR32("hello world"), 11);
+		EA::StdC::Strlcat(s8, EASTL_CHAR32("hello world"), 11);
 		EATEST_VERIFY(s8 == EA_CHAR8("abc hello world"));
 	}
 	{
@@ -3890,15 +3890,15 @@ static int TestConvertString()
 		s8.clear();
 
 		// 16 -> 16
-		s16 = EA_CHAR16("abc ");
-		EA::StdC::Strlcat(s16, EA_CHAR16("hello world"), 11);
-		EATEST_VERIFY(s16 == EA_CHAR16("abc hello world"));
+		s16 = EASTL_CHAR16("abc ");
+		EA::StdC::Strlcat(s16, EASTL_CHAR16("hello world"), 11);
+		EATEST_VERIFY(s16 == EASTL_CHAR16("abc hello world"));
 		s16.clear();
 
 		// 32 -> 32
-		s32 = EA_CHAR32("abc ");
-		EA::StdC::Strlcat(s32, EA_CHAR32("hello world"), 11);
-		EATEST_VERIFY(s32 == EA_CHAR32("abc hello world"));
+		s32 = EASTL_CHAR32("abc ");
+		EA::StdC::Strlcat(s32, EASTL_CHAR32("hello world"), 11);
+		EATEST_VERIFY(s32 == EASTL_CHAR32("abc hello world"));
 		s32.clear();
 	}
 
@@ -3910,7 +3910,7 @@ static int TestConvertString()
 			// 8 -> 16
 			s8 = EA_CHAR8("hello world");
 			EA::StdC::ConvertString(s8, s16);
-			EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+			EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 			s8.clear();
 
 			// 16 -> 8
@@ -3921,7 +3921,7 @@ static int TestConvertString()
 		{
 			// 8 -> 32
 			EA::StdC::ConvertString(s8, s32);
-			EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+			EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 			s8.clear();
 
 			// 32 -> 8
@@ -3936,7 +3936,7 @@ static int TestConvertString()
 		{
 			// 8 -> 16
 			s16 = EA::StdC::ConvertString<eastl::string8,  eastl::string16>(s8);
-			EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+			EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 			s8.clear();
 
 			// 16 -> 8
@@ -3947,7 +3947,7 @@ static int TestConvertString()
 		{
 			// 8 -> 32
 			s32 = EA::StdC::ConvertString<eastl::string8,  eastl::string32>(s8);
-			EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+			EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 			s8.clear();
 
 			// 32 -> 8
@@ -3963,13 +3963,13 @@ static int TestConvertString()
 			s8.clear();
 
 			// 16 -> 16
-			s16 = EA::StdC::ConvertString<eastl::string16, eastl::string16>(eastl::string16(EA_CHAR16("hello world")));
-			EATEST_VERIFY(s16 == EA_CHAR16("hello world"));
+			s16 = EA::StdC::ConvertString<eastl::string16, eastl::string16>(eastl::string16(EASTL_CHAR16("hello world")));
+			EATEST_VERIFY(s16 == EASTL_CHAR16("hello world"));
 			s16.clear();
 
 			// 32 -> 32
-			s32 = EA::StdC::ConvertString<eastl::string32, eastl::string32>(eastl::string32(EA_CHAR32("hello world")));
-			EATEST_VERIFY(s32 == EA_CHAR32("hello world"));
+			s32 = EA::StdC::ConvertString<eastl::string32, eastl::string32>(eastl::string32(EASTL_CHAR32("hello world")));
+			EATEST_VERIFY(s32 == EASTL_CHAR32("hello world"));
 			s32.clear();
 		}
 
@@ -3987,12 +3987,18 @@ template <class charType>
 int TestStrstripString(const charType* input, const charType* expectedOutput)
 {
 	using namespace EA::StdC;
+
 	int nErrorCount = 0;
-	size_t strLen = EA::StdC::Strlen(input) + 1;
-	charType* str = static_cast<charType*>(malloc((strLen) * sizeof(charType)));
+
+	const size_t strLen = EA::StdC::Strlen(input) + 1;
+	const size_t allocSizeInBytes = (strLen) * sizeof(charType);
+
+	charType* str = static_cast<charType*>(malloc(allocSizeInBytes));
+	Memclear(str, allocSizeInBytes);
 	Strncpy(str, input, strLen);
 	EATEST_VERIFY(Strcmp(Strstrip(str), expectedOutput) == 0);
 	free(str);
+
 	return nErrorCount;
 }
 
@@ -4040,79 +4046,78 @@ static int TestStrstrip()
 	nErrorCount += TestStrstripString("\t a\r\n \n \t \r\nb \n", "a\r\n \n \t \r\nb");
 	nErrorCount += TestStrstripString(" \t \r\n \na \t \r\n \n ", "a");
 
-	nErrorCount += TestStrstripString(EA_CHAR16(""), EA_CHAR16(""));
-	nErrorCount += TestStrstripString(EA_CHAR16(" "), EA_CHAR16(""));
-	nErrorCount += TestStrstripString(EA_CHAR16("  "), EA_CHAR16(""));
-	nErrorCount += TestStrstripString(EA_CHAR16("        "), EA_CHAR16(""));
-	nErrorCount += TestStrstripString(EA_CHAR16("a"), EA_CHAR16("a"));
-	nErrorCount += TestStrstripString(EA_CHAR16("a "), EA_CHAR16("a"));
-	nErrorCount += TestStrstripString(EA_CHAR16("a      "), EA_CHAR16("a"));
-	nErrorCount += TestStrstripString(EA_CHAR16(" a"), EA_CHAR16("a"));
-	nErrorCount += TestStrstripString(EA_CHAR16("     a"), EA_CHAR16("a"));
-	nErrorCount += TestStrstripString(EA_CHAR16(" a "), EA_CHAR16("a"));
-	nErrorCount += TestStrstripString(EA_CHAR16("  a  "), EA_CHAR16("a"));
-	nErrorCount += TestStrstripString(EA_CHAR16("        a "), EA_CHAR16("a"));
-	nErrorCount += TestStrstripString(EA_CHAR16(" a      "), EA_CHAR16("a"));
-	nErrorCount += TestStrstripString(EA_CHAR16("a b"), EA_CHAR16("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR16("a    b"), EA_CHAR16("a    b"));
-	nErrorCount += TestStrstripString(EA_CHAR16(" a b"), EA_CHAR16("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR16("      a b"), EA_CHAR16("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR16("      a b "), EA_CHAR16("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR16("a b "), EA_CHAR16("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR16("a b    "), EA_CHAR16("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR16(" a b    "), EA_CHAR16("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR16(" a b "), EA_CHAR16("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR16(" a     b "), EA_CHAR16("a     b"));
-	nErrorCount += TestStrstripString(EA_CHAR16("    a     b   "), EA_CHAR16("a     b"));
-	nErrorCount += TestStrstripString(EA_CHAR16("    a     b   "), EA_CHAR16("a     b"));
-	nErrorCount += TestStrstripString(EA_CHAR16("ab"), EA_CHAR16("ab"));
-	nErrorCount += TestStrstripString(EA_CHAR16("abcdefghiklmnop"), EA_CHAR16("abcdefghiklmnop"));
-	nErrorCount += TestStrstripString(EA_CHAR16("a b c d e f g h i k l m n o p"), EA_CHAR16("a b c d e f g h i k l m n o p"));
-	nErrorCount += TestStrstripString(EA_CHAR16(" a b c d e f g h i k l m n o p "), EA_CHAR16("a b c d e f g h i k l m n o p"));
-	nErrorCount += TestStrstripString(EA_CHAR16("    abcdefg  hiklmnop    "), EA_CHAR16("abcdefg  hiklmnop"));
-	nErrorCount += TestStrstripString(EA_CHAR16("abcdefg  hiklmnop"), EA_CHAR16("abcdefg  hiklmnop"));
-	nErrorCount += TestStrstripString(EA_CHAR16(" \t \r\n \n \t \r\n \n "), EA_CHAR16(""));
-	nErrorCount += TestStrstripString(EA_CHAR16("\t \r\n \na b\t \r\n \n"), EA_CHAR16("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR16("\t a\r\n \n \t \r\nb \n"), EA_CHAR16("a\r\n \n \t \r\nb"));
-	nErrorCount += TestStrstripString(EA_CHAR16(" \t \r\n \na \t \r\n \n "), EA_CHAR16("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(""), EASTL_CHAR16(""));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" "), EASTL_CHAR16(""));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("  "), EASTL_CHAR16(""));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("        "), EASTL_CHAR16(""));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("a"), EASTL_CHAR16("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("a "), EASTL_CHAR16("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("a      "), EASTL_CHAR16("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" a"), EASTL_CHAR16("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("     a"), EASTL_CHAR16("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" a "), EASTL_CHAR16("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("  a  "), EASTL_CHAR16("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("        a "), EASTL_CHAR16("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" a      "), EASTL_CHAR16("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("a b"), EASTL_CHAR16("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("a    b"), EASTL_CHAR16("a    b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" a b"), EASTL_CHAR16("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("      a b"), EASTL_CHAR16("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("      a b "), EASTL_CHAR16("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("a b "), EASTL_CHAR16("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("a b    "), EASTL_CHAR16("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" a b    "), EASTL_CHAR16("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" a b "), EASTL_CHAR16("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" a     b "), EASTL_CHAR16("a     b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("    a     b   "), EASTL_CHAR16("a     b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("    a     b   "), EASTL_CHAR16("a     b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("ab"), EASTL_CHAR16("ab"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("abcdefghiklmnop"), EASTL_CHAR16("abcdefghiklmnop"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("a b c d e f g h i k l m n o p"), EASTL_CHAR16("a b c d e f g h i k l m n o p"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" a b c d e f g h i k l m n o p "), EASTL_CHAR16("a b c d e f g h i k l m n o p"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("    abcdefg  hiklmnop    "), EASTL_CHAR16("abcdefg  hiklmnop"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("abcdefg  hiklmnop"), EASTL_CHAR16("abcdefg  hiklmnop"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" \t \r\n \n \t \r\n \n "), EASTL_CHAR16(""));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("\t \r\n \na b\t \r\n \n"), EASTL_CHAR16("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16("\t a\r\n \n \t \r\nb \n"), EASTL_CHAR16("a\r\n \n \t \r\nb"));
+	nErrorCount += TestStrstripString(EASTL_CHAR16(" \t \r\n \na \t \r\n \n "), EASTL_CHAR16("a"));
 
-	nErrorCount += TestStrstripString(EA_CHAR32(""), EA_CHAR32(""));
-	nErrorCount += TestStrstripString(EA_CHAR32(" "), EA_CHAR32(""));
-	nErrorCount += TestStrstripString(EA_CHAR32("  "), EA_CHAR32(""));
-	nErrorCount += TestStrstripString(EA_CHAR32("        "), EA_CHAR32(""));
-	nErrorCount += TestStrstripString(EA_CHAR32("a"), EA_CHAR32("a"));
-	nErrorCount += TestStrstripString(EA_CHAR32("a "), EA_CHAR32("a"));
-	nErrorCount += TestStrstripString(EA_CHAR32("a      "), EA_CHAR32("a"));
-	nErrorCount += TestStrstripString(EA_CHAR32(" a"), EA_CHAR32("a"));
-	nErrorCount += TestStrstripString(EA_CHAR32("     a"), EA_CHAR32("a"));
-	nErrorCount += TestStrstripString(EA_CHAR32(" a "), EA_CHAR32("a"));
-	nErrorCount += TestStrstripString(EA_CHAR32("  a  "), EA_CHAR32("a"));
-	nErrorCount += TestStrstripString(EA_CHAR32("        a "), EA_CHAR32("a"));
-	nErrorCount += TestStrstripString(EA_CHAR32(" a      "), EA_CHAR32("a"));
-	nErrorCount += TestStrstripString(EA_CHAR32("a b"), EA_CHAR32("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR32("a    b"), EA_CHAR32("a    b"));
-	nErrorCount += TestStrstripString(EA_CHAR32(" a b"), EA_CHAR32("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR32("      a b"), EA_CHAR32("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR32("      a b "), EA_CHAR32("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR32("a b "), EA_CHAR32("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR32("a b    "), EA_CHAR32("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR32(" a b    "), EA_CHAR32("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR32(" a b "), EA_CHAR32("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR32(" a     b "), EA_CHAR32("a     b"));
-	nErrorCount += TestStrstripString(EA_CHAR32("    a     b   "), EA_CHAR32("a     b"));
-	nErrorCount += TestStrstripString(EA_CHAR32("    a     b   "), EA_CHAR32("a     b"));
-	nErrorCount += TestStrstripString(EA_CHAR32("ab"), EA_CHAR32("ab"));
-	nErrorCount += TestStrstripString(EA_CHAR32("abcdefghiklmnop"), EA_CHAR32("abcdefghiklmnop"));
-	nErrorCount += TestStrstripString(EA_CHAR32("a b c d e f g h i k l m n o p"), EA_CHAR32("a b c d e f g h i k l m n o p"));
-	nErrorCount += TestStrstripString(EA_CHAR32(" a b c d e f g h i k l m n o p "), EA_CHAR32("a b c d e f g h i k l m n o p"));
-	nErrorCount += TestStrstripString(EA_CHAR32("    abcdefg  hiklmnop    "), EA_CHAR32("abcdefg  hiklmnop"));
-	nErrorCount += TestStrstripString(EA_CHAR32("    abcdefg  hiklmnop"), EA_CHAR32("abcdefg  hiklmnop"));
-	nErrorCount += TestStrstripString(EA_CHAR32("abcdefg  hiklmnop    "), EA_CHAR32("abcdefg  hiklmnop"));
-	nErrorCount += TestStrstripString(EA_CHAR32("abcdefg  hiklmnop"), EA_CHAR32("abcdefg  hiklmnop"));
-	nErrorCount += TestStrstripString(EA_CHAR32(" \t \r\n \n \t \r\n \n "), EA_CHAR32(""));
-	nErrorCount += TestStrstripString(EA_CHAR32("\t \r\n \na b\t \r\n \n"), EA_CHAR32("a b"));
-	nErrorCount += TestStrstripString(EA_CHAR32("\t a\r\n \n \t \r\nb \n"), EA_CHAR32("a\r\n \n \t \r\nb"));
-	nErrorCount += TestStrstripString(EA_CHAR32(" \t \r\n \na \t \r\n \n "), EA_CHAR32("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(""), EASTL_CHAR32(""));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" "), EASTL_CHAR32(""));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("  "), EASTL_CHAR32(""));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("        "), EASTL_CHAR32(""));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("a"), EASTL_CHAR32("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("a "), EASTL_CHAR32("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("a      "), EASTL_CHAR32("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" a"), EASTL_CHAR32("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("     a"), EASTL_CHAR32("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" a "), EASTL_CHAR32("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("  a  "), EASTL_CHAR32("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("        a "), EASTL_CHAR32("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" a      "), EASTL_CHAR32("a"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("a b"), EASTL_CHAR32("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("a    b"), EASTL_CHAR32("a    b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" a b"), EASTL_CHAR32("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("      a b"), EASTL_CHAR32("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("      a b "), EASTL_CHAR32("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("a b "), EASTL_CHAR32("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("a b    "), EASTL_CHAR32("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" a b    "), EASTL_CHAR32("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" a b "), EASTL_CHAR32("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" a     b "), EASTL_CHAR32("a     b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("    a     b   "), EASTL_CHAR32("a     b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("ab"), EASTL_CHAR32("ab"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("abcdefghiklmnop"), EASTL_CHAR32("abcdefghiklmnop"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("a b c d e f g h i k l m n o p"), EASTL_CHAR32("a b c d e f g h i k l m n o p"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" a b c d e f g h i k l m n o p "), EASTL_CHAR32("a b c d e f g h i k l m n o p"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("    abcdefg  hiklmnop    "), EASTL_CHAR32("abcdefg  hiklmnop"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("    abcdefg  hiklmnop"), EASTL_CHAR32("abcdefg  hiklmnop"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("abcdefg  hiklmnop    "), EASTL_CHAR32("abcdefg  hiklmnop"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("abcdefg  hiklmnop"), EASTL_CHAR32("abcdefg  hiklmnop"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" \t \r\n \n \t \r\n \n "), EASTL_CHAR32(""));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("\t \r\n \na b\t \r\n \n"), EASTL_CHAR32("a b"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32("\t a\r\n \n \t \r\nb \n"), EASTL_CHAR32("a\r\n \n \t \r\nb"));
+	nErrorCount += TestStrstripString(EASTL_CHAR32(" \t \r\n \na \t \r\n \n "), EASTL_CHAR32("a"));
 
 	return nErrorCount;
 }
@@ -4145,42 +4150,42 @@ static int TestStrstart()
 	EATEST_VERIFY( Stristart("abcdef", "Abcdef"));
 
 	// char16_t
-	EATEST_VERIFY( Strstart(EA_CHAR16(""),       EA_CHAR16("")));
-	EATEST_VERIFY( Strstart(EA_CHAR16("a"),      EA_CHAR16("")));
-	EATEST_VERIFY(!Strstart(EA_CHAR16(""),       EA_CHAR16("a")));
-	EATEST_VERIFY( Strstart(EA_CHAR16("abcdef"), EA_CHAR16("a")));
-	EATEST_VERIFY(!Strstart(EA_CHAR16("abcdef"), EA_CHAR16("A")));
-	EATEST_VERIFY( Strstart(EA_CHAR16("abcdef"), EA_CHAR16("abcdef")));
-	EATEST_VERIFY(!Strstart(EA_CHAR16("abcdef"), EA_CHAR16("bcdef ")));
-	EATEST_VERIFY(!Strstart(EA_CHAR16("abcdef"), EA_CHAR16("Abcdef")));
+	EATEST_VERIFY( Strstart(EASTL_CHAR16(""),       EASTL_CHAR16("")));
+	EATEST_VERIFY( Strstart(EASTL_CHAR16("a"),      EASTL_CHAR16("")));
+	EATEST_VERIFY(!Strstart(EASTL_CHAR16(""),       EASTL_CHAR16("a")));
+	EATEST_VERIFY( Strstart(EASTL_CHAR16("abcdef"), EASTL_CHAR16("a")));
+	EATEST_VERIFY(!Strstart(EASTL_CHAR16("abcdef"), EASTL_CHAR16("A")));
+	EATEST_VERIFY( Strstart(EASTL_CHAR16("abcdef"), EASTL_CHAR16("abcdef")));
+	EATEST_VERIFY(!Strstart(EASTL_CHAR16("abcdef"), EASTL_CHAR16("bcdef ")));
+	EATEST_VERIFY(!Strstart(EASTL_CHAR16("abcdef"), EASTL_CHAR16("Abcdef")));
 
-	EATEST_VERIFY( Stristart(EA_CHAR16(""),       EA_CHAR16("")));
-	EATEST_VERIFY( Stristart(EA_CHAR16("a"),      EA_CHAR16("")));
-	EATEST_VERIFY(!Stristart(EA_CHAR16(""),       EA_CHAR16("a")));
-	EATEST_VERIFY( Stristart(EA_CHAR16("abcdef"), EA_CHAR16("a")));
-	EATEST_VERIFY( Stristart(EA_CHAR16("abcdef"), EA_CHAR16("A")));
-	EATEST_VERIFY( Stristart(EA_CHAR16("abcdef"), EA_CHAR16("abcdef")));
-	EATEST_VERIFY(!Stristart(EA_CHAR16("abcdef"), EA_CHAR16("bcdef ")));
-	EATEST_VERIFY( Stristart(EA_CHAR16("abcdef"), EA_CHAR16("Abcdef")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR16(""),       EASTL_CHAR16("")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR16("a"),      EASTL_CHAR16("")));
+	EATEST_VERIFY(!Stristart(EASTL_CHAR16(""),       EASTL_CHAR16("a")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR16("abcdef"), EASTL_CHAR16("a")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR16("abcdef"), EASTL_CHAR16("A")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR16("abcdef"), EASTL_CHAR16("abcdef")));
+	EATEST_VERIFY(!Stristart(EASTL_CHAR16("abcdef"), EASTL_CHAR16("bcdef ")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR16("abcdef"), EASTL_CHAR16("Abcdef")));
 
 	// char32_t
-	EATEST_VERIFY( Strstart(EA_CHAR32(""),       EA_CHAR32("")));
-	EATEST_VERIFY( Strstart(EA_CHAR32("a"),      EA_CHAR32("")));
-	EATEST_VERIFY(!Strstart(EA_CHAR32(""),       EA_CHAR32("a")));
-	EATEST_VERIFY( Strstart(EA_CHAR32("abcdef"), EA_CHAR32("a")));
-	EATEST_VERIFY(!Strstart(EA_CHAR32("abcdef"), EA_CHAR32("A")));
-	EATEST_VERIFY( Strstart(EA_CHAR32("abcdef"), EA_CHAR32("abcdef")));
-	EATEST_VERIFY(!Strstart(EA_CHAR32("abcdef"), EA_CHAR32("bcdef ")));
-	EATEST_VERIFY(!Strstart(EA_CHAR32("abcdef"), EA_CHAR32("Abcdef")));
+	EATEST_VERIFY( Strstart(EASTL_CHAR32(""),       EASTL_CHAR32("")));
+	EATEST_VERIFY( Strstart(EASTL_CHAR32("a"),      EASTL_CHAR32("")));
+	EATEST_VERIFY(!Strstart(EASTL_CHAR32(""),       EASTL_CHAR32("a")));
+	EATEST_VERIFY( Strstart(EASTL_CHAR32("abcdef"), EASTL_CHAR32("a")));
+	EATEST_VERIFY(!Strstart(EASTL_CHAR32("abcdef"), EASTL_CHAR32("A")));
+	EATEST_VERIFY( Strstart(EASTL_CHAR32("abcdef"), EASTL_CHAR32("abcdef")));
+	EATEST_VERIFY(!Strstart(EASTL_CHAR32("abcdef"), EASTL_CHAR32("bcdef ")));
+	EATEST_VERIFY(!Strstart(EASTL_CHAR32("abcdef"), EASTL_CHAR32("Abcdef")));
 
-	EATEST_VERIFY( Stristart(EA_CHAR32(""),       EA_CHAR32("")));
-	EATEST_VERIFY( Stristart(EA_CHAR32("a"),      EA_CHAR32("")));
-	EATEST_VERIFY(!Stristart(EA_CHAR32(""),       EA_CHAR32("a")));
-	EATEST_VERIFY( Stristart(EA_CHAR32("abcdef"), EA_CHAR32("a")));
-	EATEST_VERIFY( Stristart(EA_CHAR32("abcdef"), EA_CHAR32("A")));
-	EATEST_VERIFY( Stristart(EA_CHAR32("abcdef"), EA_CHAR32("abcdef")));
-	EATEST_VERIFY(!Stristart(EA_CHAR32("abcdef"), EA_CHAR32("bcdef ")));
-	EATEST_VERIFY( Stristart(EA_CHAR32("abcdef"), EA_CHAR32("Abcdef")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR32(""),       EASTL_CHAR32("")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR32("a"),      EASTL_CHAR32("")));
+	EATEST_VERIFY(!Stristart(EASTL_CHAR32(""),       EASTL_CHAR32("a")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR32("abcdef"), EASTL_CHAR32("a")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR32("abcdef"), EASTL_CHAR32("A")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR32("abcdef"), EASTL_CHAR32("abcdef")));
+	EATEST_VERIFY(!Stristart(EASTL_CHAR32("abcdef"), EASTL_CHAR32("bcdef ")));
+	EATEST_VERIFY( Stristart(EASTL_CHAR32("abcdef"), EASTL_CHAR32("Abcdef")));
 
 	return nErrorCount;
 }
@@ -4217,60 +4222,59 @@ static int TestStrend()
 	EATEST_VERIFY(!Striend("abcdef", "abcdefghi"));
 
 	// char16_t
-	EATEST_VERIFY( Strend(EA_CHAR16(""),       EA_CHAR16("")));
-	EATEST_VERIFY( Strend(EA_CHAR16("f"),      EA_CHAR16("")));
-	EATEST_VERIFY(!Strend(EA_CHAR16(""),       EA_CHAR16("f")));
-	EATEST_VERIFY( Strend(EA_CHAR16("abcdef"), EA_CHAR16("f")));
-	EATEST_VERIFY(!Strend(EA_CHAR16("abcdef"), EA_CHAR16("F")));
-	EATEST_VERIFY( Strend(EA_CHAR16("abcdef"), EA_CHAR16("abcdef")));
-	EATEST_VERIFY(!Strend(EA_CHAR16("abcdef"), EA_CHAR16("abcde ")));
-	EATEST_VERIFY(!Strend(EA_CHAR16("abcdef"), EA_CHAR16(" abcde")));
-	EATEST_VERIFY(!Strend(EA_CHAR16("abcdef"), EA_CHAR16("Abcdef")));
-	EATEST_VERIFY(!Strend(EA_CHAR16("abcdef"), EA_CHAR16("abcdefghi")));
+	EATEST_VERIFY( Strend(EASTL_CHAR16(""),       EASTL_CHAR16("")));
+	EATEST_VERIFY( Strend(EASTL_CHAR16("f"),      EASTL_CHAR16("")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR16(""),       EASTL_CHAR16("f")));
+	EATEST_VERIFY( Strend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("f")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("F")));
+	EATEST_VERIFY( Strend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("abcdef")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("abcde ")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR16("abcdef"), EASTL_CHAR16(" abcde")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("Abcdef")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("abcdefghi")));
 
-	EATEST_VERIFY( Striend(EA_CHAR16(""),       EA_CHAR16("")));
-	EATEST_VERIFY( Striend(EA_CHAR16("f"),      EA_CHAR16("")));
-	EATEST_VERIFY(!Striend(EA_CHAR16(""),       EA_CHAR16("f")));
-	EATEST_VERIFY( Striend(EA_CHAR16("abcdef"), EA_CHAR16("f")));
-	EATEST_VERIFY( Striend(EA_CHAR16("abcdef"), EA_CHAR16("F")));
-	EATEST_VERIFY( Striend(EA_CHAR16("abcdef"), EA_CHAR16("abcdef")));
-	EATEST_VERIFY(!Striend(EA_CHAR16("abcdef"), EA_CHAR16("abcde ")));
-	EATEST_VERIFY(!Striend(EA_CHAR16("abcdef"), EA_CHAR16(" abcde")));
-	EATEST_VERIFY( Striend(EA_CHAR16("abcdef"), EA_CHAR16("Abcdef")));
-	EATEST_VERIFY(!Striend(EA_CHAR16("abcdef"), EA_CHAR16("abcdefghi")));
+	EATEST_VERIFY( Striend(EASTL_CHAR16(""),       EASTL_CHAR16("")));
+	EATEST_VERIFY( Striend(EASTL_CHAR16("f"),      EASTL_CHAR16("")));
+	EATEST_VERIFY(!Striend(EASTL_CHAR16(""),       EASTL_CHAR16("f")));
+	EATEST_VERIFY( Striend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("f")));
+	EATEST_VERIFY( Striend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("F")));
+	EATEST_VERIFY( Striend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("abcdef")));
+	EATEST_VERIFY(!Striend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("abcde ")));
+	EATEST_VERIFY(!Striend(EASTL_CHAR16("abcdef"), EASTL_CHAR16(" abcde")));
+	EATEST_VERIFY( Striend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("Abcdef")));
+	EATEST_VERIFY(!Striend(EASTL_CHAR16("abcdef"), EASTL_CHAR16("abcdefghi")));
 
 	// char32_t
-	EATEST_VERIFY( Strend(EA_CHAR32(""),       EA_CHAR32("")));
-	EATEST_VERIFY( Strend(EA_CHAR32("f"),      EA_CHAR32("")));
-	EATEST_VERIFY(!Strend(EA_CHAR32(""),       EA_CHAR32("f")));
-	EATEST_VERIFY( Strend(EA_CHAR32("abcdef"), EA_CHAR32("f")));
-	EATEST_VERIFY(!Strend(EA_CHAR32("abcdef"), EA_CHAR32("F")));
-	EATEST_VERIFY( Strend(EA_CHAR32("abcdef"), EA_CHAR32("abcdef")));
-	EATEST_VERIFY(!Strend(EA_CHAR32("abcdef"), EA_CHAR32("abcde ")));
-	EATEST_VERIFY(!Strend(EA_CHAR32("abcdef"), EA_CHAR32(" abcde")));
-	EATEST_VERIFY(!Strend(EA_CHAR32("abcdef"), EA_CHAR32("Abcdef")));
-	EATEST_VERIFY(!Strend(EA_CHAR32("abcdef"), EA_CHAR32("abcdefghi")));
+	EATEST_VERIFY( Strend(EASTL_CHAR32(""),       EASTL_CHAR32("")));
+	EATEST_VERIFY( Strend(EASTL_CHAR32("f"),      EASTL_CHAR32("")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR32(""),       EASTL_CHAR32("f")));
+	EATEST_VERIFY( Strend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("f")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("F")));
+	EATEST_VERIFY( Strend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("abcdef")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("abcde ")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR32("abcdef"), EASTL_CHAR32(" abcde")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("Abcdef")));
+	EATEST_VERIFY(!Strend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("abcdefghi")));
 
-	EATEST_VERIFY( Striend(EA_CHAR32(""),       EA_CHAR32("")));
-	EATEST_VERIFY( Striend(EA_CHAR32("f"),      EA_CHAR32("")));
-	EATEST_VERIFY(!Striend(EA_CHAR32(""),       EA_CHAR32("f")));
-	EATEST_VERIFY( Striend(EA_CHAR32("abcdef"), EA_CHAR32("f")));
-	EATEST_VERIFY( Striend(EA_CHAR32("abcdef"), EA_CHAR32("F")));
-	EATEST_VERIFY( Striend(EA_CHAR32("abcdef"), EA_CHAR32("abcdef")));
-	EATEST_VERIFY(!Striend(EA_CHAR32("abcdef"), EA_CHAR32("abcde ")));
-	EATEST_VERIFY(!Striend(EA_CHAR32("abcdef"), EA_CHAR32(" abcde")));
-	EATEST_VERIFY( Striend(EA_CHAR32("abcdef"), EA_CHAR32("Abcdef")));
-	EATEST_VERIFY(!Striend(EA_CHAR32("abcdef"), EA_CHAR32("abcdefghi")));
+	EATEST_VERIFY( Striend(EASTL_CHAR32(""),       EASTL_CHAR32("")));
+	EATEST_VERIFY( Striend(EASTL_CHAR32("f"),      EASTL_CHAR32("")));
+	EATEST_VERIFY(!Striend(EASTL_CHAR32(""),       EASTL_CHAR32("f")));
+	EATEST_VERIFY( Striend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("f")));
+	EATEST_VERIFY( Striend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("F")));
+	EATEST_VERIFY( Striend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("abcdef")));
+	EATEST_VERIFY(!Striend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("abcde ")));
+	EATEST_VERIFY(!Striend(EASTL_CHAR32("abcdef"), EASTL_CHAR32(" abcde")));
+	EATEST_VERIFY( Striend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("Abcdef")));
+	EATEST_VERIFY(!Striend(EASTL_CHAR32("abcdef"), EASTL_CHAR32("abcdefghi")));
 
 	return nErrorCount;
 }
 
 
+
 int TestString()
 {
 	int nErrorCount = 0;
-
-	EA::UnitTest::Report("TestString\n");
 
 	// Disable assertions, because we will be explicitly testing the failure 
 	// modes of some of the functions here. And we don't want the tests to 

@@ -53,7 +53,7 @@
 
 
 #include <EAStdC/internal/Config.h>
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAAssert/eaassert.h>
 #include <EAStdC/EARandom.h>
 #include <math.h>

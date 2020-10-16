@@ -8,8 +8,8 @@
 #include <EAStdC/EAString.h>
 #include <EAStdC/EADateTime.h>
 #include <EAStdCTest/EAStdCTest.h>
-#include <EASTL/string.h>
-#include <EASTL/unique_ptr.h>
+#include <eastl/string.h>
+#include <eastl/unique_ptr.h>
 #include <EATest/EATest.h>
 #include <float.h>
 #include <string.h>
@@ -130,7 +130,7 @@ static int TestSprintf8(int unused = 0, ...)
 
 
 	// template <typename String>
-	// int StringVcprintf(String& s, const char* EA_RESTRICT pFormat, va_list arguments)
+	// int StringVcprintf(String& s, const char* EASTL_RESTRICT pFormat, va_list arguments)
 	{
 		va_list arguments;
 		va_start(arguments, unused);
@@ -144,7 +144,7 @@ static int TestSprintf8(int unused = 0, ...)
 
 
 	// template <typename String> 
-	// int StringPrintf(String& s, const typename String::value_type* EA_RESTRICT pFormat, ...)
+	// int StringPrintf(String& s, const typename String::value_type* EASTL_RESTRICT pFormat, ...)
 	{
 		eastl::string s8;
 		int result = StringPrintf(s8, "%s", "hello");
@@ -1191,28 +1191,28 @@ static int TestSprintf16(int unused = 0, ...)
 	// int Snprintf(char_t* pDestination, size_t n, const char_t* pFormat, ...);
 	{
 		char16_t sn18[128];
-		Snprintf(sn18, 128, EA_CHAR16("%5s%-4d%03i"), EA_WCHAR("abc"), -12, 3);
-		EATEST_VERIFY(!Strcmp(EA_CHAR16("  abc-12 003"), sn18));
-		Snprintf(sn18, 128, EA_CHAR16("%.2f"), 3.1415);
-		EATEST_VERIFY(!Strcmp(EA_CHAR16("3.14"), sn18));
+		Snprintf(sn18, 128, EASTL_CHAR16("%5s%-4d%03i"), EA_WCHAR("abc"), -12, 3);
+		EATEST_VERIFY(!Strcmp(EASTL_CHAR16("  abc-12 003"), sn18));
+		Snprintf(sn18, 128, EASTL_CHAR16("%.2f"), 3.1415);
+		EATEST_VERIFY(!Strcmp(EASTL_CHAR16("3.14"), sn18));
 	}
 
 	// int Vsnprintf(char_t* pDestination, size_t n, const char_t* pFormat, ...);
 	{
 		char16_t sn18[128];
-		TestCRTVsnprintf(sn18, 128, EA_CHAR16("%5s%-5d%04i"), EA_WCHAR("abc"), -12, 3);
-		EATEST_VERIFY(!Strcmp(EA_CHAR16("  abc-12  0003"), sn18));
-		TestCRTVsnprintf(sn18, 128, EA_CHAR16("%.2f"), 3.1415);
-		EATEST_VERIFY(!Strcmp(EA_CHAR16("3.14"), sn18));
+		TestCRTVsnprintf(sn18, 128, EASTL_CHAR16("%5s%-5d%04i"), EA_WCHAR("abc"), -12, 3);
+		EATEST_VERIFY(!Strcmp(EASTL_CHAR16("  abc-12  0003"), sn18));
+		TestCRTVsnprintf(sn18, 128, EASTL_CHAR16("%.2f"), 3.1415);
+		EATEST_VERIFY(!Strcmp(EASTL_CHAR16("3.14"), sn18));
 	}
 
 	#if EASTDC_VSNPRINTF8_ENABLED
 		{
 			char16_t sn18[128];
-			TestCRTVsnprintf16(sn18, 128, EA_CHAR16("%5s%-5d%04i"), EA_WCHAR("abc"), -12, 3);
-			EATEST_VERIFY(!Strcmp(EA_CHAR16("  abc-12  0003"), sn18));
-			TestCRTVsnprintf16(sn18, 128, EA_CHAR16("%.2f"), 3.1415);
-			EATEST_VERIFY(!Strcmp(EA_CHAR16("3.14"), sn18));
+			TestCRTVsnprintf16(sn18, 128, EASTL_CHAR16("%5s%-5d%04i"), EA_WCHAR("abc"), -12, 3);
+			EATEST_VERIFY(!Strcmp(EASTL_CHAR16("  abc-12  0003"), sn18));
+			TestCRTVsnprintf16(sn18, 128, EASTL_CHAR16("%.2f"), 3.1415);
+			EATEST_VERIFY(!Strcmp(EASTL_CHAR16("3.14"), sn18));
 		}
 	#endif
 
@@ -1221,152 +1221,152 @@ static int TestSprintf16(int unused = 0, ...)
 		va_list arguments;
 		va_start(arguments, unused);
 
-		int result = Vscprintf(EA_CHAR16("abc"), arguments);       
+		int result = Vscprintf(EASTL_CHAR16("abc"), arguments);       
 		EATEST_VERIFY(result == 3);
 
 		va_end(arguments);
 	}
 
 	// template <typename String>
-	// int StringVcprintf(String& s, const char* EA_RESTRICT pFormat, va_list arguments)
+	// int StringVcprintf(String& s, const char* EASTL_RESTRICT pFormat, va_list arguments)
 	{
 		va_list arguments;
 		va_start(arguments, unused);
 
 		eastl::string16 s16;
-		int result = StringVcprintf(s16, EA_CHAR16("hello"), arguments);
-		EATEST_VERIFY((result == 5) && (s16 == EA_CHAR16("hello")));
+		int result = StringVcprintf(s16, EASTL_CHAR16("hello"), arguments);
+		EATEST_VERIFY((result == 5) && (s16 == EASTL_CHAR16("hello")));
 
 		va_end(arguments);
 	}
 
 	// template <typename String> 
-	// int StringPrintf(String& s, const typename String::value_type* EA_RESTRICT pFormat, ...)
+	// int StringPrintf(String& s, const typename String::value_type* EASTL_RESTRICT pFormat, ...)
 	{
 		eastl::string16 s16;
-		int result = StringPrintf(s16, EA_CHAR16("%s"), EA_WCHAR("hello"));
-		EATEST_VERIFY((result == 5) && (s16 == EA_CHAR16("hello")));
+		int result = StringPrintf(s16, EASTL_CHAR16("%s"), EA_WCHAR("hello"));
+		EATEST_VERIFY((result == 5) && (s16 == EASTL_CHAR16("hello")));
 	}
 
 	{
 		char16_t buffer[128];
 		const int kHexValue = 0x12;
 
-		Sprintf(buffer, EA_CHAR16("%.4x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%.4x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%04x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%04x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%4.4x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%4.4x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%04.4x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%04.4x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%4.3x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16(" 012")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%4.3x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16(" 012")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%04.3x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16(" 012")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%04.3x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16(" 012")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%.*x"), 4, kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%.*x"), 4, kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%0*x"), 4, kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%0*x"), 4, kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%*.*x"), 4, 4, kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%*.*x"), 4, 4, kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%0*.*x"), 4, 4, kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%0*.*x"), 4, 4, kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("0012")) == 0);
 	}
 
 
 	{
 		char16_t buffer[128];
 
-		Sprintf(buffer, EA_CHAR16("decimal negative: \"%d\"\n"), -2345);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("decimal negative: \"-2345\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("decimal negative: \"%d\"\n"), -2345);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("decimal negative: \"-2345\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("octal negative: \"%o\"\n"), -2345);
+		Sprintf(buffer, EASTL_CHAR16("octal negative: \"%o\"\n"), -2345);
 		if(sizeof(int) == (4 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("octal negative: \"37777773327\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("octal negative: \"37777773327\"\n")) == 0);
 		else if(sizeof(int) == (8 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("octal negative: \"1777777777777777773327\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("octal negative: \"1777777777777777773327\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("hex negative: \"%x\"\n"), -2345);
+		Sprintf(buffer, EASTL_CHAR16("hex negative: \"%x\"\n"), -2345);
 		if(sizeof(int) == (4 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("hex negative: \"fffff6d7\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("hex negative: \"fffff6d7\"\n")) == 0);
 		else if(sizeof(int) == (8 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("hex negative: \"fffffffffffff6d7\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("hex negative: \"fffffffffffff6d7\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("long decimal number: \"%ld\"\n"), -123456L);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("long decimal number: \"-123456\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("long decimal number: \"%ld\"\n"), -123456L);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("long decimal number: \"-123456\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("long octal negative: \"%lo\"\n"), -2345L);
+		Sprintf(buffer, EASTL_CHAR16("long octal negative: \"%lo\"\n"), -2345L);
 		if(sizeof(long) == (4 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("long octal negative: \"37777773327\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("long octal negative: \"37777773327\"\n")) == 0);
 		else if(sizeof(long) == (8 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("long octal negative: \"1777777777777777773327\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("long octal negative: \"1777777777777777773327\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("long unsigned decimal number: \"%lu\"\n"), -123456L);
+		Sprintf(buffer, EASTL_CHAR16("long unsigned decimal number: \"%lu\"\n"), -123456L);
 		if(sizeof(long) == (4 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("long unsigned decimal number: \"4294843840\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("long unsigned decimal number: \"4294843840\"\n")) == 0);
 		else if(sizeof(long) == (8 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("long unsigned decimal number: \"18446744073709428160\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("long unsigned decimal number: \"18446744073709428160\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("zero-padded LDN: \"%010ld\"\n"), -123456L);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("zero-padded LDN: \"-000123456\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("zero-padded LDN: \"%010ld\"\n"), -123456L);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("zero-padded LDN: \"-000123456\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("left-adjusted ZLDN: \"%-010ld\"\n"), -123456L);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("left-adjusted ZLDN: \"-123456   \"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("left-adjusted ZLDN: \"%-010ld\"\n"), -123456L);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("left-adjusted ZLDN: \"-123456   \"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("space-padded LDN: \"%10ld\"\n"), -123456L);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("space-padded LDN: \"   -123456\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("space-padded LDN: \"%10ld\"\n"), -123456L);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("space-padded LDN: \"   -123456\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("left-adjusted SLDN: \"%-10ld\"\n"), -123456L);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("left-adjusted SLDN: \"-123456   \"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("left-adjusted SLDN: \"%-10ld\"\n"), -123456L);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("left-adjusted SLDN: \"-123456   \"\n")) == 0);
 	}
 
 
 	{
 		char16_t  buffer[1024];
-		wchar_t   str1[64]; Strlcpy(str1, EA_WCHAR("abc de"), EAArrayCount(str1)); // Can't do str1[64] = EA_CHAR16("abc de") because some compilers don't support 16 bit string literals.
-		wchar_t   str2[64]; Strlcpy(str2, EA_WCHAR("abd def ghi jkl mno pqr stu vwz yz."), EAArrayCount(str2));
+		wchar_t   str1[64]; Strlcpy(str1, EA_WCHAR("abc de"), EASTLArrayCount(str1)); // Can't do str1[64] = EASTL_CHAR16("abc de") because some compilers don't support 16 bit string literals.
+		wchar_t   str2[64]; Strlcpy(str2, EA_WCHAR("abd def ghi jkl mno pqr stu vwz yz."), EASTLArrayCount(str2));
 
 		// The C99 standard specifies that leading zeros only put zeroes in front of numerical types. Spaces for others.
-		Sprintf(buffer, EA_CHAR16("zero-padded string: \"%010s\"\n"), str1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("zero-padded string: \"    abc de\"\n")) == 0); // VC++ fails this, as it puts zeroes in front.
+		Sprintf(buffer, EASTL_CHAR16("zero-padded string: \"%010s\"\n"), str1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("zero-padded string: \"    abc de\"\n")) == 0); // VC++ fails this, as it puts zeroes in front.
 
-		Sprintf(buffer, EA_CHAR16("left-adjusted Z string: \"%-010s\"\n"), str1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("left-adjusted Z string: \"abc de    \"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("left-adjusted Z string: \"%-010s\"\n"), str1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("left-adjusted Z string: \"abc de    \"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("space-padded string: \"%10s\"\n"), str1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("space-padded string: \"    abc de\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("space-padded string: \"%10s\"\n"), str1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("space-padded string: \"    abc de\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("left-adjusted S string: \"%-10s\"\n"), str1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("left-adjusted S string: \"abc de    \"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("left-adjusted S string: \"%-10s\"\n"), str1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("left-adjusted S string: \"abc de    \"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("limited string: \"%.22s\"\n"), str2);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("limited string: \"abd def ghi jkl mno pq\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("limited string: \"%.22s\"\n"), str2);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("limited string: \"abd def ghi jkl mno pq\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("null string: \"%s\"\n"), (wchar_t*)NULL);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("null string: \"(null)\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("null string: \"%s\"\n"), (wchar_t*)NULL);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("null string: \"(null)\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%10s\n"), (wchar_t*)NULL);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("    (null)\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%10s\n"), (wchar_t*)NULL);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("    (null)\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%-10s\n"), (wchar_t*)NULL);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("(null)    \n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%-10s\n"), (wchar_t*)NULL);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("(null)    \n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%*s%*s%*s"), -1, EA_WCHAR("one"), -20, EA_WCHAR("two"), -30, EA_WCHAR("three"));
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("onetwo                 three                         ")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%*s%*s%*s"), -1, EA_WCHAR("one"), -20, EA_WCHAR("two"), -30, EA_WCHAR("three"));
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("onetwo                 three                         ")) == 0);
 
 		int i;
 		memset(buffer, '_', sizeof(buffer));
-		Sprintf(buffer, EA_CHAR16("x%1000ls"), EA_WCHAR(" "));
+		Sprintf(buffer, EASTL_CHAR16("x%1000ls"), EA_WCHAR(" "));
 		EATEST_VERIFY(buffer[0] == 'x');
 		for(i = 0; i < 1000; i++)
 		{
@@ -1376,7 +1376,7 @@ static int TestSprintf16(int unused = 0, ...)
 		if(i != 1000)
 			EATEST_VERIFY(i == 1000);
 		else
-			EATEST_VERIFY(buffer[1 + 1000] == EA_CHAR16('\0'));
+			EATEST_VERIFY(buffer[1 + 1000] == EASTL_CHAR16('\0'));
 	}
 
 
@@ -1392,29 +1392,29 @@ static int TestSprintf16(int unused = 0, ...)
 		char32_t fStr32[2] = { 'f', 0 };
 
 		#if EASPRINTF_MS_STYLE_S_FORMAT // Microsoft style means that the meanings of S and s are reversed for non-char Sprintf.
-			Sprintf(buffer, EA_CHAR16("%hc %c %lc %I8c %I16c %I32c"), 'a', EA_WCHAR('b'), EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR16("%hc %c %lc %I8c %I16c %I32c"), 'a', EA_WCHAR('b'), EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("a b c d e f")) == 0);
 
-			Sprintf(buffer, EA_CHAR16("%hC %C %lC %I8C %I16C %I32C"), 'a', 'b',           EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR16("%hC %C %lC %I8C %I16C %I32C"), 'a', 'b',           EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("a b c d e f")) == 0);
 
-			Sprintf(buffer, EA_CHAR16("%hs %s %ls %I8s %I16s %I32s"), "a", EA_WCHAR("b"), EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR16("%hs %s %ls %I8s %I16s %I32s"), "a", EA_WCHAR("b"), EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("a b c d e f")) == 0);
 
-			Sprintf(buffer, EA_CHAR16("%hS %S %lS %I8S %I16S %I32S"), "a", "b",           EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR16("%hS %S %lS %I8S %I16S %I32S"), "a", "b",           EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("a b c d e f")) == 0);
 		#else
-			Sprintf(buffer, EA_CHAR16("%hc %c %lc %I8c %I16c %I32c"), 'a', 'b',           EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR16("%hc %c %lc %I8c %I16c %I32c"), 'a', 'b',           EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("a b c d e f")) == 0);
 
-			Sprintf(buffer, EA_CHAR16("%hC %C %lC %I8C %I16C %I32C"), 'a', EA_WCHAR('b'), EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("a b c d e f)") == 0);
+			Sprintf(buffer, EASTL_CHAR16("%hC %C %lC %I8C %I16C %I32C"), 'a', EA_WCHAR('b'), EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("a b c d e f)") == 0);
 
-			Sprintf(buffer, EA_CHAR16("%hs %s %ls %I8s %I16s %I32s"), "a", "b",           EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR16("%hs %s %ls %I8s %I16s %I32s"), "a", "b",           EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("a b c d e f")) == 0);
 
-			Sprintf(buffer, EA_CHAR16("%hS %S %lS %I8S %I16S %I32S"), "a", EA_WCHAR("b"), EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR16("%hS %S %lS %I8S %I16S %I32S"), "a", EA_WCHAR("b"), EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("a b c d e f")) == 0);
 		#endif
 	}
 
@@ -1422,60 +1422,60 @@ static int TestSprintf16(int unused = 0, ...)
 		char16_t buffer[1024];
 		int i;
 
-		Sprintf(buffer, EA_CHAR16("e-style >= 1: \"%e\"\n"), 12.34);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("e-style >= 1: \"1.234000e+01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		Sprintf(buffer, EASTL_CHAR16("e-style >= 1: \"%e\"\n"), 12.34);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("e-style >= 1: \"1.234000e+01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR16("e-style >= .1: \"%e\"\n"), 0.1234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("e-style >= .1: \"1.234000e-01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		Sprintf(buffer, EASTL_CHAR16("e-style >= .1: \"%e\"\n"), 0.1234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("e-style >= .1: \"1.234000e-01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR16("e-style < .1: \"%e\"\n"), 0.001234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("e-style < .1: \"1.234000e-03\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		Sprintf(buffer, EASTL_CHAR16("e-style < .1: \"%e\"\n"), 0.001234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("e-style < .1: \"1.234000e-03\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR16("e-style big: \"%.60e\"\n"), 1e20);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("e-style big: \"1.000000000000000000000000000000000000000000000000000000000000e+20\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		Sprintf(buffer, EASTL_CHAR16("e-style big: \"%.60e\"\n"), 1e20);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("e-style big: \"1.000000000000000000000000000000000000000000000000000000000000e+20\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR16("e-style == .1: \"%e\"\n"), 0.1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("e-style == .1: \"1.000000e-01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		Sprintf(buffer, EASTL_CHAR16("e-style == .1: \"%e\"\n"), 0.1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("e-style == .1: \"1.000000e-01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR16("f-style >= 1: \"%f\"\n"), 12.34);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("f-style >= 1: \"12.340000\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("f-style >= 1: \"%f\"\n"), 12.34);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("f-style >= 1: \"12.340000\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("f-style >= .1: \"%f\"\n"), 0.1234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("f-style >= .1: \"0.123400\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("f-style >= .1: \"%f\"\n"), 0.1234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("f-style >= .1: \"0.123400\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("f-style < .1: \"%f\"\n"), 0.001234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("f-style < .1: \"0.001234\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("f-style < .1: \"%f\"\n"), 0.001234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("f-style < .1: \"0.001234\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("g-style >= 1: \"%g\"\n"), 12.34);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("g-style >= 1: \"12.34\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("g-style >= 1: \"%g\"\n"), 12.34);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("g-style >= 1: \"12.34\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("g-style >= .1: \"%g\"\n"), 0.1234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("g-style >= .1: \"0.1234\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("g-style >= .1: \"%g\"\n"), 0.1234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("g-style >= .1: \"0.1234\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("g-style < .1: \"%g\"\n"), 0.001234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("g-style < .1: \"0.001234\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("g-style < .1: \"%g\"\n"), 0.001234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("g-style < .1: \"0.001234\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("g-style big: \"%.60g\"\n"), 1e20);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("g-style big: \"100000000000000000000\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("g-style big: \"%.60g\"\n"), 1e20);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("g-style big: \"100000000000000000000\"\n")) == 0);
 
-		//Sprintf(buffer, EA_CHAR16("%#.4g\n"), 0.0); // The C99 committee has decided in a defect analysis that this is how it should work.
-		//EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("0\n")) == 0);
+		//Sprintf(buffer, EASTL_CHAR16("%#.4g\n"), 0.0); // The C99 committee has decided in a defect analysis that this is how it should work.
+		//EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("0\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16(" %6.5f\n"), .099999999860301614);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16(" 0.10000\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16(" %6.5f\n"), .099999999860301614);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16(" 0.10000\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16(" %6.5f\n"), .1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16(" 0.10000\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16(" %6.5f\n"), .1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16(" 0.10000\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("x%5.4fx\n"), .5);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("x0.5000x\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("x%5.4fx\n"), .5);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("x0.5000x\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%#03x\n"), 1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("0x1\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%#03x\n"), 1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("0x1\n")) == 0);
 
 
 		memset(buffer, '_', sizeof(buffer));
-		Sprintf(buffer, EA_CHAR16("%.300f"), 1.0);
+		Sprintf(buffer, EASTL_CHAR16("%.300f"), 1.0);
 		EATEST_VERIFY((buffer[0] == '1') && (buffer[1] == '.'));
 		for(i = 0; i < 300; i++)
 		{
@@ -1485,20 +1485,20 @@ static int TestSprintf16(int unused = 0, ...)
 		if(i != 300)
 			EATEST_VERIFY(i == 300);
 		else
-			EATEST_VERIFY(buffer[2 + 300] == EA_CHAR16('\0'));
+			EATEST_VERIFY(buffer[2 + 300] == EASTL_CHAR16('\0'));
 
 
 		// Operations on FLT_MIN are undefined on Neon
 		double d = static_cast<double>(FLT_MIN);    // We are intentionally using FLT_MIN and not DBL_MIN.
 		d /= 2.0;
-		Sprintf(buffer, EA_CHAR16("%.17e"), d);     // It should be something like 5.87747175411143___e-39 where count and values of the _ digits vary by hardware.
+		Sprintf(buffer, EASTL_CHAR16("%.17e"), d);     // It should be something like 5.87747175411143___e-39 where count and values of the _ digits vary by hardware.
 		buffer[16] = buffer[17] = buffer[18] = '_'; // Replace the uncertain digits with '_' characters, as they are system-dependent.
 		
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("5.87747175411143___e-39")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("5.87747175411143___e-39")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
 
-		Sprintf(buffer, EA_CHAR16("%15.5e\n"), 4.9406564584124654e-307);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("   4.94066e-307\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%15.5e\n"), 4.9406564584124654e-307);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("   4.94066e-307\n")) == 0);
 	}
 
 
@@ -1509,34 +1509,34 @@ static int TestSprintf16(int unused = 0, ...)
 		// VC++ sprintf would fail these tests, as the Standard says to print no more 
 		// than 2 unless necessary, yet VC++ sprintf prints 3 digits exponents.
 
-		Sprintf(buffer, EA_CHAR16("|%12.4f|%12.4e|%12.4g|"), 0.0, 0.0, 0.0);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("|      0.0000|  0.0000e+00|           0|")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("|%12.4f|%12.4e|%12.4g|"), 0.0, 0.0, 0.0);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("|      0.0000|  0.0000e+00|           0|")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("|%12.4f|%12.4e|%12.4g|"), 1.0, 1.0, 1.0);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("|      1.0000|  1.0000e+00|           1|")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("|%12.4f|%12.4e|%12.4g|"), 1.0, 1.0, 1.0);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("|      1.0000|  1.0000e+00|           1|")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("|%12.4f|%12.4e|%12.4g|"), -1.0, -1.0, -1.0);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("|     -1.0000| -1.0000e+00|          -1|")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("|%12.4f|%12.4e|%12.4g|"), -1.0, -1.0, -1.0);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("|     -1.0000| -1.0000e+00|          -1|")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("|%12.4f|%12.4e|%12.4g|"), 100.0, 100.0, 100.0);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("|    100.0000|  1.0000e+02|         100|")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("|%12.4f|%12.4e|%12.4g|"), 100.0, 100.0, 100.0);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("|    100.0000|  1.0000e+02|         100|")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("|%12.4f|%12.4e|%12.4g|"), 1000.0, 1000.0, 1000.0);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("|   1000.0000|  1.0000e+03|        1000|")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("|%12.4f|%12.4e|%12.4g|"), 1000.0, 1000.0, 1000.0);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("|   1000.0000|  1.0000e+03|        1000|")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("|%12.4f|%12.4e|%12.4g|"), 10000.0, 10000.0, 10000.0);
-		EATEST_VERIFY(Strcmp(buffer,EA_CHAR16("|  10000.0000|  1.0000e+04|       1e+04|")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("|%12.4f|%12.4e|%12.4g|"), 10000.0, 10000.0, 10000.0);
+		EATEST_VERIFY(Strcmp(buffer,EASTL_CHAR16("|  10000.0000|  1.0000e+04|       1e+04|")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("|%12.4f|%12.4e|%12.4g|"), 12346.0, 12346.0, 12346.0);
-		pExpected = EA_CHAR16("|  12346.0000|  1.2346e+04|   1.235e+04|");
+		Sprintf(buffer, EASTL_CHAR16("|%12.4f|%12.4e|%12.4g|"), 12346.0, 12346.0, 12346.0);
+		pExpected = EASTL_CHAR16("|  12346.0000|  1.2346e+04|   1.235e+04|");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR16("|%12.4f|%12.4e|%12.4g|"), 100000.0, 100000.0, 100000.0);
-		pExpected = EA_CHAR16("| 100000.0000|  1.0000e+05|       1e+05|");
+		Sprintf(buffer, EASTL_CHAR16("|%12.4f|%12.4e|%12.4g|"), 100000.0, 100000.0, 100000.0);
+		pExpected = EASTL_CHAR16("| 100000.0000|  1.0000e+05|       1e+05|");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR16("|%12.4f|%12.4e|%12.4g|"), 123467.0, 123467.0, 123467.0);
-		pExpected = EA_CHAR16("| 123467.0000|  1.2347e+05|   1.235e+05|");
+		Sprintf(buffer, EASTL_CHAR16("|%12.4f|%12.4e|%12.4g|"), 123467.0, 123467.0, 123467.0);
+		pExpected = EASTL_CHAR16("| 123467.0000|  1.2347e+05|   1.235e+05|");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 	}
 
@@ -1550,33 +1550,33 @@ static int TestSprintf16(int unused = 0, ...)
 
 		const int kBuf1Capacity = 20;
 		wchar_t   buf1[kBuf1Capacity];
-		int       n1 = Snprintf(buf1, kBuf1Capacity, EA_WCHAR("%30I16s"), EA_CHAR16("foo"));
-		Sprintf(buffer, EA_CHAR16("snprintf(\"%%30s\", \"foo\") == %d, \"%.*s\"\n"), n1, kBuf1Capacity, buf1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("snprintf(\"%30s\", \"foo\") == 30, \"                   \"\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
+		int       n1 = Snprintf(buf1, kBuf1Capacity, EA_WCHAR("%30I16s"), EASTL_CHAR16("foo"));
+		Sprintf(buffer, EASTL_CHAR16("snprintf(\"%%30s\", \"foo\") == %d, \"%.*s\"\n"), n1, kBuf1Capacity, buf1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("snprintf(\"%30s\", \"foo\") == 30, \"                   \"\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
 
 		const int kBuf2Capacity = 512;
 		char16_t  buf2[kBuf2Capacity];
-		int       n2 = Snprintf(buf2, kBuf2Capacity, EA_CHAR16("%.1000u"), 10);
-		Sprintf(buffer, EA_CHAR16("snprintf(\"%%.1000u\", 10) == %d\n"), n2);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("snprintf(\"%.1000u\", 10) == 1000\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
+		int       n2 = Snprintf(buf2, kBuf2Capacity, EASTL_CHAR16("%.1000u"), 10);
+		Sprintf(buffer, EASTL_CHAR16("snprintf(\"%%.1000u\", 10) == %d\n"), n2);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("snprintf(\"%.1000u\", 10) == 1000\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
 
 		const int kBuf3Capacity = 512;
 		char16_t  buf3[kBuf3Capacity];
 		char16_t* pString = new char16_t[100000];
 		memset(pString, '_', 100000 * sizeof(char16_t));
 		pString[100000 - 1] = 0;
-		int n3 = Snprintf(buf3, kBuf2Capacity, EA_CHAR16("%I16s"), pString);
-		Sprintf(buffer, EA_CHAR16("snprintf(\"%%s\", pString) == %d\n"), n3);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("snprintf(\"%s\", pString) == 99999\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
+		int n3 = Snprintf(buf3, kBuf2Capacity, EASTL_CHAR16("%I16s"), pString);
+		Sprintf(buffer, EASTL_CHAR16("snprintf(\"%%s\", pString) == %d\n"), n3);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("snprintf(\"%s\", pString) == 99999\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
 		delete[] pString;
 
-		int n4 = Snprintf(NULL, 0, EA_CHAR16("%I16s"), EA_CHAR16("abc"));
-		Sprintf(buffer, EA_CHAR16("snprintf(NULL, \"abc\") == %d\n"), n4);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("snprintf(NULL, \"abc\") == 3\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
+		int n4 = Snprintf(NULL, 0, EASTL_CHAR16("%I16s"), EASTL_CHAR16("abc"));
+		Sprintf(buffer, EASTL_CHAR16("snprintf(NULL, \"abc\") == %d\n"), n4);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("snprintf(NULL, \"abc\") == 3\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
 
-		int n5 = Snprintf(NULL, 100, EA_CHAR16("%I16s"), EA_CHAR16("abc"));
-		Sprintf(buffer, EA_CHAR16("snprintf(NULL, \"abc\") == %d\n"), n5);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("snprintf(NULL, \"abc\") == 3\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
+		int n5 = Snprintf(NULL, 100, EASTL_CHAR16("%I16s"), EASTL_CHAR16("abc"));
+		Sprintf(buffer, EASTL_CHAR16("snprintf(NULL, \"abc\") == %d\n"), n5);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("snprintf(NULL, \"abc\") == 3\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
 	}
 
 
@@ -1610,7 +1610,7 @@ static int TestSprintf16(int unused = 0, ...)
 						#define INT  255
 						#define UNS (~0)
 
-						Sprintf(format, EA_CHAR16("%%5s |%s6d |%s6o |%s6x |%s6X |%s6u |"), prefix, prefix, prefix, prefix, prefix);
+						Sprintf(format, EASTL_CHAR16("%%5s |%s6d |%s6o |%s6x |%s6X |%s6u |"), prefix, prefix, prefix, prefix, prefix);
 						Sprintf(buffer[n], format, prefix, DEC, INT, INT, INT, UNS);
 						n++;
 					}
@@ -1618,22 +1618,22 @@ static int TestSprintf16(int unused = 0, ...)
 			}
 		}
 
-		EATEST_VERIFY(Strcmp(buffer[ 0], EA_CHAR16("%-+#0 |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 1], EA_CHAR16(" %-+# |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 2], EA_CHAR16(" %-+0 |-123   |377    |ff     |FF     |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 3], EA_CHAR16("  %-+ |-123   |377    |ff     |FF     |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 4], EA_CHAR16(" %-#0 |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 5], EA_CHAR16("  %-# |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 6], EA_CHAR16("  %-0 |-123   |377    |ff     |FF     |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 7], EA_CHAR16("   %- |-123   |377    |ff     |FF     |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 8], EA_CHAR16(" %+#0 |-00123 |000377 |0x00ff |0X00FF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 9], EA_CHAR16("  %+# |  -123 |  0377 |  0xff |  0XFF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[10], EA_CHAR16("  %+0 |-00123 |000377 |0000ff |0000FF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[11], EA_CHAR16("   %+ |  -123 |   377 |    ff |    FF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[12], EA_CHAR16("  %#0 |-00123 |000377 |0x00ff |0X00FF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[13], EA_CHAR16("   %# |  -123 |  0377 |  0xff |  0XFF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[14], EA_CHAR16("   %0 |-00123 |000377 |0000ff |0000FF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[15], EA_CHAR16("    % |  -123 |   377 |    ff |    FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 0], EASTL_CHAR16("%-+#0 |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 1], EASTL_CHAR16(" %-+# |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 2], EASTL_CHAR16(" %-+0 |-123   |377    |ff     |FF     |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 3], EASTL_CHAR16("  %-+ |-123   |377    |ff     |FF     |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 4], EASTL_CHAR16(" %-#0 |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 5], EASTL_CHAR16("  %-# |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 6], EASTL_CHAR16("  %-0 |-123   |377    |ff     |FF     |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 7], EASTL_CHAR16("   %- |-123   |377    |ff     |FF     |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 8], EASTL_CHAR16(" %+#0 |-00123 |000377 |0x00ff |0X00FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 9], EASTL_CHAR16("  %+# |  -123 |  0377 |  0xff |  0XFF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[10], EASTL_CHAR16("  %+0 |-00123 |000377 |0000ff |0000FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[11], EASTL_CHAR16("   %+ |  -123 |   377 |    ff |    FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[12], EASTL_CHAR16("  %#0 |-00123 |000377 |0x00ff |0X00FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[13], EASTL_CHAR16("   %# |  -123 |  0377 |  0xff |  0XFF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[14], EASTL_CHAR16("   %0 |-00123 |000377 |0000ff |0000FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[15], EASTL_CHAR16("    % |  -123 |   377 |    ff |    FF |4294967295 |")) == 0);
 
 	}
 
@@ -1642,32 +1642,32 @@ static int TestSprintf16(int unused = 0, ...)
 		char16_t        buffer[256];
 		const char16_t* pExpected;
 
-		Sprintf(buffer, EA_CHAR16("%e"), 1234567.8); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		pExpected = EA_CHAR16("1.234568e+06"); 
+		Sprintf(buffer, EASTL_CHAR16("%e"), 1234567.8); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		pExpected = EASTL_CHAR16("1.234568e+06"); 
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR16("%f"), 1234567.8);
-		pExpected = EA_CHAR16("1234567.800000");
+		Sprintf(buffer, EASTL_CHAR16("%f"), 1234567.8);
+		pExpected = EASTL_CHAR16("1234567.800000");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR16("%g"), 1234567.8); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		pExpected = EA_CHAR16("1.23457e+06");
+		Sprintf(buffer, EASTL_CHAR16("%g"), 1234567.8); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		pExpected = EASTL_CHAR16("1.23457e+06");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR16("%g"), 123.456);
-		pExpected = EA_CHAR16("123.456");
+		Sprintf(buffer, EASTL_CHAR16("%g"), 123.456);
+		pExpected = EASTL_CHAR16("123.456");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR16("%g"), 1000000.0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		pExpected = EA_CHAR16("1e+06"); 
+		Sprintf(buffer, EASTL_CHAR16("%g"), 1000000.0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		pExpected = EASTL_CHAR16("1e+06"); 
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR16("%g"), 10.0);
-		pExpected = EA_CHAR16("10");
+		Sprintf(buffer, EASTL_CHAR16("%g"), 10.0);
+		pExpected = EASTL_CHAR16("10");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR16("%g"), 0.02);
-		pExpected = EA_CHAR16("0.02");
+		Sprintf(buffer, EASTL_CHAR16("%g"), 0.02);
+		pExpected = EASTL_CHAR16("0.02");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 	}
 
@@ -1676,68 +1676,68 @@ static int TestSprintf16(int unused = 0, ...)
 		char16_t        buffer[64];
 		const char16_t* pExpected;
 
-		Sprintf(buffer, EA_CHAR16("%'u"), 123456789);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("123,456,789")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'u"), 123456789);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("123,456,789")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'d"), -123456789);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("-123,456,789")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'d"), -123456789);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("-123,456,789")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'I8u"), 123);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("123")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'I8u"), 123);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("123")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'I16u"), 12345);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("12,345")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'I16u"), 12345);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("12,345")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'I16d"), -12345);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("-12,345")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'I16d"), -12345);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("-12,345")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'I32u"), 12345678);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("12,345,678")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'I32u"), 12345678);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("12,345,678")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'I32d"), -12345678);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("-12,345,678")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'I32d"), -12345678);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("-12,345,678")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%20I32d"), -12345678);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("           -12345678")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%20I32d"), -12345678);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("           -12345678")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'20I32d"), -12345678); // Verify that the , chars count towards the field width.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("         -12,345,678")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'20I32d"), -12345678); // Verify that the , chars count towards the field width.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("         -12,345,678")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'I32x"), 0x12345678);  // ' has no effect on hex formatting.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("12345678")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'I32x"), 0x12345678);  // ' has no effect on hex formatting.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("12345678")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'I64u"), UINT64_C(1234999995678));
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("1,234,999,995,678")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'I64u"), UINT64_C(1234999995678));
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("1,234,999,995,678")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'I64d"), INT64_C(-1234599999678));
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("-1,234,599,999,678")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'I64d"), INT64_C(-1234599999678));
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("-1,234,599,999,678")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'I64x"), UINT64_C(0x1234567812345678));  // ' has no effect on hex formatting.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("1234567812345678")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'I64x"), UINT64_C(0x1234567812345678));  // ' has no effect on hex formatting.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("1234567812345678")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'f"), 123456.234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("123,456.234000")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'f"), 123456.234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("123,456.234000")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'e"), 1234567.8);  // ' has no effect on %e formatting.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("1.234568e+06")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%'e"), 1234567.8);  // ' has no effect on %e formatting.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("1.234568e+06")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%'g"), 1234.54);   // In some cases %g acts like %f.
-		pExpected = EA_CHAR16("1,234.54");
+		Sprintf(buffer, EASTL_CHAR16("%'g"), 1234.54);   // In some cases %g acts like %f.
+		pExpected = EASTL_CHAR16("1,234.54");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR16("%'g"), 1234567.8);   // In some cases %g acts like %f.
-		pExpected = EA_CHAR16("1.23457e+06");
+		Sprintf(buffer, EASTL_CHAR16("%'g"), 1234567.8);   // In some cases %g acts like %f.
+		pExpected = EASTL_CHAR16("1.23457e+06");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 	}
 
 	{
 		char16_t buffer[256];
 
-		Sprintf(buffer, EA_CHAR16("%hhu"), UCHAR_MAX + 2);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("1")) == 0); // VC++ fails this, as it doesn't implement the C99 standard %hh modifier.
+		Sprintf(buffer, EASTL_CHAR16("%hhu"), UCHAR_MAX + 2);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("1")) == 0); // VC++ fails this, as it doesn't implement the C99 standard %hh modifier.
 
-		Sprintf(buffer, EA_CHAR16("%hu"), USHRT_MAX + 2);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("1")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%hu"), USHRT_MAX + 2);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("1")) == 0);
 	}
 
 
@@ -1745,24 +1745,24 @@ static int TestSprintf16(int unused = 0, ...)
 		char16_t        buffer[128];
 		const char16_t* pExpected;
 
-		Sprintf(buffer, EA_CHAR16("%5.s"), EA_WCHAR("xyz"));
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("     ")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%5.s"), EA_WCHAR("xyz"));
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("     ")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%5.f"), 33.3);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("   33")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%5.f"), 33.3);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("   33")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%8.e"), 33.3e7);                 // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("   3e+08")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%8.e"), 33.3e7);                 // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("   3e+08")) == 0);
 
-		Sprintf(buffer, EA_CHAR16("%8.E"), 33.3e7);                 // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("   3E+08")) == 0); 
+		Sprintf(buffer, EASTL_CHAR16("%8.E"), 33.3e7);                 // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("   3E+08")) == 0); 
 
-		Sprintf(buffer, EA_CHAR16("%.g"), 33.3);                    // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		pExpected = EA_CHAR16("3e+01"); 
+		Sprintf(buffer, EASTL_CHAR16("%.g"), 33.3);                    // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		pExpected = EASTL_CHAR16("3e+01"); 
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR16("%.G"), 33.3);                    // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		pExpected = EA_CHAR16("3E+01"); 
+		Sprintf(buffer, EASTL_CHAR16("%.G"), 33.3);                    // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		pExpected = EASTL_CHAR16("3E+01"); 
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I16s\n   Actual:   %I16s", pExpected, buffer); 
 	}
 
@@ -1772,32 +1772,32 @@ static int TestSprintf16(int unused = 0, ...)
 		int      precision;
 
 		precision = 0;
-		Sprintf(buffer, EA_CHAR16("%.*g"), precision, 3.3);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("3")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%.*g"), precision, 3.3);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("3")) == 0);
 
 		precision = 0;
-		Sprintf(buffer, EA_CHAR16("%.*G"), precision, 3.3);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("3")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%.*G"), precision, 3.3);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("3")) == 0);
 
 		precision = 0;
-		Sprintf(buffer, EA_CHAR16("%7.*G"), precision, 3.33);
-		EATEST_VERIFY(Strcmp(buffer,EA_CHAR16("      3")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%7.*G"), precision, 3.33);
+		EATEST_VERIFY(Strcmp(buffer,EASTL_CHAR16("      3")) == 0);
 
 		precision = 3;
-		Sprintf(buffer, EA_CHAR16("%04.*o"), precision, 33);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16(" 041")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%04.*o"), precision, 33);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16(" 041")) == 0);
 
 		precision = 7;
-		Sprintf(buffer, EA_CHAR16("%09.*u"), precision, 33);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16("  0000033")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%09.*u"), precision, 33);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16("  0000033")) == 0);
 
 		precision = 3;
-		Sprintf(buffer, EA_CHAR16("%04.*x"), precision, 33);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16(" 021")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%04.*x"), precision, 33);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16(" 021")) == 0);
 
 		precision = 3;
-		Sprintf(buffer, EA_CHAR16("%04.*X"), precision, 33);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR16(" 021")) == 0);
+		Sprintf(buffer, EASTL_CHAR16("%04.*X"), precision, 33);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR16(" 021")) == 0);
 	}
 
 	{
@@ -1815,11 +1815,11 @@ static int TestSprintf16(int unused = 0, ...)
 		value[kSourceSize - 1] = 0;
 		comparison[kSourceSize - 1] = 0;
 
-		EA::StdC::Snprintf(destination, kOutputSize, EA_CHAR16("%I8s"), value);
+		EA::StdC::Snprintf(destination, kOutputSize, EASTL_CHAR16("%I8s"), value);
 		EATEST_VERIFY(Strcmp(destination, comparison) == 0);
 
-		EA::StdC::Snprintf(destination, kOutputSize, EA_CHAR16("%.10I8s"), value);
-		EATEST_VERIFY(Strcmp(destination, EA_CHAR16("0123456789")) == 0);
+		EA::StdC::Snprintf(destination, kOutputSize, EASTL_CHAR16("%.10I8s"), value);
+		EATEST_VERIFY(Strcmp(destination, EASTL_CHAR16("0123456789")) == 0);
 	}
 
 	return nErrorCount;
@@ -1835,28 +1835,28 @@ static int TestSprintf32(int unused = 0, ...)
 	// int Snprintf(char_t* pDestination, size_t n, const char_t* pFormat, ...);
 	{
 		char32_t sn18[32];
-		Snprintf(sn18, EAArrayCount(sn18), EA_CHAR32("%5s%-4d%03i"), EA_WCHAR("abc"), -12, 3);
-		EATEST_VERIFY(!Strcmp(EA_CHAR32("  abc-12 003"), sn18));
-		Snprintf(sn18, EAArrayCount(sn18), EA_CHAR32("%.2f"), 3.1415);
-		EATEST_VERIFY(!Strcmp(EA_CHAR32("3.14"), sn18));
+		Snprintf(sn18, EASTLArrayCount(sn18), EASTL_CHAR32("%5s%-4d%03i"), EA_WCHAR("abc"), -12, 3);
+		EATEST_VERIFY(!Strcmp(EASTL_CHAR32("  abc-12 003"), sn18));
+		Snprintf(sn18, EASTLArrayCount(sn18), EASTL_CHAR32("%.2f"), 3.1415);
+		EATEST_VERIFY(!Strcmp(EASTL_CHAR32("3.14"), sn18));
 	}
 
 	// int Vsnprintf(char_t* pDestination, size_t n, const char_t* pFormat, ...);
 	{
 		char32_t sn18[32];
-		TestCRTVsnprintf(sn18, EAArrayCount(sn18), EA_CHAR32("%5s%-5d%04i"), EA_WCHAR("abc"), -12, 3);
-		EATEST_VERIFY(!Strcmp(EA_CHAR32("  abc-12  0003"), sn18));
-		TestCRTVsnprintf(sn18, EAArrayCount(sn18), EA_CHAR32("%.2f"), 3.1415);
-		EATEST_VERIFY(!Strcmp(EA_CHAR32("3.14"), sn18));
+		TestCRTVsnprintf(sn18, EASTLArrayCount(sn18), EASTL_CHAR32("%5s%-5d%04i"), EA_WCHAR("abc"), -12, 3);
+		EATEST_VERIFY(!Strcmp(EASTL_CHAR32("  abc-12  0003"), sn18));
+		TestCRTVsnprintf(sn18, EASTLArrayCount(sn18), EASTL_CHAR32("%.2f"), 3.1415);
+		EATEST_VERIFY(!Strcmp(EASTL_CHAR32("3.14"), sn18));
 	}
 
 	#if EASTDC_VSNPRINTF8_ENABLED
 		{
 			char32_t sn18[32];
-			TestCRTVsnprintf32(sn18, EAArrayCount(sn18), EA_CHAR32("%5s%-5d%04i"), EA_WCHAR("abc"), -12, 3);
-			EATEST_VERIFY(!Strcmp(EA_CHAR32("  abc-12  0003"), sn18));
-			TestCRTVsnprintf32(sn18, EAArrayCount(sn18), EA_CHAR32("%.2f"), 3.1415);
-			EATEST_VERIFY(!Strcmp(EA_CHAR32("3.14"), sn18));
+			TestCRTVsnprintf32(sn18, EASTLArrayCount(sn18), EASTL_CHAR32("%5s%-5d%04i"), EA_WCHAR("abc"), -12, 3);
+			EATEST_VERIFY(!Strcmp(EASTL_CHAR32("  abc-12  0003"), sn18));
+			TestCRTVsnprintf32(sn18, EASTLArrayCount(sn18), EASTL_CHAR32("%.2f"), 3.1415);
+			EATEST_VERIFY(!Strcmp(EASTL_CHAR32("3.14"), sn18));
 		}
 	#endif
 
@@ -1865,152 +1865,152 @@ static int TestSprintf32(int unused = 0, ...)
 		va_list arguments;
 		va_start(arguments, unused);
 
-		int result = Vscprintf(EA_CHAR32("abc"), arguments);       
+		int result = Vscprintf(EASTL_CHAR32("abc"), arguments);       
 		EATEST_VERIFY(result == 3);
 
 		va_end(arguments);
 	}
 
 	// template <typename String>
-	// int StringVcprintf(String& s, const char* EA_RESTRICT pFormat, va_list arguments)
+	// int StringVcprintf(String& s, const char* EASTL_RESTRICT pFormat, va_list arguments)
 	{
 		va_list arguments;
 		va_start(arguments, unused);
 
 		eastl::string32 s32;
-		int result = StringVcprintf(s32, EA_CHAR32("hello"), arguments);
-		EATEST_VERIFY((result == 5) && (s32 == EA_CHAR32("hello")));
+		int result = StringVcprintf(s32, EASTL_CHAR32("hello"), arguments);
+		EATEST_VERIFY((result == 5) && (s32 == EASTL_CHAR32("hello")));
 
 		va_end(arguments);
 	}
 
 	// template <typename String> 
-	// int StringPrintf(String& s, const typename String::value_type* EA_RESTRICT pFormat, ...)
+	// int StringPrintf(String& s, const typename String::value_type* EASTL_RESTRICT pFormat, ...)
 	{
 		eastl::string32 s32;
-		int result = StringPrintf(s32, EA_CHAR32("%s"), EA_WCHAR("hello"));
-		EATEST_VERIFY((result == 5) && (s32 == EA_CHAR32("hello")));
+		int result = StringPrintf(s32, EASTL_CHAR32("%s"), EA_WCHAR("hello"));
+		EATEST_VERIFY((result == 5) && (s32 == EASTL_CHAR32("hello")));
 	}
 
 	{
 		char32_t buffer[32];
 		const int kHexValue = 0x12;
 
-		Sprintf(buffer, EA_CHAR32("%.4x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%.4x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%04x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%04x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%4.4x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%4.4x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%04.4x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%04.4x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%4.3x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32(" 012")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%4.3x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32(" 012")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%04.3x"), kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32(" 012")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%04.3x"), kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32(" 012")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%.*x"), 4, kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%.*x"), 4, kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%0*x"), 4, kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%0*x"), 4, kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%*.*x"), 4, 4, kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%*.*x"), 4, 4, kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("0012")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%0*.*x"), 4, 4, kHexValue);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("0012")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%0*.*x"), 4, 4, kHexValue);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("0012")) == 0);
 	}
 
 
 	{
 		char32_t buffer[96];
 
-		Sprintf(buffer, EA_CHAR32("decimal negative: \"%d\"\n"), -2345);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("decimal negative: \"-2345\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("decimal negative: \"%d\"\n"), -2345);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("decimal negative: \"-2345\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("octal negative: \"%o\"\n"), -2345);
+		Sprintf(buffer, EASTL_CHAR32("octal negative: \"%o\"\n"), -2345);
 		if(sizeof(int) == (4 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("octal negative: \"37777773327\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("octal negative: \"37777773327\"\n")) == 0);
 		else if(sizeof(int) == (8 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("octal negative: \"1777777777777777773327\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("octal negative: \"1777777777777777773327\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("hex negative: \"%x\"\n"), -2345);
+		Sprintf(buffer, EASTL_CHAR32("hex negative: \"%x\"\n"), -2345);
 		if(sizeof(int) == (4 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("hex negative: \"fffff6d7\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("hex negative: \"fffff6d7\"\n")) == 0);
 		else if(sizeof(int) == (8 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("hex negative: \"fffffffffffff6d7\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("hex negative: \"fffffffffffff6d7\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("long decimal number: \"%ld\"\n"), -123456L);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("long decimal number: \"-123456\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("long decimal number: \"%ld\"\n"), -123456L);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("long decimal number: \"-123456\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("long octal negative: \"%lo\"\n"), -2345L);
+		Sprintf(buffer, EASTL_CHAR32("long octal negative: \"%lo\"\n"), -2345L);
 		if(sizeof(long) == (4 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("long octal negative: \"37777773327\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("long octal negative: \"37777773327\"\n")) == 0);
 		else if(sizeof(long) == (8 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("long octal negative: \"1777777777777777773327\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("long octal negative: \"1777777777777777773327\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("long unsigned decimal number: \"%lu\"\n"), -123456L);
+		Sprintf(buffer, EASTL_CHAR32("long unsigned decimal number: \"%lu\"\n"), -123456L);
 		if(sizeof(long) == (4 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("long unsigned decimal number: \"4294843840\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("long unsigned decimal number: \"4294843840\"\n")) == 0);
 		else if(sizeof(long) == (8 + (__FILE__[0] / 100000))) // Trickery here to avoid compiler warnings.
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("long unsigned decimal number: \"18446744073709428160\"\n")) == 0);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("long unsigned decimal number: \"18446744073709428160\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("zero-padded LDN: \"%010ld\"\n"), -123456L);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("zero-padded LDN: \"-000123456\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("zero-padded LDN: \"%010ld\"\n"), -123456L);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("zero-padded LDN: \"-000123456\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("left-adjusted ZLDN: \"%-010ld\"\n"), -123456L);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("left-adjusted ZLDN: \"-123456   \"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("left-adjusted ZLDN: \"%-010ld\"\n"), -123456L);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("left-adjusted ZLDN: \"-123456   \"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("space-padded LDN: \"%10ld\"\n"), -123456L);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("space-padded LDN: \"   -123456\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("space-padded LDN: \"%10ld\"\n"), -123456L);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("space-padded LDN: \"   -123456\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("left-adjusted SLDN: \"%-10ld\"\n"), -123456L);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("left-adjusted SLDN: \"-123456   \"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("left-adjusted SLDN: \"%-10ld\"\n"), -123456L);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("left-adjusted SLDN: \"-123456   \"\n")) == 0);
 	}
 
 
 	{
 		char32_t  buffer[1024];
-		wchar_t   str1[64]; Strlcpy(str1, EA_WCHAR("abc de"), EAArrayCount(str1)); // Can't do str1[64] = EA_CHAR32("abc de") because some compilers don't support 32 bit string literals.
-		wchar_t   str2[64]; Strlcpy(str2, EA_WCHAR("abd def ghi jkl mno pqr stu vwz yz."), EAArrayCount(str2));
+		wchar_t   str1[64]; Strlcpy(str1, EA_WCHAR("abc de"), EASTLArrayCount(str1)); // Can't do str1[64] = EASTL_CHAR32("abc de") because some compilers don't support 32 bit string literals.
+		wchar_t   str2[64]; Strlcpy(str2, EA_WCHAR("abd def ghi jkl mno pqr stu vwz yz."), EASTLArrayCount(str2));
 
 		// The C99 standard specifies that leading zeros only put zeroes in front of numerical types. Spaces for others.
-		Sprintf(buffer, EA_CHAR32("zero-padded string: \"%010s\"\n"), str1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("zero-padded string: \"    abc de\"\n")) == 0); // VC++ fails this, as it puts zeroes in front.
+		Sprintf(buffer, EASTL_CHAR32("zero-padded string: \"%010s\"\n"), str1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("zero-padded string: \"    abc de\"\n")) == 0); // VC++ fails this, as it puts zeroes in front.
 
-		Sprintf(buffer, EA_CHAR32("left-adjusted Z string: \"%-010s\"\n"), str1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("left-adjusted Z string: \"abc de    \"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("left-adjusted Z string: \"%-010s\"\n"), str1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("left-adjusted Z string: \"abc de    \"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("space-padded string: \"%10s\"\n"), str1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("space-padded string: \"    abc de\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("space-padded string: \"%10s\"\n"), str1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("space-padded string: \"    abc de\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("left-adjusted S string: \"%-10s\"\n"), str1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("left-adjusted S string: \"abc de    \"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("left-adjusted S string: \"%-10s\"\n"), str1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("left-adjusted S string: \"abc de    \"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("limited string: \"%.22s\"\n"), str2);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("limited string: \"abd def ghi jkl mno pq\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("limited string: \"%.22s\"\n"), str2);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("limited string: \"abd def ghi jkl mno pq\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("null string: \"%s\"\n"), (wchar_t*)NULL);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("null string: \"(null)\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("null string: \"%s\"\n"), (wchar_t*)NULL);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("null string: \"(null)\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%10s\n"), (wchar_t*)NULL);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("    (null)\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%10s\n"), (wchar_t*)NULL);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("    (null)\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%-10s\n"), (wchar_t*)NULL);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("(null)    \n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%-10s\n"), (wchar_t*)NULL);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("(null)    \n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%*s%*s%*s"), -1, EA_WCHAR("one"), -20, EA_WCHAR("two"), -30, EA_WCHAR("three"));
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("onetwo                 three                         ")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%*s%*s%*s"), -1, EA_WCHAR("one"), -20, EA_WCHAR("two"), -30, EA_WCHAR("three"));
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("onetwo                 three                         ")) == 0);
 
 		int i;
 		memset(buffer, '_', sizeof(buffer));
-		Sprintf(buffer, EA_CHAR32("x%1000ls"), EA_WCHAR(" "));
+		Sprintf(buffer, EASTL_CHAR32("x%1000ls"), EA_WCHAR(" "));
 		EATEST_VERIFY(buffer[0] == 'x');
 		for(i = 0; i < 1000; i++)
 		{
@@ -2036,29 +2036,29 @@ static int TestSprintf32(int unused = 0, ...)
 		char32_t fStr32[2] = { 'f', 0 };
 
 		#if EASPRINTF_MS_STYLE_S_FORMAT // Microsoft style means that the meanings of S and s are reversed for non-char Sprintf.
-			Sprintf(buffer, EA_CHAR32("%hc %c %lc %I8c %I16c %I32c"), 'a', EA_WCHAR('b'), EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR32("%hc %c %lc %I8c %I16c %I32c"), 'a', EA_WCHAR('b'), EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("a b c d e f")) == 0);
 
-			Sprintf(buffer, EA_CHAR32("%hC %C %lC %I8C %I16C %I32C"), 'a', 'b',           EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR32("%hC %C %lC %I8C %I16C %I32C"), 'a', 'b',           EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("a b c d e f")) == 0);
 
-			Sprintf(buffer, EA_CHAR32("%hs %s %ls %I8s %I16s %I32s"), "a", EA_WCHAR("b"), EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR32("%hs %s %ls %I8s %I16s %I32s"), "a", EA_WCHAR("b"), EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("a b c d e f")) == 0);
 
-			Sprintf(buffer, EA_CHAR32("%hS %S %lS %I8S %I16S %I32S"), "a", "b",           EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR32("%hS %S %lS %I8S %I16S %I32S"), "a", "b",           EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("a b c d e f")) == 0);
 		#else
-			Sprintf(buffer, EA_CHAR32("%hc %c %lc %I8c %I16c %I32c"), 'a', 'b',           EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR32("%hc %c %lc %I8c %I16c %I32c"), 'a', 'b',           EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("a b c d e f")) == 0);
 
-			Sprintf(buffer, EA_CHAR32("%hC %C %lC %I8C %I16C %I32C"), 'a', EA_WCHAR('b'), EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("a b c d e f)") == 0);
+			Sprintf(buffer, EASTL_CHAR32("%hC %C %lC %I8C %I16C %I32C"), 'a', EA_WCHAR('b'), EA_WCHAR('c'), (char)'d', (char16_t)'e', (char32_t)'f');
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("a b c d e f)") == 0);
 
-			Sprintf(buffer, EA_CHAR32("%hs %s %ls %I8s %I16s %I32s"), "a", "b",           EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR32("%hs %s %ls %I8s %I16s %I32s"), "a", "b",           EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("a b c d e f")) == 0);
 
-			Sprintf(buffer, EA_CHAR32("%hS %S %lS %I8S %I16S %I32S"), "a", EA_WCHAR("b"), EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
-			EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("a b c d e f")) == 0);
+			Sprintf(buffer, EASTL_CHAR32("%hS %S %lS %I8S %I16S %I32S"), "a", EA_WCHAR("b"), EA_WCHAR("c"), dStr8,        eStr16,         fStr32);
+			EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("a b c d e f")) == 0);
 		#endif
 	}
 
@@ -2066,60 +2066,60 @@ static int TestSprintf32(int unused = 0, ...)
 		char32_t buffer[384];
 		int i;
 
-		Sprintf(buffer, EA_CHAR32("e-style >= 1: \"%e\"\n"), 12.34);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("e-style >= 1: \"1.234000e+01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		Sprintf(buffer, EASTL_CHAR32("e-style >= 1: \"%e\"\n"), 12.34);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("e-style >= 1: \"1.234000e+01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR32("e-style >= .1: \"%e\"\n"), 0.1234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("e-style >= .1: \"1.234000e-01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		Sprintf(buffer, EASTL_CHAR32("e-style >= .1: \"%e\"\n"), 0.1234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("e-style >= .1: \"1.234000e-01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR32("e-style < .1: \"%e\"\n"), 0.001234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("e-style < .1: \"1.234000e-03\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		Sprintf(buffer, EASTL_CHAR32("e-style < .1: \"%e\"\n"), 0.001234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("e-style < .1: \"1.234000e-03\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR32("e-style big: \"%.60e\"\n"), 1e20);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("e-style big: \"1.000000000000000000000000000000000000000000000000000000000000e+20\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		Sprintf(buffer, EASTL_CHAR32("e-style big: \"%.60e\"\n"), 1e20);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("e-style big: \"1.000000000000000000000000000000000000000000000000000000000000e+20\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR32("e-style == .1: \"%e\"\n"), 0.1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("e-style == .1: \"1.000000e-01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		Sprintf(buffer, EASTL_CHAR32("e-style == .1: \"%e\"\n"), 0.1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("e-style == .1: \"1.000000e-01\"\n")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR32("f-style >= 1: \"%f\"\n"), 12.34);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("f-style >= 1: \"12.340000\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("f-style >= 1: \"%f\"\n"), 12.34);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("f-style >= 1: \"12.340000\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("f-style >= .1: \"%f\"\n"), 0.1234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("f-style >= .1: \"0.123400\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("f-style >= .1: \"%f\"\n"), 0.1234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("f-style >= .1: \"0.123400\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("f-style < .1: \"%f\"\n"), 0.001234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("f-style < .1: \"0.001234\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("f-style < .1: \"%f\"\n"), 0.001234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("f-style < .1: \"0.001234\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("g-style >= 1: \"%g\"\n"), 12.34);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("g-style >= 1: \"12.34\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("g-style >= 1: \"%g\"\n"), 12.34);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("g-style >= 1: \"12.34\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("g-style >= .1: \"%g\"\n"), 0.1234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("g-style >= .1: \"0.1234\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("g-style >= .1: \"%g\"\n"), 0.1234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("g-style >= .1: \"0.1234\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("g-style < .1: \"%g\"\n"), 0.001234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("g-style < .1: \"0.001234\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("g-style < .1: \"%g\"\n"), 0.001234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("g-style < .1: \"0.001234\"\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("g-style big: \"%.60g\"\n"), 1e20);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("g-style big: \"100000000000000000000\"\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("g-style big: \"%.60g\"\n"), 1e20);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("g-style big: \"100000000000000000000\"\n")) == 0);
 
-		//Sprintf(buffer, EA_CHAR32("%#.4g\n"), 0.0); // The C99 committee has decided in a defect analysis that this is how it should work.
-		//EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("0\n")) == 0);
+		//Sprintf(buffer, EASTL_CHAR32("%#.4g\n"), 0.0); // The C99 committee has decided in a defect analysis that this is how it should work.
+		//EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("0\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32(" %6.5f\n"), .099999999860301614);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32(" 0.10000\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32(" %6.5f\n"), .099999999860301614);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32(" 0.10000\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32(" %6.5f\n"), .1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32(" 0.10000\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32(" %6.5f\n"), .1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32(" 0.10000\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("x%5.4fx\n"), .5);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("x0.5000x\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("x%5.4fx\n"), .5);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("x0.5000x\n")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%#03x\n"), 1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("0x1\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%#03x\n"), 1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("0x1\n")) == 0);
 
 
 		memset(buffer, '_', sizeof(buffer));
-		Sprintf(buffer, EA_CHAR32("%.300f"), 1.0);
+		Sprintf(buffer, EASTL_CHAR32("%.300f"), 1.0);
 		EATEST_VERIFY((buffer[0] == '1') && (buffer[1] == '.'));
 		for(i = 0; i < 300; i++)
 		{
@@ -2134,13 +2134,13 @@ static int TestSprintf32(int unused = 0, ...)
 
 		double d = static_cast<double>(FLT_MIN);    // We are intentionally using FLT_MIN and not DBL_MIN.
 		d /= 2.0;
-		Sprintf(buffer, EA_CHAR32("%.17e"), d);     // It should be something like 5.87747175411143___e-39 where count and values of the _ digits vary by hardware.
+		Sprintf(buffer, EASTL_CHAR32("%.17e"), d);     // It should be something like 5.87747175411143___e-39 where count and values of the _ digits vary by hardware.
 		buffer[16] = buffer[17] = buffer[18] = '_'; // Replace the uncertain digits with '_' characters, as they are system-dependent.
 		
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("5.87747175411143___e-39")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("5.87747175411143___e-39")) == 0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
 
-		Sprintf(buffer, EA_CHAR32("%15.5e\n"), 4.9406564584124654e-307);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("   4.94066e-307\n")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%15.5e\n"), 4.9406564584124654e-307);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("   4.94066e-307\n")) == 0);
 	}
 
 
@@ -2151,34 +2151,34 @@ static int TestSprintf32(int unused = 0, ...)
 		// VC++ sprintf would fail these tests, as the Standard says to print no more 
 		// than 2 unless necessary, yet VC++ sprintf prints 3 digits exponents.
 
-		Sprintf(buffer, EA_CHAR32("|%12.4f|%12.4e|%12.4g|"), 0.0, 0.0, 0.0);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("|      0.0000|  0.0000e+00|           0|")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("|%12.4f|%12.4e|%12.4g|"), 0.0, 0.0, 0.0);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("|      0.0000|  0.0000e+00|           0|")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("|%12.4f|%12.4e|%12.4g|"), 1.0, 1.0, 1.0);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("|      1.0000|  1.0000e+00|           1|")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("|%12.4f|%12.4e|%12.4g|"), 1.0, 1.0, 1.0);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("|      1.0000|  1.0000e+00|           1|")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("|%12.4f|%12.4e|%12.4g|"), -1.0, -1.0, -1.0);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("|     -1.0000| -1.0000e+00|          -1|")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("|%12.4f|%12.4e|%12.4g|"), -1.0, -1.0, -1.0);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("|     -1.0000| -1.0000e+00|          -1|")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("|%12.4f|%12.4e|%12.4g|"), 100.0, 100.0, 100.0);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("|    100.0000|  1.0000e+02|         100|")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("|%12.4f|%12.4e|%12.4g|"), 100.0, 100.0, 100.0);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("|    100.0000|  1.0000e+02|         100|")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("|%12.4f|%12.4e|%12.4g|"), 1000.0, 1000.0, 1000.0);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("|   1000.0000|  1.0000e+03|        1000|")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("|%12.4f|%12.4e|%12.4g|"), 1000.0, 1000.0, 1000.0);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("|   1000.0000|  1.0000e+03|        1000|")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("|%12.4f|%12.4e|%12.4g|"), 10000.0, 10000.0, 10000.0);
-		EATEST_VERIFY(Strcmp(buffer,EA_CHAR32("|  10000.0000|  1.0000e+04|       1e+04|")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("|%12.4f|%12.4e|%12.4g|"), 10000.0, 10000.0, 10000.0);
+		EATEST_VERIFY(Strcmp(buffer,EASTL_CHAR32("|  10000.0000|  1.0000e+04|       1e+04|")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("|%12.4f|%12.4e|%12.4g|"), 12346.0, 12346.0, 12346.0);
-		pExpected = EA_CHAR32("|  12346.0000|  1.2346e+04|   1.235e+04|");
+		Sprintf(buffer, EASTL_CHAR32("|%12.4f|%12.4e|%12.4g|"), 12346.0, 12346.0, 12346.0);
+		pExpected = EASTL_CHAR32("|  12346.0000|  1.2346e+04|   1.235e+04|");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("|%12.4f|%12.4e|%12.4g|"), 100000.0, 100000.0, 100000.0);
-		pExpected = EA_CHAR32("| 100000.0000|  1.0000e+05|       1e+05|");
+		Sprintf(buffer, EASTL_CHAR32("|%12.4f|%12.4e|%12.4g|"), 100000.0, 100000.0, 100000.0);
+		pExpected = EASTL_CHAR32("| 100000.0000|  1.0000e+05|       1e+05|");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("|%12.4f|%12.4e|%12.4g|"), 123467.0, 123467.0, 123467.0);
-		pExpected = EA_CHAR32("| 123467.0000|  1.2347e+05|   1.235e+05|");
+		Sprintf(buffer, EASTL_CHAR32("|%12.4f|%12.4e|%12.4g|"), 123467.0, 123467.0, 123467.0);
+		pExpected = EASTL_CHAR32("| 123467.0000|  1.2347e+05|   1.235e+05|");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 	}
 
@@ -2192,33 +2192,33 @@ static int TestSprintf32(int unused = 0, ...)
 
 		const int kBuf1Capacity = 20;
 		wchar_t   buf1[kBuf1Capacity];
-		int       n1 = Snprintf(buf1, kBuf1Capacity, EA_WCHAR("%30I32s"), EA_CHAR32("foo"));
-		Sprintf(buffer, EA_CHAR32("snprintf(\"%%30s\", \"foo\") == %d, \"%.*s\"\n"), n1, kBuf1Capacity, buf1);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("snprintf(\"%30s\", \"foo\") == 30, \"                   \"\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
+		int       n1 = Snprintf(buf1, kBuf1Capacity, EA_WCHAR("%30I32s"), EASTL_CHAR32("foo"));
+		Sprintf(buffer, EASTL_CHAR32("snprintf(\"%%30s\", \"foo\") == %d, \"%.*s\"\n"), n1, kBuf1Capacity, buf1);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("snprintf(\"%30s\", \"foo\") == 30, \"                   \"\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
 
 		const int kBuf2Capacity = 512;
 		char32_t  buf2[kBuf2Capacity];
-		int       n2 = Snprintf(buf2, kBuf2Capacity, EA_CHAR32("%.1000u"), 10);
-		Sprintf(buffer, EA_CHAR32("snprintf(\"%%.1000u\", 10) == %d\n"), n2);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("snprintf(\"%.1000u\", 10) == 1000\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
+		int       n2 = Snprintf(buf2, kBuf2Capacity, EASTL_CHAR32("%.1000u"), 10);
+		Sprintf(buffer, EASTL_CHAR32("snprintf(\"%%.1000u\", 10) == %d\n"), n2);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("snprintf(\"%.1000u\", 10) == 1000\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
 
 		const int kBuf3Capacity = 512;
 		char32_t  buf3[kBuf3Capacity];
 		char32_t* pString = new char32_t[100000];
 		memset(pString, '_', 100000 * sizeof(char32_t));
 		pString[100000 - 1] = 0;
-		int n3 = Snprintf(buf3, kBuf2Capacity, EA_CHAR32("%I32s"), pString);
-		Sprintf(buffer, EA_CHAR32("snprintf(\"%%s\", pString) == %d\n"), n3);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("snprintf(\"%s\", pString) == 99999\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
+		int n3 = Snprintf(buf3, kBuf2Capacity, EASTL_CHAR32("%I32s"), pString);
+		Sprintf(buffer, EASTL_CHAR32("snprintf(\"%%s\", pString) == %d\n"), n3);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("snprintf(\"%s\", pString) == 99999\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
 		delete[] pString;
 
-		int n4 = Snprintf(NULL, 0, EA_CHAR32("%I32s"), EA_CHAR32("abc"));
-		Sprintf(buffer, EA_CHAR32("snprintf(NULL, \"abc\") == %d\n"), n4);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("snprintf(NULL, \"abc\") == 3\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
+		int n4 = Snprintf(NULL, 0, EASTL_CHAR32("%I32s"), EASTL_CHAR32("abc"));
+		Sprintf(buffer, EASTL_CHAR32("snprintf(NULL, \"abc\") == %d\n"), n4);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("snprintf(NULL, \"abc\") == 3\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
 
-		int n5 = Snprintf(NULL, 100, EA_CHAR32("%I32s"), EA_CHAR32("abc"));
-		Sprintf(buffer, EA_CHAR32("snprintf(NULL, \"abc\") == %d\n"), n5);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("snprintf(NULL, \"abc\") == 3\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
+		int n5 = Snprintf(NULL, 100, EASTL_CHAR32("%I32s"), EASTL_CHAR32("abc"));
+		Sprintf(buffer, EASTL_CHAR32("snprintf(NULL, \"abc\") == %d\n"), n5);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("snprintf(NULL, \"abc\") == 3\n")) == 0); // VC++ fails this, as it's version of snprintf doesn't use C99 standard snprintf return value conventions.
 	}
 
 
@@ -2252,7 +2252,7 @@ static int TestSprintf32(int unused = 0, ...)
 						#define INT  255
 						#define UNS (~0)
 
-						Sprintf(format, EA_CHAR32("%%5s |%s6d |%s6o |%s6x |%s6X |%s6u |"), prefix, prefix, prefix, prefix, prefix);
+						Sprintf(format, EASTL_CHAR32("%%5s |%s6d |%s6o |%s6x |%s6X |%s6u |"), prefix, prefix, prefix, prefix, prefix);
 						Sprintf(buffer[n], format, prefix, DEC, INT, INT, INT, UNS);
 						n++;
 					}
@@ -2260,22 +2260,22 @@ static int TestSprintf32(int unused = 0, ...)
 			}
 		}
 
-		EATEST_VERIFY(Strcmp(buffer[ 0], EA_CHAR32("%-+#0 |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 1], EA_CHAR32(" %-+# |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 2], EA_CHAR32(" %-+0 |-123   |377    |ff     |FF     |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 3], EA_CHAR32("  %-+ |-123   |377    |ff     |FF     |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 4], EA_CHAR32(" %-#0 |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 5], EA_CHAR32("  %-# |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 6], EA_CHAR32("  %-0 |-123   |377    |ff     |FF     |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 7], EA_CHAR32("   %- |-123   |377    |ff     |FF     |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 8], EA_CHAR32(" %+#0 |-00123 |000377 |0x00ff |0X00FF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[ 9], EA_CHAR32("  %+# |  -123 |  0377 |  0xff |  0XFF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[10], EA_CHAR32("  %+0 |-00123 |000377 |0000ff |0000FF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[11], EA_CHAR32("   %+ |  -123 |   377 |    ff |    FF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[12], EA_CHAR32("  %#0 |-00123 |000377 |0x00ff |0X00FF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[13], EA_CHAR32("   %# |  -123 |  0377 |  0xff |  0XFF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[14], EA_CHAR32("   %0 |-00123 |000377 |0000ff |0000FF |4294967295 |")) == 0);
-		EATEST_VERIFY(Strcmp(buffer[15], EA_CHAR32("    % |  -123 |   377 |    ff |    FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 0], EASTL_CHAR32("%-+#0 |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 1], EASTL_CHAR32(" %-+# |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 2], EASTL_CHAR32(" %-+0 |-123   |377    |ff     |FF     |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 3], EASTL_CHAR32("  %-+ |-123   |377    |ff     |FF     |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 4], EASTL_CHAR32(" %-#0 |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 5], EASTL_CHAR32("  %-# |-123   |0377   |0xff   |0XFF   |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 6], EASTL_CHAR32("  %-0 |-123   |377    |ff     |FF     |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 7], EASTL_CHAR32("   %- |-123   |377    |ff     |FF     |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 8], EASTL_CHAR32(" %+#0 |-00123 |000377 |0x00ff |0X00FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[ 9], EASTL_CHAR32("  %+# |  -123 |  0377 |  0xff |  0XFF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[10], EASTL_CHAR32("  %+0 |-00123 |000377 |0000ff |0000FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[11], EASTL_CHAR32("   %+ |  -123 |   377 |    ff |    FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[12], EASTL_CHAR32("  %#0 |-00123 |000377 |0x00ff |0X00FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[13], EASTL_CHAR32("   %# |  -123 |  0377 |  0xff |  0XFF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[14], EASTL_CHAR32("   %0 |-00123 |000377 |0000ff |0000FF |4294967295 |")) == 0);
+		EATEST_VERIFY(Strcmp(buffer[15], EASTL_CHAR32("    % |  -123 |   377 |    ff |    FF |4294967295 |")) == 0);
 
 	}
 
@@ -2284,32 +2284,32 @@ static int TestSprintf32(int unused = 0, ...)
 		char32_t        buffer[256];
 		const char32_t* pExpected;
 
-		Sprintf(buffer, EA_CHAR32("%e"), 1234567.8); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		pExpected = EA_CHAR32("1.234568e+06"); 
+		Sprintf(buffer, EASTL_CHAR32("%e"), 1234567.8); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		pExpected = EASTL_CHAR32("1.234568e+06"); 
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("%f"), 1234567.8);
-		pExpected = EA_CHAR32("1234567.800000");
+		Sprintf(buffer, EASTL_CHAR32("%f"), 1234567.8);
+		pExpected = EASTL_CHAR32("1234567.800000");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("%g"), 1234567.8); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		pExpected = EA_CHAR32("1.23457e+06");
+		Sprintf(buffer, EASTL_CHAR32("%g"), 1234567.8); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		pExpected = EASTL_CHAR32("1.23457e+06");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("%g"), 123.456);
-		pExpected = EA_CHAR32("123.456");
+		Sprintf(buffer, EASTL_CHAR32("%g"), 123.456);
+		pExpected = EASTL_CHAR32("123.456");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("%g"), 1000000.0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		pExpected = EA_CHAR32("1e+06"); 
+		Sprintf(buffer, EASTL_CHAR32("%g"), 1000000.0); // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		pExpected = EASTL_CHAR32("1e+06"); 
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("%g"), 10.0);
-		pExpected = EA_CHAR32("10");
+		Sprintf(buffer, EASTL_CHAR32("%g"), 10.0);
+		pExpected = EASTL_CHAR32("10");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("%g"), 0.02);
-		pExpected = EA_CHAR32("0.02");
+		Sprintf(buffer, EASTL_CHAR32("%g"), 0.02);
+		pExpected = EASTL_CHAR32("0.02");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 	}
 
@@ -2318,69 +2318,69 @@ static int TestSprintf32(int unused = 0, ...)
 		char32_t        buffer[64];
 		const char32_t* pExpected;
 
-		Sprintf(buffer, EA_CHAR32("%'u"), 123456789);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("123,456,789")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'u"), 123456789);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("123,456,789")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'d"), -123456789);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("-123,456,789")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'d"), -123456789);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("-123,456,789")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'I8u"), 123);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("123")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'I8u"), 123);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("123")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'I16u"), 12345);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("12,345")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'I16u"), 12345);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("12,345")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'I16d"), -12345);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("-12,345")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'I16d"), -12345);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("-12,345")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'I32u"), 12345678);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("12,345,678")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'I32u"), 12345678);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("12,345,678")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'I32d"), -12345678);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("-12,345,678")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'I32d"), -12345678);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("-12,345,678")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%20I32d"), -12345678);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("           -12345678")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%20I32d"), -12345678);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("           -12345678")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'20I32d"), -12345678); // Verify that the , chars count towards the field width.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("         -12,345,678")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'20I32d"), -12345678); // Verify that the , chars count towards the field width.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("         -12,345,678")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'I32x"), 0x12345678);  // ' has no effect on hex formatting.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("12345678")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'I32x"), 0x12345678);  // ' has no effect on hex formatting.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("12345678")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'I64u"), UINT64_C(1234999995678));
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("1,234,999,995,678")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'I64u"), UINT64_C(1234999995678));
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("1,234,999,995,678")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'I64d"), INT64_C(-1234599999678));
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("-1,234,599,999,678")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'I64d"), INT64_C(-1234599999678));
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("-1,234,599,999,678")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'I64x"), UINT64_C(0x1234567812345678));  // ' has no effect on hex formatting.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("1234567812345678")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'I64x"), UINT64_C(0x1234567812345678));  // ' has no effect on hex formatting.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("1234567812345678")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'f"), 123456.234);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("123,456.234000")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%'f"), 123456.234);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("123,456.234000")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%'e"), 1234567.8);   // ' has no effect on %e formatting.
-		pExpected = EA_CHAR32("1.234568e+06");
+		Sprintf(buffer, EASTL_CHAR32("%'e"), 1234567.8);   // ' has no effect on %e formatting.
+		pExpected = EASTL_CHAR32("1.234568e+06");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("%'g"), 1234.54);     // In some cases %g acts like %f.
-		pExpected = EA_CHAR32("1,234.54");
+		Sprintf(buffer, EASTL_CHAR32("%'g"), 1234.54);     // In some cases %g acts like %f.
+		pExpected = EASTL_CHAR32("1,234.54");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("%'g"), 1234567.8);   // In some cases %g acts like %f.
-		pExpected = EA_CHAR32("1.23457e+06");
+		Sprintf(buffer, EASTL_CHAR32("%'g"), 1234567.8);   // In some cases %g acts like %f.
+		pExpected = EASTL_CHAR32("1.23457e+06");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 	}
 
 	{
 		char32_t buffer[256];
 
-		Sprintf(buffer, EA_CHAR32("%hhu"), UCHAR_MAX + 2);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("1")) == 0); // VC++ fails this, as it doesn't implement the C99 standard %hh modifier.
+		Sprintf(buffer, EASTL_CHAR32("%hhu"), UCHAR_MAX + 2);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("1")) == 0); // VC++ fails this, as it doesn't implement the C99 standard %hh modifier.
 
-		Sprintf(buffer, EA_CHAR32("%hu"), USHRT_MAX + 2);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("1")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%hu"), USHRT_MAX + 2);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("1")) == 0);
 	}
 
 
@@ -2388,24 +2388,24 @@ static int TestSprintf32(int unused = 0, ...)
 		char32_t        buffer[128];
 		const char32_t* pExpected;
 
-		Sprintf(buffer, EA_CHAR32("%5.s"), EA_WCHAR("xyz"));
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("     ")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%5.s"), EA_WCHAR("xyz"));
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("     ")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%5.f"), 33.3);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("   33")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%5.f"), 33.3);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("   33")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%8.e"), 33.3e7);                 // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("   3e+08")) == 0); 
+		Sprintf(buffer, EASTL_CHAR32("%8.e"), 33.3e7);                 // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("   3e+08")) == 0); 
 
-		Sprintf(buffer, EA_CHAR32("%8.E"), 33.3e7);                 // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("   3E+08")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%8.E"), 33.3e7);                 // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("   3E+08")) == 0);
 
-		Sprintf(buffer, EA_CHAR32("%.g"), 33.3);                    // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		pExpected = EA_CHAR32("3e+01");
+		Sprintf(buffer, EASTL_CHAR32("%.g"), 33.3);                    // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		pExpected = EASTL_CHAR32("3e+01");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 
-		Sprintf(buffer, EA_CHAR32("%.G"), 33.3);                    // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
-		pExpected = EA_CHAR32("3E+01");
+		Sprintf(buffer, EASTL_CHAR32("%.G"), 33.3);                    // VC++ sprintf would fail this, as it uses 3 exponent digits, but the Standard says to print no more than 2 unless necessary.
+		pExpected = EASTL_CHAR32("3E+01");
 		EATEST_VERIFY_F(Strcmp(buffer, pExpected) == 0, "\n   Expected: %I32s\n   Actual:   %I32s", pExpected, buffer); 
 	}
 
@@ -2415,32 +2415,32 @@ static int TestSprintf32(int unused = 0, ...)
 		int      precision;
 
 		precision = 0;
-		Sprintf(buffer, EA_CHAR32("%.*g"), precision, 3.3);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("3")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%.*g"), precision, 3.3);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("3")) == 0);
 
 		precision = 0;
-		Sprintf(buffer, EA_CHAR32("%.*G"), precision, 3.3);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("3")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%.*G"), precision, 3.3);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("3")) == 0);
 
 		precision = 0;
-		Sprintf(buffer, EA_CHAR32("%7.*G"), precision, 3.33);
-		EATEST_VERIFY(Strcmp(buffer,EA_CHAR32("      3")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%7.*G"), precision, 3.33);
+		EATEST_VERIFY(Strcmp(buffer,EASTL_CHAR32("      3")) == 0);
 
 		precision = 3;
-		Sprintf(buffer, EA_CHAR32("%04.*o"), precision, 33);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32(" 041")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%04.*o"), precision, 33);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32(" 041")) == 0);
 
 		precision = 7;
-		Sprintf(buffer, EA_CHAR32("%09.*u"), precision, 33);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32("  0000033")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%09.*u"), precision, 33);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32("  0000033")) == 0);
 
 		precision = 3;
-		Sprintf(buffer, EA_CHAR32("%04.*x"), precision, 33);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32(" 021")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%04.*x"), precision, 33);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32(" 021")) == 0);
 
 		precision = 3;
-		Sprintf(buffer, EA_CHAR32("%04.*X"), precision, 33);
-		EATEST_VERIFY(Strcmp(buffer, EA_CHAR32(" 021")) == 0);
+		Sprintf(buffer, EASTL_CHAR32("%04.*X"), precision, 33);
+		EATEST_VERIFY(Strcmp(buffer, EASTL_CHAR32(" 021")) == 0);
 	}
 
 	{
@@ -2458,11 +2458,11 @@ static int TestSprintf32(int unused = 0, ...)
 		value[kSourceSize - 1] = 0;
 		comparison[kSourceSize - 1] = 0;
 
-		EA::StdC::Snprintf(destination, kOutputSize, EA_CHAR32("%I8s"), value);
+		EA::StdC::Snprintf(destination, kOutputSize, EASTL_CHAR32("%I8s"), value);
 		EATEST_VERIFY(Strcmp(destination, comparison) == 0);
 
-		EA::StdC::Snprintf(destination, kOutputSize, EA_CHAR32("%.10I8s"), value);
-		EATEST_VERIFY(Strcmp(destination, EA_CHAR32("0123456789")) == 0);
+		EA::StdC::Snprintf(destination, kOutputSize, EASTL_CHAR32("%.10I8s"), value);
+		EATEST_VERIFY(Strcmp(destination, EASTL_CHAR32("0123456789")) == 0);
 	}
 
 	return nErrorCount;
@@ -2480,11 +2480,11 @@ static int TestDrintf8()
 
 		Dprintf("Begin Dprintf (debug output printf) testing...\n");
 
-		// EASTDC_API int Vdprintf(const char* EA_RESTRICT pFormat, va_list arguments);
-		// EASTDC_API int Dprintf(const char* EA_RESTRICT pFormat, ...);
+		// EASTDC_API int Vdprintf(const char* EASTL_RESTRICT pFormat, va_list arguments);
+		// EASTDC_API int Dprintf(const char* EASTL_RESTRICT pFormat, ...);
 		eastl::string8 sBuffer;
 		for(eastl_size_t i = 0; i < 1024; i++) // This size should be > than the size of the buffer(s) used in PlatformLogWriter8, though those buffer sizes aren't publicly exposed.
-			sBuffer.push_back('a' + (char)(i % 26));
+			sBuffer.pushBack('a' + (char)(i % 26));
 
 		EA::UnitTest::Rand rand((uint32_t)EA::StdC::GetTime());
 
@@ -2497,10 +2497,10 @@ static int TestDrintf8()
 		}
 
 		#if EASTDC_PRINTF_DEBUG_ENABLED
-			// EASTDC_API int Fprintf(FILE* EA_RESTRICT pFile, const char* EA_RESTRICT pFormat, ...);
-			// EASTDC_API int Printf(const char* EA_RESTRICT pFormat, ...);
-			// EASTDC_API int Vfprintf(FILE* EA_RESTRICT pFile, const char* EA_RESTRICT pFormat, va_list arguments);
-			// EASTDC_API int Vprintf(const char* EA_RESTRICT pFormat, va_list arguments);
+			// EASTDC_API int Fprintf(FILE* EASTL_RESTRICT pFile, const char* EASTL_RESTRICT pFormat, ...);
+			// EASTDC_API int Printf(const char* EASTL_RESTRICT pFormat, ...);
+			// EASTDC_API int Vfprintf(FILE* EASTL_RESTRICT pFile, const char* EASTL_RESTRICT pFormat, va_list arguments);
+			// EASTDC_API int Vprintf(const char* EASTL_RESTRICT pFormat, va_list arguments);
 			result = Printf("%s", "Printf test (EASTDC_PRINTF_DEBUG_ENABLED).\n");
 			EATEST_VERIFY(result > 0);
 
@@ -2591,22 +2591,22 @@ static int TestOsprintf16()
 		int      result;
 
 		memset(buffer, 0, sizeof(buffer));
-		result = OSprintf(buffer, EA_CHAR16("%0:d"), (int)0);
-		EATEST_VERIFY((result == 1) && Strcmp(buffer, EA_CHAR16("0")) == 0);
+		result = OSprintf(buffer, EASTL_CHAR16("%0:d"), (int)0);
+		EATEST_VERIFY((result == 1) && Strcmp(buffer, EASTL_CHAR16("0")) == 0);
 
 		memset(buffer, 0, sizeof(buffer));
-		result = OSprintf(buffer, EA_CHAR16("%2:1.0f %3:d %1:c"), (char)'3', (float)1.f, (int)2);
-		EATEST_VERIFY((result == 5) && Strcmp(buffer, EA_CHAR16("1 2 3")) == 0);
+		result = OSprintf(buffer, EASTL_CHAR16("%2:1.0f %3:d %1:c"), (char)'3', (float)1.f, (int)2);
+		EATEST_VERIFY((result == 5) && Strcmp(buffer, EASTL_CHAR16("1 2 3")) == 0);
 
 		// Test 0-based ordering
 		memset(buffer, 0, sizeof(buffer));
-		result = OSprintf(buffer, EA_CHAR16("%1:1.0f %2:d %0:c"), (char)'3', (float)1.f, (int)2);
-		EATEST_VERIFY((result == 5) && Strcmp(buffer, EA_CHAR16("1 2 3")) == 0);
+		result = OSprintf(buffer, EASTL_CHAR16("%1:1.0f %2:d %0:c"), (char)'3', (float)1.f, (int)2);
+		EATEST_VERIFY((result == 5) && Strcmp(buffer, EASTL_CHAR16("1 2 3")) == 0);
 
 		// Test format limit (currently 21 spans)
 		memset(buffer, 0, sizeof(buffer));
-		result = OSprintf(buffer, EA_CHAR16(" %0:d %1:d %2:d %3:d %4:d %5:d %6:d %7:d %8:d %9:d        "), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-		EATEST_VERIFY((result == 28) && Strcmp(buffer, EA_CHAR16(" 0 1 2 3 4 5 6 7 8 9        ")) == 0);
+		result = OSprintf(buffer, EASTL_CHAR16(" %0:d %1:d %2:d %3:d %4:d %5:d %6:d %7:d %8:d %9:d        "), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+		EATEST_VERIFY((result == 28) && Strcmp(buffer, EASTL_CHAR16(" 0 1 2 3 4 5 6 7 8 9        ")) == 0);
 
 		// Test format overflow
 		// Tests below are disabled by default because they trigger runtime asserts which break auto-testing.
@@ -2615,29 +2615,29 @@ static int TestOsprintf16()
 		if(EA::UnitTest::GetInteractive())
 		{
 			memset(buffer, 0, sizeof(buffer));
-			result = OSprintf(buffer, EA_CHAR16(" %0:d %1:d %2:d %3:d %4:d %5:d %6:d %7:d %8:d %9:d %9:d "), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9);
+			result = OSprintf(buffer, EASTL_CHAR16(" %0:d %1:d %2:d %3:d %4:d %5:d %6:d %7:d %8:d %9:d %9:d "), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9);
 			EATEST_VERIFY(result == -1);
 
 			memset(buffer, 0, sizeof(buffer));
-			result = OSprintf(buffer, EA_CHAR16("%00000000000000000000:f"), 0.f);
+			result = OSprintf(buffer, EASTL_CHAR16("%00000000000000000000:f"), 0.f);
 			EATEST_VERIFY(result == -1);
 
 			memset(buffer, 0, sizeof(buffer));
-			result = OSprintf(buffer, EA_CHAR16("%0:000000000000000000f"), 0.f);
+			result = OSprintf(buffer, EASTL_CHAR16("%0:000000000000000000f"), 0.f);
 			EATEST_VERIFY(result == -1);
 
 			memset(buffer, 0, sizeof(buffer));
-			result = OSprintf(buffer, EA_CHAR16("%0:.000000000000000000f"), 0.f);
+			result = OSprintf(buffer, EASTL_CHAR16("%0:.000000000000000000f"), 0.f);
 			EATEST_VERIFY(result == -1);
 
 			memset(buffer, 0, sizeof(buffer));
-			result = OSprintf(buffer, EA_CHAR16("%000000000000000000:000000000000000000.000000000000000000f"), 0.f);
+			result = OSprintf(buffer, EASTL_CHAR16("%000000000000000000:000000000000000000.000000000000000000f"), 0.f);
 			EATEST_VERIFY(result == -1);
 		}
 
 		// Test OVsnprintf capacity limits
 		memset(buffer, 0, sizeof(buffer));
-		result = OSnprintf(buffer, 0, EA_CHAR16("%2:1.0f %3:d %1:c"), (char)'3', (float)1.f, (int)2);
+		result = OSnprintf(buffer, 0, EASTL_CHAR16("%2:1.0f %3:d %1:c"), (char)'3', (float)1.f, (int)2);
 		EATEST_VERIFY((result == 5) && (buffer[0] == 0));
 	}
 
@@ -2656,22 +2656,22 @@ static int TestOsprintf32()
 		int      result;
 
 		memset(buffer, 0, sizeof(buffer));
-		result = OSprintf(buffer, EA_CHAR32("%0:d"), (int)0);
-		EATEST_VERIFY((result == 1) && Strcmp(buffer, EA_CHAR32("0")) == 0);
+		result = OSprintf(buffer, EASTL_CHAR32("%0:d"), (int)0);
+		EATEST_VERIFY((result == 1) && Strcmp(buffer, EASTL_CHAR32("0")) == 0);
 
 		memset(buffer, 0, sizeof(buffer));
-		result = OSprintf(buffer, EA_CHAR32("%2:1.0f %3:d %1:c"), (char)'3', (float)1.f, (int)2);
-		EATEST_VERIFY((result == 5) && Strcmp(buffer, EA_CHAR32("1 2 3")) == 0);
+		result = OSprintf(buffer, EASTL_CHAR32("%2:1.0f %3:d %1:c"), (char)'3', (float)1.f, (int)2);
+		EATEST_VERIFY((result == 5) && Strcmp(buffer, EASTL_CHAR32("1 2 3")) == 0);
 
 		// Test 0-based ordering
 		memset(buffer, 0, sizeof(buffer));
-		result = OSprintf(buffer, EA_CHAR32("%1:1.0f %2:d %0:c"), (char)'3', (float)1.f, (int)2);
-		EATEST_VERIFY((result == 5) && Strcmp(buffer, EA_CHAR32("1 2 3")) == 0);
+		result = OSprintf(buffer, EASTL_CHAR32("%1:1.0f %2:d %0:c"), (char)'3', (float)1.f, (int)2);
+		EATEST_VERIFY((result == 5) && Strcmp(buffer, EASTL_CHAR32("1 2 3")) == 0);
 
 		// Test format limit (currently 21 spans)
 		memset(buffer, 0, sizeof(buffer));
-		result = OSprintf(buffer, EA_CHAR32(" %0:d %1:d %2:d %3:d %4:d %5:d %6:d %7:d %8:d %9:d        "), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-		EATEST_VERIFY((result == 28) && Strcmp(buffer, EA_CHAR32(" 0 1 2 3 4 5 6 7 8 9        ")) == 0);
+		result = OSprintf(buffer, EASTL_CHAR32(" %0:d %1:d %2:d %3:d %4:d %5:d %6:d %7:d %8:d %9:d        "), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+		EATEST_VERIFY((result == 28) && Strcmp(buffer, EASTL_CHAR32(" 0 1 2 3 4 5 6 7 8 9        ")) == 0);
 
 		// Test format overflow
 		// Tests below are disabled by default because they trigger runtime asserts which break auto-testing.
@@ -2680,29 +2680,29 @@ static int TestOsprintf32()
 		if(EA::UnitTest::GetInteractive())
 		{
 			memset(buffer, 0, sizeof(buffer));
-			result = OSprintf(buffer, EA_CHAR32(" %0:d %1:d %2:d %3:d %4:d %5:d %6:d %7:d %8:d %9:d %9:d "), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9);
+			result = OSprintf(buffer, EASTL_CHAR32(" %0:d %1:d %2:d %3:d %4:d %5:d %6:d %7:d %8:d %9:d %9:d "), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9);
 			EATEST_VERIFY(result == -1);
 
 			memset(buffer, 0, sizeof(buffer));
-			result = OSprintf(buffer, EA_CHAR32("%00000000000000000000:f"), 0.f);
+			result = OSprintf(buffer, EASTL_CHAR32("%00000000000000000000:f"), 0.f);
 			EATEST_VERIFY(result == -1);
 
 			memset(buffer, 0, sizeof(buffer));
-			result = OSprintf(buffer, EA_CHAR32("%0:000000000000000000f"), 0.f);
+			result = OSprintf(buffer, EASTL_CHAR32("%0:000000000000000000f"), 0.f);
 			EATEST_VERIFY(result == -1);
 
 			memset(buffer, 0, sizeof(buffer));
-			result = OSprintf(buffer, EA_CHAR32("%0:.000000000000000000f"), 0.f);
+			result = OSprintf(buffer, EASTL_CHAR32("%0:.000000000000000000f"), 0.f);
 			EATEST_VERIFY(result == -1);
 
 			memset(buffer, 0, sizeof(buffer));
-			result = OSprintf(buffer, EA_CHAR32("%000000000000000000:000000000000000000.000000000000000000f"), 0.f);
+			result = OSprintf(buffer, EASTL_CHAR32("%000000000000000000:000000000000000000.000000000000000000f"), 0.f);
 			EATEST_VERIFY(result == -1);
 		}
 
 		// Test OVsnprintf capacity limits
 		memset(buffer, 0, sizeof(buffer));
-		result = OSnprintf(buffer, 0, EA_CHAR32("%2:1.0f %3:d %1:c"), (char)'3', (float)1.f, (int)2);
+		result = OSnprintf(buffer, 0, EASTL_CHAR32("%2:1.0f %3:d %1:c"), (char)'3', (float)1.f, (int)2);
 		EATEST_VERIFY((result == 5) && (buffer[0] == 0));
 	}
 
@@ -2718,8 +2718,6 @@ static int TestOsprintf32()
 int TestSprintf()
 {
 	int nErrorCount(0);
-
-	EA::UnitTest::Report("TestSprintf\n");
 
 	// Regular sprintf
 	nErrorCount += TestSprintf8();

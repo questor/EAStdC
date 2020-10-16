@@ -86,7 +86,7 @@ namespace StdC
 	}
 
 
-	EASTDC_EAMEMORY_DECL char* Memcpy(void* EA_RESTRICT pDestination, const void* EA_RESTRICT pSource, size_t nByteCount)
+	EASTDC_EAMEMORY_DECL char* Memcpy(void* EASTL_RESTRICT pDestination, const void* EASTL_RESTRICT pSource, size_t nByteCount)
 	{
 		EA_ASSERT((pSource      >= (const uint8_t*)pDestination + nByteCount) || // Verify the memory doesn't overlap.
 				  (pDestination >= (const uint8_t*)pSource      + nByteCount));
@@ -97,7 +97,7 @@ namespace StdC
 	}
 
 
-	EASTDC_EAMEMORY_DECL char* MemcpyC(void* EA_RESTRICT pDestination, const void* EA_RESTRICT pSource, size_t nByteCount)
+	EASTDC_EAMEMORY_DECL char* MemcpyC(void* EASTL_RESTRICT pDestination, const void* EASTL_RESTRICT pSource, size_t nByteCount)
 	{
 		EA_ASSERT((pSource      >= (const uint8_t*)pDestination + nByteCount) || // Verify the memory doesn't overlap.
 				  (pDestination >= (const uint8_t*)pSource      + nByteCount));
@@ -106,7 +106,7 @@ namespace StdC
 	}
 
 
-	EASTDC_EAMEMORY_DECL char* MemcpyS(void* EA_RESTRICT pDestination, const void* EA_RESTRICT pSource, size_t nByteCount)
+	EASTDC_EAMEMORY_DECL char* MemcpyS(void* EASTL_RESTRICT pDestination, const void* EASTL_RESTRICT pSource, size_t nByteCount)
 	{
 		EA_ASSERT((pSource      >= (const uint8_t*)pDestination + nByteCount) || // Verify the memory doesn't overlap.
 				  (pDestination >= (const uint8_t*)pSource      + nByteCount));
@@ -116,7 +116,7 @@ namespace StdC
 	}
 
 
-	EASTDC_EAMEMORY_DECL char* Memcpy128(void* EA_RESTRICT pDestination, const void* EA_RESTRICT pSource, size_t nByteCount)
+	EASTDC_EAMEMORY_DECL char* Memcpy128(void* EASTL_RESTRICT pDestination, const void* EASTL_RESTRICT pSource, size_t nByteCount)
 	{
 		EA_ASSERT((pSource      >= (const uint8_t*)pDestination + nByteCount) || // Verify the memory doesn't overlap.
 				  (pDestination >= (const uint8_t*)pSource      + nByteCount));
@@ -127,7 +127,7 @@ namespace StdC
 	}
 
 
-	EASTDC_EAMEMORY_DECL char* Memcpy128C(void* EA_RESTRICT pDestination, const void* EA_RESTRICT pSource, size_t nByteCount)
+	EASTDC_EAMEMORY_DECL char* Memcpy128C(void* EASTL_RESTRICT pDestination, const void* EASTL_RESTRICT pSource, size_t nByteCount)
 	{
 		EA_ASSERT((pSource      >= (const uint8_t*)pDestination + nByteCount) || // Verify the memory doesn't overlap.
 				  (pDestination >= (const uint8_t*)pSource      + nByteCount));

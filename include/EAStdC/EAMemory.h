@@ -69,7 +69,7 @@
 #define EASTDC_EAMEMORY_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/internal/Config.h>
 
 
@@ -94,7 +94,7 @@ EA_DISABLE_ALL_VC_WARNINGS()
 	#include <intrin.h>
 #endif
 
-#if EA_SSE
+#if EASTL_SSE
 	#include <xmmintrin.h>
 #endif
 
@@ -108,75 +108,11 @@ namespace EA
 namespace StdC
 {
 
-#if EABASE_VERSION_N <= 20602
 	#if   defined(EA_PROCESSOR_X86)
 		typedef uint32_t machine_word_t;
 		const size_t     kMachineWordSize     = sizeof(machine_word_t);
 		const size_t     kMachineWordSizeMask = sizeof(machine_word_t) - 1;
-		const size_t     kCacheLineSize       = 32;  // This is the minimum possible value.
-		const size_t     kCacheLineSizeMask   = 31;
-
-		#if EA_SSE
-			#define EA_CACHE_PREFETCH_128(addr)  _mm_prefetch((const char*)(uintptr_t)(addr), _MM_HINT_NTA)
-			#define EA_CACHE_ZERO_128(addr)      memset(addr, 0, 128)
-		#else
-			#define EA_CACHE_PREFETCH_128(addr)  // Need to support _mm_prefetch.
-			#define EA_CACHE_ZERO_128(addr)      memset(addr, 0, 128)
-		#endif
-
-	#elif defined(EA_PROCESSOR_X86_64)
-		typedef uint64_t machine_word_t;
-		const size_t     kMachineWordSize     = sizeof(machine_word_t);
-		const size_t     kMachineWordSizeMask = sizeof(machine_word_t) - 1;
-		const size_t     kCacheLineSize       = 64;  // This is the minimum possible value
-		const size_t     kCacheLineSizeMask   = 63;
-
-		#define EA_CACHE_PREFETCH_128(addr)  _mm_prefetch((const char*)(uintptr_t)(addr), _MM_HINT_NTA)
-		#define EA_CACHE_ZERO_128(addr)      memset(addr, 0, 128)
-
-	#elif defined(EA_PROCESSOR_ARM)
-		typedef uint32_t machine_word_t;
-		const size_t     kMachineWordSize     = sizeof(machine_word_t);
-		const size_t     kMachineWordSizeMask = sizeof(machine_word_t) - 1;
-		const size_t     kCacheLineSize       = 32; // This varies between implementations and is usually 32 or 64.
-		const size_t     kCacheLineSizeMask   = 31;
-
-		// Modern ARM CPUs have auto-prefetch functionality, though it's 
-		// not necessarily smart and has to be enabled by the OS.
-		#if defined(__GNUC__) && (__GNUC__ >= 4)
-			#define EA_CACHE_PREFETCH_128(addr) __builtin_prefetch(addr)
-		#else
-			#define EA_CACHE_PREFETCH_128(addr)
-		#endif
-		#define EA_CACHE_ZERO_128(addr)      memset(addr, 0, 128)
-
-	#elif (EA_PLATFORM_WORD_SIZE == 4)
-		typedef uint32_t machine_word_t;
-		const size_t     kMachineWordSize     = sizeof(machine_word_t);
-		const size_t     kMachineWordSizeMask = sizeof(machine_word_t) - 1;
-		const size_t     kCacheLineSize       = 32;  // This is the minimum possible value
-		const size_t     kCacheLineSizeMask   = 31;
-
-		#define EA_CACHE_PREFETCH_128(addr)
-		#define EA_CACHE_ZERO_128(addr)      memset(addr, 0, 128)
-
-	#else
-		typedef uint64_t machine_word_t;
-		const size_t     kMachineWordSize     = sizeof(machine_word_t);
-		const size_t     kMachineWordSizeMask = sizeof(machine_word_t) - 1;
-		const size_t     kCacheLineSize       = 64;  // This is the minimum possible value
-		const size_t     kCacheLineSizeMask   = 63;
-
-		#define EA_CACHE_PREFETCH_128(addr)
-		#define EA_CACHE_ZERO_128(addr)      memset(addr, 0, 128)
-
-	#endif
-#else
-	#if   defined(EA_PROCESSOR_X86)
-		typedef uint32_t machine_word_t;
-		const size_t     kMachineWordSize     = sizeof(machine_word_t);
-		const size_t     kMachineWordSizeMask = sizeof(machine_word_t) - 1;
-		#if EA_SSE
+		#if EASTL_SSE
 			#define EA_CACHE_PREFETCH_128(addr)  _mm_prefetch((const char*)(uintptr_t)(addr), _MM_HINT_NTA)
 			#define EA_CACHE_ZERO_128(addr)      memset(addr, 0, 128)
 		#else
@@ -218,11 +154,6 @@ namespace StdC
 
 	const size_t     kCacheLineSize       = EA_CACHE_LINE_SIZE;  
 	const size_t     kCacheLineSizeMask   = (EA_CACHE_LINE_SIZE-1);
-#endif
-
-
-   
-
 
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -347,14 +278,14 @@ namespace StdC
 	/// must be writable. 
 	/// Works with uncacheable memory, such as video memory. 
 	///
-	EASTDC_API char* Memcpy(void* EA_RESTRICT pDestination, const void* EA_RESTRICT pSource, size_t nByteCount);
+	EASTDC_API char* Memcpy(void* EASTL_RESTRICT pDestination, const void* EASTL_RESTRICT pSource, size_t nByteCount);
 
 	// Cacheable memory copy
 	// Works only with cacheable memory (i.e. conventional system memory).
 	// The source and destination memory must not overlap.
 	// Cannot be relied on to work with uncachable memory, such as video memory.
 	// There are no alignment restrictions on either pDestination or pSource.
-	EASTDC_API char* MemcpyC(void* EA_RESTRICT pDestination, const void* EA_RESTRICT pSource, size_t nByteCount);
+	EASTDC_API char* MemcpyC(void* EASTL_RESTRICT pDestination, const void* EASTL_RESTRICT pSource, size_t nByteCount);
 
 	// Streaming memcpy
 	// This function copies memory from source to destination without filling the cache with the memory.
@@ -363,7 +294,7 @@ namespace StdC
 	// Works on both cacheable and uncacheable memory.
 	// The source and destination memory must not overlap.
 	// There are no alignment restrictions on either pDestination or pSource.
-	EASTDC_API char* MemcpyS(void* EA_RESTRICT pDestination, const void* EA_RESTRICT pSource, size_t nByteCount);
+	EASTDC_API char* MemcpyS(void* EASTL_RESTRICT pDestination, const void* EASTL_RESTRICT pSource, size_t nByteCount);
 
 
 	///////////////////////////////////////////////////////////////////////////
@@ -379,14 +310,14 @@ namespace StdC
 	/// that allocated with VirtualAlloc(..., PAGE_NOCACHE) or VirtualAlloc(..., PAGE_WRITECOMBINE).
 	/// In fact, on XBox 360 this function is the same as XMemCpy128.
 	///
-	EASTDC_API char* Memcpy128(void* EA_RESTRICT pDestination, const void* EA_RESTRICT pSource, size_t nByteCount);
+	EASTDC_API char* Memcpy128(void* EASTL_RESTRICT pDestination, const void* EASTL_RESTRICT pSource, size_t nByteCount);
 
 	// cacheable 128 byte memcpy
 	// This function is useful for higher performance memory copies when the requirements can be met.
 	// The address pointed to by pDestination must be aligned on a 128-byte boundary, and uint8Count must be a multiple of 128.
 	// Works only with cacheable memory (i.e. conventional system memory).
 	// The source and destination memory must not overlap.
-	EASTDC_API char* Memcpy128C(void* EA_RESTRICT pDestination, const void* EA_RESTRICT pSource, size_t nByteCount);
+	EASTDC_API char* Memcpy128C(void* EASTL_RESTRICT pDestination, const void* EASTL_RESTRICT pSource, size_t nByteCount);
 
 
 	///////////////////////////////////////////////////////////////////////////
@@ -425,7 +356,7 @@ namespace StdC
 	#if EA_WCHAR_UNIQUE
 		inline const wchar_t* MemchrW(const wchar_t* p, wchar_t c, size_t n)
 		{
-			#if (EA_WCHAR_SIZE == 2)
+			#if (EASTL_WCHAR_SIZE == 2)
 				return reinterpret_cast<const wchar_t*>(Memchr16(reinterpret_cast<const char16_t*>(p), (char16_t)c, n));
 			#else
 				return reinterpret_cast<const wchar_t*>(Memchr32(reinterpret_cast<const char32_t*>(p), (char32_t)c, n));
@@ -592,7 +523,7 @@ namespace StdC
 	template <size_t n>
 	struct StaticMemory
 	{
-		EA_PREFIX_ALIGN(8) uint64_t mMemory[(n + 7) / 8];
+		EASTL_PREFIX_ALIGN(8) uint64_t mMemory[(n + 7) / 8];
 		inline void* Memory() { return mMemory; }
 	};
 

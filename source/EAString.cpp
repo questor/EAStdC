@@ -444,7 +444,7 @@ static const uint32_t utf8MaximumValueTable[] =
 const uint32_t kUnicodeReplacementChar	= 0x0000fffd;
 const uint32_t kUnicodeInvalidDecode = 0xffffffffu;
 
-EA_FORCE_INLINE uint32_t DecodeCodePoint(const char*& pSourceStart, const char* pSourceEnd)
+EASTL_FORCE_INLINE uint32_t DecodeCodePoint(const char*& pSourceStart, const char* pSourceEnd)
 {
 	const char* pSource = pSourceStart;
 	uint32_t c = (uint8_t)*(pSource++);
@@ -497,7 +497,7 @@ EA_FORCE_INLINE uint32_t DecodeCodePoint(const char*& pSourceStart, const char* 
 	return c;
 }
 
-EA_FORCE_INLINE bool EncodeCodePoint(uint32_t c, char*& pDestStart, char* pDestEnd)
+EASTL_FORCE_INLINE bool EncodeCodePoint(uint32_t c, char*& pDestStart, char* pDestEnd)
 {
 	// Encode as UTF-8
 	if(c < 0x00000080u)
@@ -562,24 +562,28 @@ EA_FORCE_INLINE bool EncodeCodePoint(uint32_t c, char*& pDestStart, char* pDestE
 	}
 }
 
-EA_FORCE_INLINE uint32_t DecodeCodePoint(const char16_t*& pSourceStart, const char16_t* pSourceEnd)
+EASTL_FORCE_INLINE uint32_t DecodeCodePoint(const char16_t*& pSourceStart, const char16_t* pSourceEnd)
 {
+	EA_UNUSED(pSourceEnd);
 	return (uint32_t)*(pSourceStart++);
 }
 
-EA_FORCE_INLINE bool EncodeCodePoint(uint32_t c, char16_t*& pDestStart, char16_t* pDestEnd)
+EASTL_FORCE_INLINE bool EncodeCodePoint(uint32_t c, char16_t*& pDestStart, char16_t* pDestEnd)
 {
+	EA_UNUSED(pDestEnd);
 	*(pDestStart++) = static_cast<char16_t>(c);
 	return true;
 }
 
-EA_FORCE_INLINE uint32_t DecodeCodePoint(const char32_t*& pSourceStart, const char32_t* pSourceEnd)
+EASTL_FORCE_INLINE uint32_t DecodeCodePoint(const char32_t*& pSourceStart, const char32_t* pSourceEnd)
 {
+	EA_UNUSED(pSourceEnd);
 	return (uint32_t)*(pSourceStart++);
 }
 
-EA_FORCE_INLINE bool EncodeCodePoint(uint32_t c, char32_t*& pDestStart, char32_t* pDestEnd)
+EASTL_FORCE_INLINE bool EncodeCodePoint(uint32_t c, char32_t*& pDestStart, char32_t* pDestEnd)
 {
+	EA_UNUSED(pDestEnd);
 	*(pDestStart++) = static_cast<char32_t>(c);
 	return true;
 }

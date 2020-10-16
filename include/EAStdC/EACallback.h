@@ -74,7 +74,7 @@
 #define EASTDC_EACALLBACK_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/internal/Config.h>
 #include <EAStdC/EAStopwatch.h>
 #include <EAStdC/EARandom.h>
@@ -498,7 +498,7 @@ namespace EA
 				size_t      size() const                    { return (size_t)(mpEnd - mpBegin); }
 				value_type& operator[](size_t i)            { return mpBegin[i]; }
 				iterator    erase(iterator it);
-				iterator    push_back(value_type value);
+				iterator    pushBack(value_type value);
 
 			protected:
 				value_type* mpBegin;

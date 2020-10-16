@@ -9,10 +9,7 @@
 
 // EAMathHelp.h (or possibly the build file) would have set none or one of the 
 // following (usually none). If none were defined then we auto-detect.
-#if !defined(EAMATHHELP_MODE_SSE)     && \
-	!defined(EAMATHHELP_MODE_X86ASM)  && \
-	!defined(EAMATHHELP_MODE_REFERENCE)
-
+#if !defined(EAMATHHELP_MODE_SSE) && !defined(EAMATHHELP_MODE_X86ASM) && !defined(EAMATHHELP_MODE_REFERENCE)
 	#if !defined(EAMATHHELP_MODE_SSE) && defined(EA_PROCESSOR_X86_64) && defined(EA_COMPILER_MSVC)
 		#define EAMATHHELP_MODE_SSE 1
 	#elif !defined(EAMATHHELP_MODE_X86ASM) && defined(EA_PROCESSOR_X86) && defined(EA_ASM_STYLE_INTEL)
@@ -20,7 +17,6 @@
 	#else
 		#define EAMATHHELP_MODE_REFERENCE 1
 	#endif
-
 #endif
 
 #if EAMATHHELP_MODE_SSE
@@ -99,7 +95,7 @@ namespace StdC
 		// too awkward for the expression -- it will resort to good old slow-as-@&$
 		// fldcw + fistp.
 		inline int32_t TruncateToInt32(float32_t fValue) {
-			#if (defined(_MSC_VER) && (_MSC_VER < 1500)) || !EA_SSE2  // If using VC++ < VS2008 or if SSE2+ is not available...
+			#if (defined(_MSC_VER) && (_MSC_VER < 1500)) || !EASTL_SSE2  // If using VC++ < VS2008 or if SSE2+ is not available...
 				return _mm_cvttss_si32(_mm_set_ss(fValue));
 			#else
 				return (int32_t)fValue;
@@ -130,7 +126,7 @@ namespace StdC
 	#elif EAMATHHELP_MODE_X86ASM
 
 		inline uint32_t RoundToUint32(float32_t fValue) {
-			EA_PREFIX_ALIGN(8) int64_t v;
+			EASTL_PREFIX_ALIGN(8) int64_t v;
 			__asm {
 				fld fValue
 				fistp v

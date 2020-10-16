@@ -21,7 +21,7 @@
 
 
 #include <EAStdC/internal/Config.h>
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 EA_DISABLE_ALL_VC_WARNINGS()
 #include <stddef.h>
 EA_RESTORE_ALL_VC_WARNINGS()
@@ -67,7 +67,7 @@ namespace StdC
 	///
 	/// Notes:
 	///   This string hash hashes the characters, not the binary bytes. 
-	///   As a result, the hash of "hello" and EA_CHAR16("hello") will yield the 
+	///   As a result, the hash of "hello" and EASTL_CHAR16("hello") will yield the 
 	///   same result. 
 	///
 	/// Algorithm:

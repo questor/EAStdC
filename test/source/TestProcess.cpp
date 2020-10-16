@@ -33,17 +33,17 @@
 		size_t sizeError = (size_t)-1;
 
 		// Verify that nothing is found:
-		Strlcpy(name, "NameNonExisting", EAArrayCount(name));
+		Strlcpy(name, "NameNonExisting", EASTLArrayCount(name));
 		valueOut[0] = 0;
-		nRequiredStrlen = GetEnvironmentVar(name, valueOut, EAArrayCount(valueOut));
+		nRequiredStrlen = GetEnvironmentVar(name, valueOut, EASTLArrayCount(valueOut));
 		EATEST_VERIFY((nRequiredStrlen == sizeError) && (valueOut[0] == 0));
 
 		// Verify that something can be set, then found:
-		Strlcpy(name,  "NameExisting", EAArrayCount(name));
-		Strlcpy(valueIn, "ValueExisting", EAArrayCount(valueIn));
+		Strlcpy(name,  "NameExisting", EASTLArrayCount(name));
+		Strlcpy(valueIn, "ValueExisting", EASTLArrayCount(valueIn));
 		bResult = SetEnvironmentVar(name, valueIn);
 		EATEST_VERIFY(bResult);
-		nRequiredStrlen = GetEnvironmentVar(name, valueOut, EAArrayCount(valueOut));
+		nRequiredStrlen = GetEnvironmentVar(name, valueOut, EASTLArrayCount(valueOut));
 		EATEST_VERIFY((nRequiredStrlen == 13) && (Strcmp(valueIn, valueOut) == 0));
 
 		// Verify that a too-small output capacity is handled properly:
@@ -52,40 +52,40 @@
 		EATEST_VERIFY((nRequiredStrlen == 13) && (valueOut[3] == (T)-1));
 
 		// Verify that something can be reset, then found with the new value:
-		Strlcpy(valueIn, "ValueExistingNew", EAArrayCount(valueIn));
+		Strlcpy(valueIn, "ValueExistingNew", EASTLArrayCount(valueIn));
 		bResult = SetEnvironmentVar(name, valueIn);
 		EATEST_VERIFY(bResult);
-		nRequiredStrlen = GetEnvironmentVar(name, valueOut, EAArrayCount(valueOut));
+		nRequiredStrlen = GetEnvironmentVar(name, valueOut, EASTLArrayCount(valueOut));
 		EATEST_VERIFY((nRequiredStrlen == 16) && (Strcmp(valueIn, valueOut) == 0));
 
 		// Verify that something can be cleared, then not found:
 		bResult = SetEnvironmentVar(name, NULL);
 		EATEST_VERIFY(bResult);
 		valueOut[0] = 0;
-		nRequiredStrlen = GetEnvironmentVar(name, valueOut, EAArrayCount(valueOut));
+		nRequiredStrlen = GetEnvironmentVar(name, valueOut, EASTLArrayCount(valueOut));
 		EATEST_VERIFY((nRequiredStrlen == sizeError) && (valueOut[0] == 0));
 
 		// Verify that something can once again be set, then found:
-		Strlcpy(name, "NameExisting", EAArrayCount(name));
-		Strlcpy(valueIn, "ValueExistingNew2", EAArrayCount(valueIn));
+		Strlcpy(name, "NameExisting", EASTLArrayCount(name));
+		Strlcpy(valueIn, "ValueExistingNew2", EASTLArrayCount(valueIn));
 		bResult = SetEnvironmentVar(name, valueIn);
 		EATEST_VERIFY(bResult);
-		nRequiredStrlen = GetEnvironmentVar(name, valueOut, EAArrayCount(valueOut));
+		nRequiredStrlen = GetEnvironmentVar(name, valueOut, EASTLArrayCount(valueOut));
 		EATEST_VERIFY((nRequiredStrlen == 17) && (Strcmp(valueIn, valueOut) == 0));
 
 		// Verify that GetEnvironmentVar(T) yields the same result as GetEnvironmentVar(char) (T may be char16_t).
 		char valueOut8[32];
 		T       valueOutT[32];
-		nRequiredStrlen = GetEnvironmentVar("NameExisting", valueOut8, EAArrayCount(valueOut8));
-		Strlcpy(valueOutT, valueOut8, EAArrayCount(valueOutT)); // Need to convert char to T, as Strcmp only exists for like types.
+		nRequiredStrlen = GetEnvironmentVar("NameExisting", valueOut8, EASTLArrayCount(valueOut8));
+		Strlcpy(valueOutT, valueOut8, EASTLArrayCount(valueOutT)); // Need to convert char to T, as Strcmp only exists for like types.
 		EATEST_VERIFY((nRequiredStrlen == 17) && (Strcmp(valueOut, valueOutT) == 0));
 
 		// Verify that GetEnvironmentVar(T) yields the same result as GetEnvironmentVar(char16_t) (T may be char).
 		char16_t name16[32];
 		char16_t valueOut16[32];
-		Strlcpy(name16, name, EAArrayCount(name16));
-		nRequiredStrlen = GetEnvironmentVar(name16, valueOut16, EAArrayCount(valueOut16));
-		Strlcpy(valueOutT, valueOut16, EAArrayCount(valueOutT)); // Need to convert char16_t to T, as Strcmp only exists for like types.
+		Strlcpy(name16, name, EASTLArrayCount(name16));
+		nRequiredStrlen = GetEnvironmentVar(name16, valueOut16, EASTLArrayCount(valueOut16));
+		Strlcpy(valueOutT, valueOut16, EASTLArrayCount(valueOutT)); // Need to convert char16_t to T, as Strcmp only exists for like types.
 		EATEST_VERIFY((nRequiredStrlen == 17) && (Strcmp(valueOut, valueOutT) == 0));
 	}
 #endif
@@ -95,8 +95,6 @@
 int TestProcess()
 {
 	int nErrorCount(0);
-
-	EA::UnitTest::Report("TestProcess\n");
 
 	{
 		// size_t GetCurrentProcessPath(char*  pPath);
@@ -126,7 +124,7 @@ int TestProcess()
 			#if defined(EA_PLATFORM_APPLE) // Test kPathFlagBundlePath
 				if(n && !EA::StdC::Strend(path8, ".app")) // If we have a path to a file within a bundle (e.g. "/Dir/MyApp.app/Contents/MacOS/MyApp")
 				{
-					n = EA::StdC::GetCurrentProcessPath(path8, EAArrayCount(path8), EA::StdC::kPathFlagBundlePath);
+					n = EA::StdC::GetCurrentProcessPath(path8, EASTLArrayCount(path8), EA::StdC::kPathFlagBundlePath);
 					EATEST_VERIFY(n > 0); // Should be like "/Dir/MyApp" or "/Dir/MyApp.app"
 				}
 			#endif
@@ -147,7 +145,7 @@ int TestProcess()
 				// We could do a similar test for iOS.
 				if(n && EA::StdC::Strend(path8, "MacOS/")) // If we have a path to a file within a MacOS bundle (e.g. "/Dir/MyApp.app/Contents/MacOS/")
 				{
-					n = EA::StdC::GetCurrentProcessDirectory(path8, EAArrayCount(path8), EA::StdC::kPathFlagBundlePath);
+					n = EA::StdC::GetCurrentProcessDirectory(path8, EASTLArrayCount(path8), EA::StdC::kPathFlagBundlePath);
 					EATEST_VERIFY((n > 0) && !EA::StdC::Strend(path8, "MacOS/")); // Should be like "/Dir/"
 				}
 			#elif defined(EA_PLATFORM_SONY)
@@ -157,7 +155,7 @@ int TestProcess()
 				EA::StdC::SetCurrentProcessPath(KETTLE_PROCESS_FOLDER KETTLE_PROCESS_ELF);
 
 				n = EA::StdC::GetCurrentProcessPath(path16);
-				EATEST_VERIFY(EA::StdC::Strcmp(path16, EA_CHAR16(KETTLE_PROCESS_FOLDER KETTLE_PROCESS_ELF)) == 0);
+				EATEST_VERIFY(EA::StdC::Strcmp(path16, EASTL_CHAR16(KETTLE_PROCESS_FOLDER KETTLE_PROCESS_ELF)) == 0);
 				EATEST_VERIFY(n == EA::StdC::Strlen(KETTLE_PROCESS_FOLDER KETTLE_PROCESS_ELF));
 
 				n = EA::StdC::GetCurrentProcessPath(path8);
@@ -165,7 +163,7 @@ int TestProcess()
 				EATEST_VERIFY(n == EA::StdC::Strlen(KETTLE_PROCESS_FOLDER KETTLE_PROCESS_ELF));
 
 				n = EA::StdC::GetCurrentProcessDirectory(path16);
-				EATEST_VERIFY(EA::StdC::Strcmp(path16, EA_CHAR16(KETTLE_PROCESS_FOLDER)) == 0);
+				EATEST_VERIFY(EA::StdC::Strcmp(path16, EASTL_CHAR16(KETTLE_PROCESS_FOLDER)) == 0);
 				EATEST_VERIFY(n == EA::StdC::Strlen(KETTLE_PROCESS_FOLDER));
 				EATEST_VERIFY(n > 0);
 

@@ -40,28 +40,28 @@ extern volatile int gWriteToEnsureFunctionCalled;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// EA_WCHAR / EA_CHAR16 / EA_CHAR32
+// EA_WCHAR / EASTL_CHAR16 / EASTL_CHAR32
 //
 // We define these in the case that EABase doesn't define them so that our 
 // tests can exercize them. For example, on Windows EABase doesn't define 
-// EA_CHAR32, as it's impossible to do so in an efficient way and would be
+// EASTL_CHAR32, as it's impossible to do so in an efficient way and would be
 // bad for user code. But for our unit tests we don't care about this and 
 // it's useful to have it.
 ///////////////////////////////////////////////////////////////////////////////
 
 // Always defind as L""
 // The purpose of this in our unit tests is to make it explicit in 
-// the test code that we really mean L""/L'' and not EA_CHAR16 or EA_CHAR32.
+// the test code that we really mean L""/L'' and not EASTL_CHAR16 or EASTL_CHAR32.
 #if !defined(EA_WCHAR)
 	#define EA_WCHAR(s) L ## s
 #endif
 
 
-#if !defined(EA_CHAR16)
+#if !defined(EASTL_CHAR16)
 
 	#include <stdlib.h>
 	#include <string.h>
-	#include <EASTL/map.h>
+	#include <eastl/map.h>
 	#include <EAStdC/EAString.h>
 
 	// This class has no purpose other than to convert 32 bit wchar_t strings to 16 bit char16_t strings.
@@ -117,16 +117,16 @@ extern volatile int gWriteToEnsureFunctionCalled;
 
 	char16_t char16_convert(wchar_t c);
 
-	#define EA_CHAR16(s) char16_convert(L ## s)
+	#define EASTL_CHAR16(s) char16_convert(L ## s)
 	#define EASTDCTEST_DEFINES_CHAR16
 #endif
 
 
-#if !defined(EA_CHAR32)
+#if !defined(EASTL_CHAR32)
 
 	#include <stdlib.h>
 	#include <string.h>
-	#include <EASTL/map.h>
+	#include <eastl/map.h>
 	#include <EAStdC/EAString.h>
 
 	// This class has no purpose other than to convert 16 bit wchar_t strings to 32 bit char32_t strings.
@@ -188,11 +188,40 @@ extern volatile int gWriteToEnsureFunctionCalled;
 
 	char32_t char32_convert(wchar_t character);
 
-	#define EA_CHAR32(s) char32_convert(L ## s)
+	#define EASTL_CHAR32(s) char32_convert(L ## s)
 	#define EASTDCTEST_DEFINES_CHAR32
 
 #endif
 
+inline double DoubleAbsoluteDifference(double x1, double x2)
+{
+	return (x1 < x2) ? (x2 - x1) : (x1 - x2);
+}
+
+inline bool DoubleEqual(double x1, double x2)
+{
+	if(x1 < 1e-15)
+		return (x2 < 1e-15);
+	else if(x2 < 1e-15)
+		return (x1 < 1e-15);
+	else
+		return DoubleAbsoluteDifference((x1 - x2) / x1, 1e-15) < 1e-13;
+}
+
+inline double FloatAbsoluteDifference(float x1, float x2)
+{
+	return (x1 < x2) ? (x2 - x1) : (x1 - x2);
+}
+
+inline bool FloatEqual(float x1, float x2)
+{
+	if(x1 < 1e-7f)
+		return (x2 < 1e-7f);
+	else if(x2 < 1e-7f)
+		return (x1 < 1e-7f);
+	else
+		return FloatAbsoluteDifference((x1 - x2) / x1, 1e-7f) < 1e-5f;
+}
 
 #endif // Header include guard
 

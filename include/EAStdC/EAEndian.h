@@ -7,7 +7,7 @@
 #define EASTDC_EAENDIAN_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/internal/Config.h>
 #include <EAStdC/Int128_t.h>
 
@@ -78,21 +78,21 @@ namespace EA
 		namespace detail
 		{
 			#if defined(EA_PROCESSOR_X86_64) && defined(_MSC_VER) 
-				EA_FORCE_INLINE uint16_t bswap16(uint16_t x) { return static_cast<uint16_t>(_byteswap_ushort(x)); }
-				EA_FORCE_INLINE uint32_t bswap32(uint32_t x) { return static_cast<uint32_t>(_byteswap_ulong(x)); }
-				EA_FORCE_INLINE uint64_t bswap64(uint64_t x) { return static_cast<uint64_t>(_byteswap_uint64(x)); }
+				EASTL_FORCE_INLINE uint16_t bswap16(uint16_t x) { return static_cast<uint16_t>(_byteswap_ushort(x)); }
+				EASTL_FORCE_INLINE uint32_t bswap32(uint32_t x) { return static_cast<uint32_t>(_byteswap_ulong(x)); }
+				EASTL_FORCE_INLINE uint64_t bswap64(uint64_t x) { return static_cast<uint64_t>(_byteswap_uint64(x)); }
 				#define EASTDC_LITTLE_ENDIAN_WITH_BSWAP 1
 			#elif defined(EA_PROCESSOR_X86_64) && (defined(EA_COMPILER_CLANG) || defined(EA_COMPILER_GNUC)) 
-				EA_FORCE_INLINE uint16_t bswap16(uint16_t x) { return static_cast<uint16_t>(__builtin_bswap16(x)); }
-				EA_FORCE_INLINE uint32_t bswap32(uint32_t x) { return static_cast<uint32_t>(__builtin_bswap32(x)); }
-				EA_FORCE_INLINE uint64_t bswap64(uint64_t x) { return static_cast<uint64_t>(__builtin_bswap64(x)); }
+				EASTL_FORCE_INLINE uint16_t bswap16(uint16_t x) { return static_cast<uint16_t>(__builtin_bswap16(x)); }
+				EASTL_FORCE_INLINE uint32_t bswap32(uint32_t x) { return static_cast<uint32_t>(__builtin_bswap32(x)); }
+				EASTL_FORCE_INLINE uint64_t bswap64(uint64_t x) { return static_cast<uint64_t>(__builtin_bswap64(x)); }
 				#define EASTDC_LITTLE_ENDIAN_WITH_BSWAP 1
 			#endif
 
 			#if defined(EASTDC_LITTLE_ENDIAN_WITH_BSWAP)
-				EA_FORCE_INLINE int16_t bswap16(int16_t x) { return static_cast<int16_t>(bswap16(static_cast<uint16_t>(x))); }
-				EA_FORCE_INLINE int32_t bswap32(int32_t x) { return static_cast<int32_t>(bswap32(static_cast<uint32_t>(x))); }
-				EA_FORCE_INLINE int64_t bswap64(int64_t x) { return static_cast<int64_t>(bswap64(static_cast<uint64_t>(x))); }
+				EASTL_FORCE_INLINE int16_t bswap16(int16_t x) { return static_cast<int16_t>(bswap16(static_cast<uint16_t>(x))); }
+				EASTL_FORCE_INLINE int32_t bswap32(int32_t x) { return static_cast<int32_t>(bswap32(static_cast<uint32_t>(x))); }
+				EASTL_FORCE_INLINE int64_t bswap64(int64_t x) { return static_cast<int64_t>(bswap64(static_cast<uint64_t>(x))); }
 			#endif 
 
 
@@ -125,12 +125,12 @@ namespace EA
 		#ifdef EASTDC_LITTLE_ENDIAN_WITH_BSWAP
 			// Runtime reading data from an address.
 			// The address need not be aligned to the data size -- but unaligned accesses are acceptable on x64 processors.
-			EA_FORCE_INLINE uint16_t ReadFromBigEndianUint16(const void* pData) { return detail::bswap16(static_cast<const uint16_t*>(pData)[0]); }
-			EA_FORCE_INLINE uint32_t ReadFromBigEndianUint32(const void* pData) { return detail::bswap32(static_cast<const uint32_t*>(pData)[0]); }
-			EA_FORCE_INLINE uint64_t ReadFromBigEndianUint64(const void* pData) { return detail::bswap64(static_cast<const uint64_t*>(pData)[0]); }
-			EA_FORCE_INLINE int16_t  ReadFromBigEndianInt16(const void* pData)  { return detail::bswap16(static_cast<const int16_t*>( pData)[0]); }
-			EA_FORCE_INLINE int32_t  ReadFromBigEndianInt32(const void* pData)  { return detail::bswap32(static_cast<const int32_t*>( pData)[0]); }
-			EA_FORCE_INLINE int64_t  ReadFromBigEndianInt64(const void* pData)  { return detail::bswap64(static_cast<const int64_t*>( pData)[0]); }
+			EASTL_FORCE_INLINE uint16_t ReadFromBigEndianUint16(const void* pData) { return detail::bswap16(static_cast<const uint16_t*>(pData)[0]); }
+			EASTL_FORCE_INLINE uint32_t ReadFromBigEndianUint32(const void* pData) { return detail::bswap32(static_cast<const uint32_t*>(pData)[0]); }
+			EASTL_FORCE_INLINE uint64_t ReadFromBigEndianUint64(const void* pData) { return detail::bswap64(static_cast<const uint64_t*>(pData)[0]); }
+			EASTL_FORCE_INLINE int16_t  ReadFromBigEndianInt16(const void* pData)  { return detail::bswap16(static_cast<const int16_t*>( pData)[0]); }
+			EASTL_FORCE_INLINE int32_t  ReadFromBigEndianInt32(const void* pData)  { return detail::bswap32(static_cast<const int32_t*>( pData)[0]); }
+			EASTL_FORCE_INLINE int64_t  ReadFromBigEndianInt64(const void* pData)  { return detail::bswap64(static_cast<const int64_t*>( pData)[0]); }
 
 		#else
 			// Runtime reading data from an address.
@@ -290,12 +290,12 @@ namespace EA
 		#ifdef EASTDC_LITTLE_ENDIAN_WITH_BSWAP
 			// Runtime reading data from an address.
 			// The address need not be aligned to the data size -- but unaligned accesses are acceptable on x64 processors.
-			EA_FORCE_INLINE uint16_t ReadFromLittleEndianUint16(const void* pData) { return (static_cast<const uint16_t*>(pData)[0]); }
-			EA_FORCE_INLINE uint32_t ReadFromLittleEndianUint32(const void* pData) { return (static_cast<const uint32_t*>(pData)[0]); }
-			EA_FORCE_INLINE uint64_t ReadFromLittleEndianUint64(const void* pData) { return (static_cast<const uint64_t*>(pData)[0]); }
-			EA_FORCE_INLINE int16_t ReadFromLittleEndianInt16(const void* pData)   { return (static_cast<const int16_t*>( pData)[0]); }
-			EA_FORCE_INLINE int32_t ReadFromLittleEndianInt32(const void* pData)   { return (static_cast<const int32_t*>( pData)[0]); }
-			EA_FORCE_INLINE int64_t ReadFromLittleEndianInt64(const void* pData)   { return (static_cast<const int64_t*>( pData)[0]); }
+			EASTL_FORCE_INLINE uint16_t ReadFromLittleEndianUint16(const void* pData) { return (static_cast<const uint16_t*>(pData)[0]); }
+			EASTL_FORCE_INLINE uint32_t ReadFromLittleEndianUint32(const void* pData) { return (static_cast<const uint32_t*>(pData)[0]); }
+			EASTL_FORCE_INLINE uint64_t ReadFromLittleEndianUint64(const void* pData) { return (static_cast<const uint64_t*>(pData)[0]); }
+			EASTL_FORCE_INLINE int16_t ReadFromLittleEndianInt16(const void* pData)   { return (static_cast<const int16_t*>( pData)[0]); }
+			EASTL_FORCE_INLINE int32_t ReadFromLittleEndianInt32(const void* pData)   { return (static_cast<const int32_t*>( pData)[0]); }
+			EASTL_FORCE_INLINE int64_t ReadFromLittleEndianInt64(const void* pData)   { return (static_cast<const int64_t*>( pData)[0]); }
 
 		#else
 			// Runtime reading data from an address.
@@ -655,16 +655,16 @@ namespace EA
 		//       GCC/Macintosh
 
 		#ifdef EASTDC_LITTLE_ENDIAN_WITH_BSWAP
-			EA_FORCE_INLINE uint16_t Swizzle(uint16_t x) { return detail::bswap16(x); }
-			EA_FORCE_INLINE int16_t  Swizzle(int16_t x)  { return detail::bswap16(x); }
+			EASTL_FORCE_INLINE uint16_t Swizzle(uint16_t x) { return detail::bswap16(x); }
+			EASTL_FORCE_INLINE int16_t  Swizzle(int16_t x)  { return detail::bswap16(x); }
 			#define EA_SWIZZLE_16_DEFINED
 			
-			EA_FORCE_INLINE uint32_t Swizzle(uint32_t x) { return detail::bswap32(x); }
-			EA_FORCE_INLINE int32_t  Swizzle(int32_t x)  { return detail::bswap32(x); }
+			EASTL_FORCE_INLINE uint32_t Swizzle(uint32_t x) { return detail::bswap32(x); }
+			EASTL_FORCE_INLINE int32_t  Swizzle(int32_t x)  { return detail::bswap32(x); }
 			#define EA_SWIZZLE_32_DEFINED
 			
-			EA_FORCE_INLINE uint64_t Swizzle(uint64_t x) { return detail::bswap64(x); }
-			EA_FORCE_INLINE int64_t  Swizzle(int64_t x)  { return detail::bswap64(x); }
+			EASTL_FORCE_INLINE uint64_t Swizzle(uint64_t x) { return detail::bswap64(x); }
+			EASTL_FORCE_INLINE int64_t  Swizzle(int64_t x)  { return detail::bswap64(x); }
 			#define EA_SWIZZLE_64_DEFINED
 
 		// MSVC7 / any platform
@@ -988,14 +988,14 @@ namespace EA
 		// such things would interfere with the compiler's ability to optimize
 		// away these operations. All of this functions should compile away
 		// when used with compile-time constants.
-		EA_FORCE_INLINE uint16_t SwizzleConst(uint16_t x)
+		EASTL_FORCE_INLINE uint16_t SwizzleConst(uint16_t x)
 		{
 			return (uint16_t) ((x >> 8) | (x << 8));
 		}
-		EA_FORCE_INLINE int16_t SwizzleConst(int16_t x)
+		EASTL_FORCE_INLINE int16_t SwizzleConst(int16_t x)
 			{ return (int16_t)SwizzleConst((uint16_t)x); }
 
-		EA_FORCE_INLINE uint32_t SwizzleConst(uint32_t x)
+		EASTL_FORCE_INLINE uint32_t SwizzleConst(uint32_t x)
 		{
 			return (uint32_t)
 				((x >> 24)               |
@@ -1003,17 +1003,17 @@ namespace EA
 				((x <<  8) & 0x00ff0000) |
 				((x >>  8) & 0x0000ff00)); 
 		}
-		EA_FORCE_INLINE int32_t SwizzleConst(int32_t x)
+		EASTL_FORCE_INLINE int32_t SwizzleConst(int32_t x)
 			{ return (int32_t)SwizzleConst((uint32_t)x); }
 
-		EA_FORCE_INLINE uint64_t SwizzleConst(uint64_t x)
+		EASTL_FORCE_INLINE uint64_t SwizzleConst(uint64_t x)
 		{
 			const uint32_t high32Bits = Swizzle((uint32_t)(x));
 			const uint32_t low32Bits  = Swizzle((uint32_t)(x >> 32));
 
 			return ((uint64_t)high32Bits << 32) | low32Bits;
 		}
-		EA_FORCE_INLINE int64_t SwizzleConst(int64_t x)
+		EASTL_FORCE_INLINE int64_t SwizzleConst(int64_t x)
 			{ return (int64_t)SwizzleConst((uint64_t)x); }
 
 		inline uint128_t SwizzleConst(uint128_t x)

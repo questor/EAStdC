@@ -57,12 +57,12 @@ int Vcprintf(WriteFunction8 pWriteFunction8, void* pContext, const char8_t* pFor
 int Vfprintf(FILE* pFile, const char8_t* pFormat, va_list arguments);
 int Vprintf(const char8_t* pFormat, va_list arguments);
 int Vsprintf(char8_t* pDestination, const char8_t* pFormat, va_list arguments);
-int Vsnprintf(char8_t* pDestination, size_t n, const char8_t* pFormat, va_list arguments);<br>int Vscprintf(const char8_t* EA_RESTRICT pFormat, va_list arguments);</span></pre>
+int Vsnprintf(char8_t* pDestination, size_t n, const char8_t* pFormat, va_list arguments);<br>int Vscprintf(const char8_t* EASTL_RESTRICT pFormat, va_list arguments);</span></pre>
 <p>Also there are:</p>
 <pre class="code-example">template &lt;typename String&gt; 
-int StringPrintf(String&amp; s, const typename String::value_type* EA_RESTRICT pFormat, ...);</pre>
+int StringPrintf(String&amp; s, const typename String::value_type* EASTL_RESTRICT pFormat, ...);</pre>
 <pre class="code-example">template &lt;typename String&gt;
-int StringVcprintf(String&amp; s, const typename String::value_type* EA_RESTRICT pFormat, va_list arguments);</pre>
+int StringVcprintf(String&amp; s, const typename String::value_type* EASTL_RESTRICT pFormat, va_list arguments);</pre>
 <blockquote></blockquote>
 <h2>Snprintf uses C99 behavior</h2>
 <p> The EASprintf 'n' functions (Snprintf and Vsnprintf) follow the C99 standard 

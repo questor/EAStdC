@@ -13,7 +13,7 @@
 
 
 #include <EAStdC/internal/Config.h>
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 EA_DISABLE_ALL_VC_WARNINGS()
 #include <stddef.h>
 #include <string.h>

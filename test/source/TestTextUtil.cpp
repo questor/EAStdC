@@ -7,8 +7,8 @@
 #include <EAStdC/EAString.h>
 #include <EAStdCTest/EAStdCTest.h>
 #include <EATest/EATest.h>
-#include <EASTL/fixed_string.h>
-#include <EASTL/string.h>
+#include <eastl/fixedString.h>
+#include <eastl/string.h>
 
 #include <string.h>
 
@@ -17,9 +17,9 @@
 #endif
 
 
-typedef eastl::basic_string<char>  String8;
-typedef eastl::basic_string<char16_t> String16;
-typedef eastl::basic_string<char32_t> String32;
+typedef eastl::basicString<char>  String8;
+typedef eastl::basicString<char16_t> String16;
+typedef eastl::basicString<char32_t> String32;
 
 
 
@@ -126,32 +126,32 @@ static int TestUTF8()
 
 
 	// size_t UTF8Length(const char16_t* p);
-	EATEST_VERIFY(UTF8Length(EA_CHAR16("0123456789")) == 10);
-	EATEST_VERIFY(UTF8Length(EA_CHAR16("")) == 0);
-	EATEST_VERIFY(UTF8Length(EA_CHAR16("\x00a0")) == 2);
-	EATEST_VERIFY(UTF8Length(EA_CHAR16("\x0400")) == 2);
-	EATEST_VERIFY(UTF8Length(EA_CHAR16("\x0800")) == 3);
+	EATEST_VERIFY(UTF8Length(EASTL_CHAR16("0123456789")) == 10);
+	EATEST_VERIFY(UTF8Length(EASTL_CHAR16("")) == 0);
+	EATEST_VERIFY(UTF8Length(EASTL_CHAR16("\x00a0")) == 2);
+	EATEST_VERIFY(UTF8Length(EASTL_CHAR16("\x0400")) == 2);
+	EATEST_VERIFY(UTF8Length(EASTL_CHAR16("\x0800")) == 3);
 
 	// We have to break up the string into multiple sub-strings because the \x escape sequence has limitations in how it works.
-	eastl::fixed_string<char16_t, 32> s16; s16 = EA_CHAR16("\xffff"); s16 += EA_CHAR16("\xffff"); // We use a string object because some compilers don't support 16 bit string literals, and thus EA_CHAR16 is a function and doesn't just prepend "L" or "u" to the string.
+	eastl::fixedString<char16_t, 32> s16; s16 = EASTL_CHAR16("\xffff"); s16 += EASTL_CHAR16("\xffff"); // We use a string object because some compilers don't support 16 bit string literals, and thus EASTL_CHAR16 is a function and doesn't just prepend "L" or "u" to the string.
 	EATEST_VERIFY(UTF8Length(s16.c_str()) == 6);
 
-	s16 = EA_CHAR16("\xffff"); s16 += EA_CHAR16("\x0900"); s16 += EA_CHAR16("0"); s16 += EA_CHAR16("\x00a0");
+	s16 = EASTL_CHAR16("\xffff"); s16 += EASTL_CHAR16("\x0900"); s16 += EASTL_CHAR16("0"); s16 += EASTL_CHAR16("\x00a0");
 	EATEST_VERIFY(UTF8Length(s16.c_str()) == 9);
 
 
 	// size_t UTF8Length(const char32_t* p);
-	EATEST_VERIFY(UTF8Length(EA_CHAR32("0123456789")) == 10);
-	EATEST_VERIFY(UTF8Length(EA_CHAR32("")) == 0);
-	EATEST_VERIFY(UTF8Length(EA_CHAR32("\x00a0")) == 2);
-	EATEST_VERIFY(UTF8Length(EA_CHAR32("\x0400")) == 2);
-	EATEST_VERIFY(UTF8Length(EA_CHAR32("\x0800")) == 3);
+	EATEST_VERIFY(UTF8Length(EASTL_CHAR32("0123456789")) == 10);
+	EATEST_VERIFY(UTF8Length(EASTL_CHAR32("")) == 0);
+	EATEST_VERIFY(UTF8Length(EASTL_CHAR32("\x00a0")) == 2);
+	EATEST_VERIFY(UTF8Length(EASTL_CHAR32("\x0400")) == 2);
+	EATEST_VERIFY(UTF8Length(EASTL_CHAR32("\x0800")) == 3);
 
 	// We have to break up the string into multiple sub-strings because the \x escape sequence has limitations in how it works.
-	eastl::fixed_string<char32_t, 32> s32; s32 = EA_CHAR32("\xffff"); s32 += EA_CHAR32("\xffff"); // We use a string object because some compilers don't support 32 bit string literals, and thus EA_CHAR32 is a function and doesn't just prepend "L" or "u" to the string.
+	eastl::fixedString<char32_t, 32> s32; s32 = EASTL_CHAR32("\xffff"); s32 += EASTL_CHAR32("\xffff"); // We use a string object because some compilers don't support 32 bit string literals, and thus EASTL_CHAR32 is a function and doesn't just prepend "L" or "u" to the string.
 	EATEST_VERIFY(UTF8Length(s32.c_str()) == 6);
 
-	s32 = EA_CHAR32("\xffff"); s32 += EA_CHAR32("\x0900"); s32 += EA_CHAR32("0"); s32 += EA_CHAR32("\x00a0");
+	s32 = EASTL_CHAR32("\xffff"); s32 += EASTL_CHAR32("\x0900"); s32 += EASTL_CHAR32("0"); s32 += EASTL_CHAR32("\x00a0");
 	EATEST_VERIFY(UTF8Length(s32.c_str()) == 9);
 
 
@@ -350,8 +350,6 @@ int TestTextUtil()
 
 	int nErrorCount(0);
 
-	EA::UnitTest::Report("TestTextUtil\n");
-
 	nErrorCount += TestUTF8();
 
 	// WildcardMatch
@@ -378,46 +376,46 @@ int TestTextUtil()
 		EATEST_VERIFY(WildcardMatch("abcde", "*?????", true) == true);
 
 		// char16_t
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("*e"),     false) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("*f"),     false) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("???de"),  false) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("????g"),  false) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("*c??"),   false) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("*e??"),   false) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("*????"),  false) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("bcdef"),  false) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("*?????"), false) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("*e"),     false) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("*f"),     false) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("???de"),  false) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("????g"),  false) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("*c??"),   false) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("*e??"),   false) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("*????"),  false) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("bcdef"),  false) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("*?????"), false) == true);
 
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcdE"), EA_CHAR16("*E"),     true) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("*f"),     true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcDE"), EA_CHAR16("???de"),  true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("????g"),  true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abCde"), EA_CHAR16("*c??"),   true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("*e??"),   true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("*????"),  true) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("bcdef"),  true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR16("abcde"), EA_CHAR16("*?????"), true) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcdE"), EASTL_CHAR16("*E"),     true) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("*f"),     true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcDE"), EASTL_CHAR16("???de"),  true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("????g"),  true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abCde"), EASTL_CHAR16("*c??"),   true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("*e??"),   true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("*????"),  true) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("bcdef"),  true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR16("abcde"), EASTL_CHAR16("*?????"), true) == true);
 
 		// char32_t
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("*e"),     false) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("*f"),     false) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("???de"),  false) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("????g"),  false) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("*c??"),   false) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("*e??"),   false) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("*????"),  false) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("bcdef"),  false) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("*?????"), false) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("*e"),     false) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("*f"),     false) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("???de"),  false) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("????g"),  false) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("*c??"),   false) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("*e??"),   false) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("*????"),  false) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("bcdef"),  false) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("*?????"), false) == true);
 
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcdE"), EA_CHAR32("*E"),     true) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("*f"),     true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcDE"), EA_CHAR32("???de"),  true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("????g"),  true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abCde"), EA_CHAR32("*c??"),   true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("*e??"),   true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("*????"),  true) == true);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("bcdef"),  true) == false);
-		EATEST_VERIFY(WildcardMatch(EA_CHAR32("abcde"), EA_CHAR32("*?????"), true) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcdE"), EASTL_CHAR32("*E"),     true) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("*f"),     true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcDE"), EASTL_CHAR32("???de"),  true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("????g"),  true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abCde"), EASTL_CHAR32("*c??"),   true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("*e??"),   true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("*????"),  true) == true);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("bcdef"),  true) == false);
+		EATEST_VERIFY(WildcardMatch(EASTL_CHAR32("abcde"), EASTL_CHAR32("*?????"), true) == true);
 	}
 
 
@@ -441,16 +439,16 @@ int TestTextUtil()
 		///  10  "  ,, 000 ,111, 222,         333          ,     ";       -1                ','          6                6                 ""   ""   "000"   "111"   "222"   "333"
 		///  11  "  ,, 000 ,111, 222,         333          ,     ";        2                ','          0                0                 ""   ""
 
-		const char16_t* pTest2  = EA_CHAR16("");
-		const char16_t* pTest3  = EA_CHAR16("000 111");
-		const char16_t* pTest4  = EA_CHAR16("  \"555 555\"   ");
-	  //const char16_t* pTest5  = EA_CHAR16("     000 111 222         333                ");
-	  //const char16_t* pTest6  = EA_CHAR16("     000 111 222         333                ");
-	  //const char16_t* pTest7  = EA_CHAR16("     000 111 222         333                ");
-	  //const char16_t* pTest8  = EA_CHAR16("000,111"));
-	  //const char16_t* pTest9  = EA_CHAR16("000,  111 , 222   333 ,444 \"555,  555  \" 666");
-	  //const char16_t* pTest10 = EA_CHAR16("  ,, 000 ,111, 222,         333          ,     ");
-	  //const char16_t* pTest11 = EA_CHAR16("  ,, 000 ,111, 222,         333          ,     ");
+		const char16_t* pTest2  = EASTL_CHAR16("");
+		const char16_t* pTest3  = EASTL_CHAR16("000 111");
+		const char16_t* pTest4  = EASTL_CHAR16("  \"555 555\"   ");
+	  //const char16_t* pTest5  = EASTL_CHAR16("     000 111 222         333                ");
+	  //const char16_t* pTest6  = EASTL_CHAR16("     000 111 222         333                ");
+	  //const char16_t* pTest7  = EASTL_CHAR16("     000 111 222         333                ");
+	  //const char16_t* pTest8  = EASTL_CHAR16("000,111"));
+	  //const char16_t* pTest9  = EASTL_CHAR16("000,  111 , 222   333 ,444 \"555,  555  \" 666");
+	  //const char16_t* pTest10 = EASTL_CHAR16("  ,, 000 ,111, 222,         333          ,     ");
+	  //const char16_t* pTest11 = EASTL_CHAR16("  ,, 000 ,111, 222,         333          ,     ");
 
 		bool            result;
 		const char16_t* pToken;
@@ -473,16 +471,16 @@ int TestTextUtil()
 		EATEST_VERIFY(result && (pToken == pTest4 + 3) && (pTokenEnd == pTest4 + 10) && (pNewText == pTest4 + 11));
 	}
 	{
-		const char32_t* pTest2  = EA_CHAR32("");
-		const char32_t* pTest3  = EA_CHAR32("000 111");
-		const char32_t* pTest4  = EA_CHAR32("  \"555 555\"   ");
-	  //const char32_t* pTest5  = EA_CHAR32("     000 111 222         333                ");
-	  //const char32_t* pTest6  = EA_CHAR32("     000 111 222         333                ");
-	  //const char32_t* pTest7  = EA_CHAR32("     000 111 222         333                ");
-	  //const char32_t* pTest8  = EA_CHAR32("000,111"));
-	  //const char32_t* pTest9  = EA_CHAR32("000,  111 , 222   333 ,444 \"555,  555  \" 666");
-	  //const char32_t* pTest10 = EA_CHAR32("  ,, 000 ,111, 222,         333          ,     ");
-	  //const char32_t* pTest11 = EA_CHAR32("  ,, 000 ,111, 222,         333          ,     ");
+		const char32_t* pTest2  = EASTL_CHAR32("");
+		const char32_t* pTest3  = EASTL_CHAR32("000 111");
+		const char32_t* pTest4  = EASTL_CHAR32("  \"555 555\"   ");
+	  //const char32_t* pTest5  = EASTL_CHAR32("     000 111 222         333                ");
+	  //const char32_t* pTest6  = EASTL_CHAR32("     000 111 222         333                ");
+	  //const char32_t* pTest7  = EASTL_CHAR32("     000 111 222         333                ");
+	  //const char32_t* pTest8  = EASTL_CHAR32("000,111"));
+	  //const char32_t* pTest9  = EASTL_CHAR32("000,  111 , 222   333 ,444 \"555,  555  \" 666");
+	  //const char32_t* pTest10 = EASTL_CHAR32("  ,, 000 ,111, 222,         333          ,     ");
+	  //const char32_t* pTest11 = EASTL_CHAR32("  ,, 000 ,111, 222,         333          ,     ");
 
 		bool            result;
 		const char32_t* pToken;
@@ -517,10 +515,10 @@ int TestTextUtil()
 		EATEST_VERIFY(Strcmp(result8, "12345678") == 0);
 
 		ConvertBinaryDataToASCIIArray(&data, 4, result16);
-		EATEST_VERIFY(Strcmp(result16, EA_CHAR16("12345678")) == 0);
+		EATEST_VERIFY(Strcmp(result16, EASTL_CHAR16("12345678")) == 0);
 
 		ConvertBinaryDataToASCIIArray(&data, 4, result32);
-		EATEST_VERIFY(Strcmp(result32, EA_CHAR32("12345678")) == 0);
+		EATEST_VERIFY(Strcmp(result32, EASTL_CHAR32("12345678")) == 0);
 
 
 		memset(data, 0, sizeof(data));
@@ -641,14 +639,14 @@ int TestTextUtil()
 
 	// EASTDC_API const char16_t* GetTextLine(const char16_t* pText, const char16_t* pTextEnd, const char16_t** ppNewText);
 	{
-		const char16_t* p1 = EA_CHAR16("");
-		const char16_t* p2 = EA_CHAR16("\n");
-		const char16_t* p3 = EA_CHAR16("\r\n");
-		const char16_t* p4 = EA_CHAR16("\r\n\n");
-		const char16_t* p5 = EA_CHAR16("\n\r\r");
-		const char16_t* p6 = EA_CHAR16("aaa\nbbb\rccc\r\nddd");
-		const char16_t* p7 = EA_CHAR16("aaa\nddd\n");
-		const char16_t* p8 = EA_CHAR16("aaa\nddd\r\n");
+		const char16_t* p1 = EASTL_CHAR16("");
+		const char16_t* p2 = EASTL_CHAR16("\n");
+		const char16_t* p3 = EASTL_CHAR16("\r\n");
+		const char16_t* p4 = EASTL_CHAR16("\r\n\n");
+		const char16_t* p5 = EASTL_CHAR16("\n\r\r");
+		const char16_t* p6 = EASTL_CHAR16("aaa\nbbb\rccc\r\nddd");
+		const char16_t* p7 = EASTL_CHAR16("aaa\nddd\n");
+		const char16_t* p8 = EASTL_CHAR16("aaa\nddd\r\n");
 
 		const char16_t* pLine;
 		const char16_t* pLineEnd;
@@ -725,14 +723,14 @@ int TestTextUtil()
 
 	// EASTDC_API const char32_t* GetTextLine(const char32_t* pText, const char32_t* pTextEnd, const char32_t** ppNewText);
 	{
-		const char32_t* p1 = EA_CHAR32("");
-		const char32_t* p2 = EA_CHAR32("\n");
-		const char32_t* p3 = EA_CHAR32("\r\n");
-		const char32_t* p4 = EA_CHAR32("\r\n\n");
-		const char32_t* p5 = EA_CHAR32("\n\r\r");
-		const char32_t* p6 = EA_CHAR32("aaa\nbbb\rccc\r\nddd");
-		const char32_t* p7 = EA_CHAR32("aaa\nddd\n");
-		const char32_t* p8 = EA_CHAR32("aaa\nddd\r\n");
+		const char32_t* p1 = EASTL_CHAR32("");
+		const char32_t* p2 = EASTL_CHAR32("\n");
+		const char32_t* p3 = EASTL_CHAR32("\r\n");
+		const char32_t* p4 = EASTL_CHAR32("\r\n\n");
+		const char32_t* p5 = EASTL_CHAR32("\n\r\r");
+		const char32_t* p6 = EASTL_CHAR32("aaa\nbbb\rccc\r\nddd");
+		const char32_t* p7 = EASTL_CHAR32("aaa\nddd\n");
+		const char32_t* p8 = EASTL_CHAR32("aaa\nddd\r\n");
 
 		const char32_t* pLine;
 		const char32_t* pLineEnd;
@@ -830,138 +828,138 @@ int TestTextUtil()
 		///    ---------------------------------------
 		///    "a,b"     "a"      "b"          true
 
-		pSource = EA_CHAR16("a,b");
+		pSource = EASTL_CHAR16("a,b");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("a"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("b"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("a"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("b"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    "ab,b"    "ab"     "b"          true
 
-		pSource = EA_CHAR16("ab,b");
+		pSource = EASTL_CHAR16("ab,b");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("ab"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("b"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("ab"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("b"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ",a,b"    ""       "a,b"        true
 
-		pSource = EA_CHAR16(",a,b");
+		pSource = EASTL_CHAR16(",a,b");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16(""));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("a,b"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16(""));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("a,b"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ",b"      ""       "b"          true
 
-		pSource = EA_CHAR16(",b");
+		pSource = EASTL_CHAR16(",b");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16(""));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("b"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16(""));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("b"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ",,b"     ""       ",b"         true
 
-		pSource = EA_CHAR16(",,b");
+		pSource = EASTL_CHAR16(",,b");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16(""));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(",b"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16(""));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(",b"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ",a,"     ""       "a,"         true
 
-		pSource = EA_CHAR16(",a,");
+		pSource = EASTL_CHAR16(",a,");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16(""));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("a,"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16(""));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("a,"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    "a,"      "a"      ""           true
 
-		pSource = EA_CHAR16("a,");
+		pSource = EASTL_CHAR16("a,");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("a"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(""));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("a"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(""));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ","       ""       ""           true
 
-		pSource = EA_CHAR16(",");
+		pSource = EASTL_CHAR16(",");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16(""));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(""));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16(""));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(""));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    "a"       "a"      ""           false
 
-		pSource = EA_CHAR16("a");
+		pSource = EASTL_CHAR16("a");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("a"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(""));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("a"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(""));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ""        ""       ""           false
 
-		pSource = EA_CHAR16("");
+		pSource = EASTL_CHAR16("");
 
 		EATEST_VERIFY(!SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16(""));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(""));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16(""));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(""));
 
 
 		// various additional tests
-		pSource = EA_CHAR16("testing,long,tokens");
+		pSource = EASTL_CHAR16("testing,long,tokens");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("testing"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("long,tokens"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("testing"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("long,tokens"));
 
-		pSource = EA_CHAR16("tokentoolarge,test");
+		pSource = EASTL_CHAR16("tokentoolarge,test");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("tokento"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("test"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("tokento"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("test"));
 
-		pSource = EA_CHAR16("test,source,length");
+		pSource = EASTL_CHAR16("test,source,length");
 
 		EATEST_VERIFY(!SplitTokenDelimited(pSource, 0, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16(""));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("test,source,length"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16(""));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("test,source,length"));
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, 2, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("te"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("st,source,length"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("te"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("st,source,length"));
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, 3, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("st"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("source,length"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("st"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("source,length"));
 	}
 
 	// EASTDC_API bool SplitTokenDelimited(const char32_t* pSource, size_t nSourceLength, char32_t cDelimiter, char32_t* pToken, size_t nTokenLength, const char32_t** ppNewSource = NULL);
@@ -973,138 +971,138 @@ int TestTextUtil()
 		///    ---------------------------------------
 		///    "a,b"     "a"      "b"          true
 
-		pSource = EA_CHAR32("a,b");
+		pSource = EASTL_CHAR32("a,b");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("a"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("b"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("a"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("b"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    "ab,b"    "ab"     "b"          true
 
-		pSource = EA_CHAR32("ab,b");
+		pSource = EASTL_CHAR32("ab,b");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("ab"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("b"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("ab"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("b"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ",a,b"    ""       "a,b"        true
 
-		pSource = EA_CHAR32(",a,b");
+		pSource = EASTL_CHAR32(",a,b");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32(""));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("a,b"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32(""));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("a,b"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ",b"      ""       "b"          true
 
-		pSource = EA_CHAR32(",b");
+		pSource = EASTL_CHAR32(",b");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32(""));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("b"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32(""));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("b"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ",,b"     ""       ",b"         true
 
-		pSource = EA_CHAR32(",,b");
+		pSource = EASTL_CHAR32(",,b");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32(""));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(",b"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32(""));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(",b"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ",a,"     ""       "a,"         true
 
-		pSource = EA_CHAR32(",a,");
+		pSource = EASTL_CHAR32(",a,");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32(""));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("a,"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32(""));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("a,"));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    "a,"      "a"      ""           true
 
-		pSource = EA_CHAR32("a,");
+		pSource = EASTL_CHAR32("a,");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("a"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(""));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("a"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(""));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ","       ""       ""           true
 
-		pSource = EA_CHAR32(",");
+		pSource = EASTL_CHAR32(",");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32(""));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(""));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32(""));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(""));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    "a"       "a"      ""           false
 
-		pSource = EA_CHAR32("a");
+		pSource = EASTL_CHAR32("a");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("a"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(""));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("a"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(""));
 
 
 		///    source    token    new source   return
 		///    ---------------------------------------
 		///    ""        ""       ""           false
 
-		pSource = EA_CHAR32("");
+		pSource = EASTL_CHAR32("");
 
 		EATEST_VERIFY(!SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32(""));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(""));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32(""));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(""));
 
 
 		// various additional tests
-		pSource = EA_CHAR32("testing,long,tokens");
+		pSource = EASTL_CHAR32("testing,long,tokens");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("testing"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("long,tokens"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("testing"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("long,tokens"));
 
-		pSource = EA_CHAR32("tokentoolarge,test");
+		pSource = EASTL_CHAR32("tokentoolarge,test");
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, kLengthNull, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("tokento"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("test"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("tokento"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("test"));
 
-		pSource = EA_CHAR32("test,source,length");
+		pSource = EASTL_CHAR32("test,source,length");
 
 		EATEST_VERIFY(!SplitTokenDelimited(pSource, 0, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32(""));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("test,source,length"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32(""));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("test,source,length"));
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, 2, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("te"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("st,source,length"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("te"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("st,source,length"));
 
 		EATEST_VERIFY(SplitTokenDelimited(pSource, 3, ',', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("st"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("source,length"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("st"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("source,length"));
 	}
 
 
@@ -1130,99 +1128,99 @@ int TestTextUtil()
 		///   ---------------------------------------
 		///    "a"       "a"      ""           true
 
-		pSource = EA_CHAR16("a");
+		pSource = EASTL_CHAR16("a");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("a"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(""));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("a"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(""));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    "a b"     "a"      "b"          true
 
-		pSource = EA_CHAR16("a b");
+		pSource = EASTL_CHAR16("a b");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("a"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("b"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("a"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("b"));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    "a  b"    "a"      "b"          true
 
-		pSource = EA_CHAR16("a  b");
+		pSource = EASTL_CHAR16("a  b");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("a"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("b"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("a"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("b"));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    " a b"    "a"      "b"          true
 
-		pSource = EA_CHAR16(" a b");
+		pSource = EASTL_CHAR16(" a b");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull,' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("a"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("b"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("a"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("b"));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    " a b "   "a"      "b "         true
 
-		pSource = EA_CHAR16(" a b ");
+		pSource = EASTL_CHAR16(" a b ");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("a"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("b "));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("a"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("b "));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    " a "     "a"      ""           true
 
-		pSource = EA_CHAR16(" a ");
+		pSource = EASTL_CHAR16(" a ");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("a"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(""));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("a"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(""));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    " a  "    "a"      ""           true
 
-		pSource = EA_CHAR16(" a  ");
+		pSource = EASTL_CHAR16(" a  ");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("a"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(""));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("a"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(""));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    ""        ""       ""           false
 
-		pSource = EA_CHAR16("");
+		pSource = EASTL_CHAR16("");
 
 		EATEST_VERIFY(!SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16(""));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(""));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16(""));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(""));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    " "       ""       ""           false
 
-		pSource = EA_CHAR16(" ");
+		pSource = EASTL_CHAR16(" ");
 
 		EATEST_VERIFY(!SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16(""));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(""));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16(""));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(""));
 
 
 		///   source    token    new source   return
@@ -1232,30 +1230,30 @@ int TestTextUtil()
 		pSource = NULL;
 
 		EATEST_VERIFY(!SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16(""));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16(""));
 		EATEST_VERIFY(pSource == NULL);
 
 
 		// various additional tests
-		pSource = EA_CHAR16("testing;;;source;;;length");
+		pSource = EASTL_CHAR16("testing;;;source;;;length");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, 4, ';', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("test"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("ing;;;source;;;length"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("test"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("ing;;;source;;;length"));
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, 5, ';', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("ing"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16(";source;;;length"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("ing"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16(";source;;;length"));
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ';', pToken, 8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("source"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("length"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("source"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("length"));
 
-		pSource = EA_CHAR16(";;;;;;;123 456;;;;;a");
+		pSource = EASTL_CHAR16(";;;;;;;123 456;;;;;a");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ';', pToken,8, &pSource));
-		EATEST_VERIFY(String16(pToken) == EA_CHAR16("123 456"));
-		EATEST_VERIFY(String16(pSource) == EA_CHAR16("a"));
+		EATEST_VERIFY(String16(pToken) == EASTL_CHAR16("123 456"));
+		EATEST_VERIFY(String16(pSource) == EASTL_CHAR16("a"));
 	}
 
 	// EASTDC_API bool SplitTokenSeparated(const char32_t* pSource, size_t nSourceLength, char32_t cDelimiter, char32_t* pToken, size_t nTokenLength, const char32_t** ppNewSource = NULL);
@@ -1268,99 +1266,99 @@ int TestTextUtil()
 		///   ---------------------------------------
 		///    "a"       "a"      ""           true
 
-		pSource = EA_CHAR32("a");
+		pSource = EASTL_CHAR32("a");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("a"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(""));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("a"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(""));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    "a b"     "a"      "b"          true
 
-		pSource = EA_CHAR32("a b");
+		pSource = EASTL_CHAR32("a b");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("a"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("b"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("a"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("b"));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    "a  b"    "a"      "b"          true
 
-		pSource = EA_CHAR32("a  b");
+		pSource = EASTL_CHAR32("a  b");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("a"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("b"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("a"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("b"));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    " a b"    "a"      "b"          true
 
-		pSource = EA_CHAR32(" a b");
+		pSource = EASTL_CHAR32(" a b");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull,' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("a"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("b"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("a"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("b"));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    " a b "   "a"      "b "         true
 
-		pSource = EA_CHAR32(" a b ");
+		pSource = EASTL_CHAR32(" a b ");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("a"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("b "));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("a"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("b "));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    " a "     "a"      ""           true
 
-		pSource = EA_CHAR32(" a ");
+		pSource = EASTL_CHAR32(" a ");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("a"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(""));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("a"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(""));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    " a  "    "a"      ""           true
 
-		pSource = EA_CHAR32(" a  ");
+		pSource = EASTL_CHAR32(" a  ");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("a"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(""));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("a"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(""));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    ""        ""       ""           false
 
-		pSource = EA_CHAR32("");
+		pSource = EASTL_CHAR32("");
 
 		EATEST_VERIFY(!SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32(""));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(""));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32(""));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(""));
 
 
 		///   source    token    new source   return
 		///   ---------------------------------------
 		///    " "       ""       ""           false
 
-		pSource = EA_CHAR32(" ");
+		pSource = EASTL_CHAR32(" ");
 
 		EATEST_VERIFY(!SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32(""));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(""));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32(""));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(""));
 
 
 		///   source    token    new source   return
@@ -1370,30 +1368,30 @@ int TestTextUtil()
 		pSource = NULL;
 
 		EATEST_VERIFY(!SplitTokenSeparated(pSource, kLengthNull, ' ', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32(""));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32(""));
 		EATEST_VERIFY(pSource == NULL);
 
 
 		// various additional tests
-		pSource = EA_CHAR32("testing;;;source;;;length");
+		pSource = EASTL_CHAR32("testing;;;source;;;length");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, 4, ';', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("test"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("ing;;;source;;;length"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("test"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("ing;;;source;;;length"));
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, 5, ';', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("ing"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32(";source;;;length"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("ing"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32(";source;;;length"));
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ';', pToken, 8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("source"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("length"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("source"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("length"));
 
-		pSource = EA_CHAR32(";;;;;;;123 456;;;;;a");
+		pSource = EASTL_CHAR32(";;;;;;;123 456;;;;;a");
 
 		EATEST_VERIFY(SplitTokenSeparated(pSource, kLengthNull, ';', pToken,8, &pSource));
-		EATEST_VERIFY(String32(pToken) == EA_CHAR32("123 456"));
-		EATEST_VERIFY(String32(pSource) == EA_CHAR32("a"));
+		EATEST_VERIFY(String32(pToken) == EASTL_CHAR32("123 456"));
+		EATEST_VERIFY(String32(pSource) == EASTL_CHAR32("a"));
 	}
 
 

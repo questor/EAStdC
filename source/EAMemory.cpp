@@ -391,7 +391,7 @@ EASTDC_API void* Memmem(const void* pMemory, size_t memorySize, const void* pFin
 		{
 			for(const uint8_t* pCurrent8 = pMemory8; pCurrent8 <= pEnd8; ++pCurrent8)       // This looping algorithm is not the fastest possible way to 
 			{                                                                               // implement this function. A faster, but much more complex, algorithm
-				if(EA_UNLIKELY(pCurrent8[0] == pFind8[0])) // Do a quick first char check.  // might involve a two-way memory search (http://www-igm.univ-mlv.fr/~lecroq/string/node26.html#SECTION00260).
+				if(EASTL_UNLIKELY(pCurrent8[0] == pFind8[0])) // Do a quick first char check.  // might involve a two-way memory search (http://www-igm.univ-mlv.fr/~lecroq/string/node26.html#SECTION00260).
 				{                                                                           // Another algorithm might be to start by searching for words instead of bytes, then use Memcmp.
 					if(Memcmp(pCurrent8 + 1, pFind8 + 1, findSize - 1) == 0)
 						return const_cast<uint8_t*>(pCurrent8);

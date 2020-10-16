@@ -13,7 +13,7 @@
 #define EASTDC_EAPROCESS_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/internal/Config.h>
 #include <EAStdC/EAString.h>
 EA_DISABLE_ALL_VC_WARNINGS()
@@ -29,7 +29,7 @@ namespace EA
 		#if defined(EA_PLATFORM_WINDOWS) && EA_WINAPI_FAMILY_PARTITION(EA_WINAPI_PARTITION_DESKTOP)
 			const int kMaxPathLength      = _MAX_PATH;
 			const int kMaxDirectoryLength = _MAX_PATH;
-		#elif defined(EA_PLATFORM_XBOXONE)
+		#elif defined(EA_PLATFORM_XBOXONE) || defined(CS_UNDEFINED_STRING)
 			const int kMaxPathLength      = 260;
 			const int kMaxDirectoryLength = 260;
 		#elif defined(EA_PLATFORM_SONY)
@@ -196,7 +196,7 @@ namespace EA
 		/// processes. Usually that means desktop and server operating systems.
 		///
 		/// Example usage:
-		///   const char16_t* ptrArray[4] = { EA_CHAR16("/System/Utilities/PingSomeAddresses.exe"), EA_CHAR16("www.bozo.com"), EA_CHAR16("www.nifty.com"), NULL };
+		///   const char16_t* ptrArray[4] = { EASTL_CHAR16("/System/Utilities/PingSomeAddresses.exe"), EASTL_CHAR16("www.bozo.com"), EASTL_CHAR16("www.nifty.com"), NULL };
 		///   int nReturnValue = Spawn("/System/Utilities/PingSomeAddresses.exe", ptrArray, true);
 		///
 		EASTDC_API int Spawn(const char*  pPath, const char*  const* pArgumentArray, bool wait = false);
@@ -306,7 +306,7 @@ namespace EA
 		#if defined(EA_WCHAR_UNIQUE) && EA_WCHAR_UNIQUE
 
 			#if !defined(EASTDC_UNICODE_CONST_CHAR_PTR_CONST_CHAR_PTR_CAST)
-				#if (EA_WCHAR_SIZE == 2)
+				#if (EASTL_WCHAR_SIZE == 2)
 					#define EASTDC_UNICODE_CONST_CHAR_PTR_CONST_CHAR_PTR_CAST(x) reinterpret_cast<const char16_t* const*>(reinterpret_cast<const void *>(x))
 				#else
 					#define EASTDC_UNICODE_CONST_CHAR_PTR_CONST_CHAR_PTR_CAST(x) reinterpret_cast<const char32_t* const*>(x)

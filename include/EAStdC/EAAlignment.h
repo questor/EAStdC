@@ -29,7 +29,7 @@
 
 
 #include <EAStdC/internal/Config.h>
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 
 EA_DISABLE_ALL_VC_WARNINGS()
 EA_DISABLE_VC_WARNING(4548 4836 4574)
@@ -60,7 +60,7 @@ EA_RESTORE_ALL_VC_WARNINGS()
 
 /// EAAlignOf
 /// 
-/// Note: This has been superceded by EABase's EA_ALIGN_OF.
+/// Note: This has been superceded by EABase's EASTL_ALIGN_OF.
 ///
 /// Gives you the alignment of a given data type. If you are using 
 /// a compiler that doesn't support a built-in alignof then you 
@@ -71,7 +71,7 @@ EA_RESTORE_ALL_VC_WARNINGS()
 ///    printf("Alignment of type 'int' is %u.", (unsigned)EAAlignOf(int)); 
 /// 
 #ifndef EAAlignOf
-	#define EAAlignOf(x) EA_ALIGN_OF(x)
+	#define EAAlignOf(x) EASTL_ALIGN_OF(x)
 #endif
 
 
@@ -313,7 +313,7 @@ namespace StdC
 	///
 	/// This class makes an aligned typedef for a given class based on a user-supplied 
 	/// class and alignment. This class exists because of a weakness in VC++ whereby 
-	/// it can only accept __declspec(align) and thus EA_PREFIX_ALIGN usage via an
+	/// it can only accept __declspec(align) and thus EASTL_PREFIX_ALIGN usage via an
 	/// integer literal (e.g. "16") and not an otherwise equivalent constant integral
 	/// expression (e.g. sizeof Foo). 
 	///
@@ -328,18 +328,18 @@ namespace StdC
 		#if defined(EA_COMPILER_MSVC) && EA_COMPILER_VERSION >= 1900	// VS2015+
 			EA_DISABLE_VC_WARNING(5029);  // nonstandard extension used: alignment attributes in C++ apply to variables, data members and tag types only
 		#endif
-		template<typename T> struct AlignedType<T,    2> { typedef EA_PREFIX_ALIGN(   2)    T    EA_POSTFIX_ALIGN(   2)    Type; };
-		template<typename T> struct AlignedType<T,    4> { typedef EA_PREFIX_ALIGN(   4)    T    EA_POSTFIX_ALIGN(   4)    Type; };
-		template<typename T> struct AlignedType<T,    8> { typedef EA_PREFIX_ALIGN(   8)    T    EA_POSTFIX_ALIGN(   8)    Type; };
-		template<typename T> struct AlignedType<T,   16> { typedef EA_PREFIX_ALIGN(  16)    T    EA_POSTFIX_ALIGN(  16)    Type; };
-		template<typename T> struct AlignedType<T,   32> { typedef EA_PREFIX_ALIGN(  32)    T    EA_POSTFIX_ALIGN(  32)    Type; };
-		template<typename T> struct AlignedType<T,   64> { typedef EA_PREFIX_ALIGN(  64)    T    EA_POSTFIX_ALIGN(  64)    Type; };
-		template<typename T> struct AlignedType<T,  128> { typedef EA_PREFIX_ALIGN( 128)    T    EA_POSTFIX_ALIGN( 128)    Type; };
-		template<typename T> struct AlignedType<T,  256> { typedef EA_PREFIX_ALIGN( 256)    T    EA_POSTFIX_ALIGN( 256)    Type; };
-		template<typename T> struct AlignedType<T,  512> { typedef EA_PREFIX_ALIGN( 512)    T    EA_POSTFIX_ALIGN( 512)    Type; };
-		template<typename T> struct AlignedType<T, 1024> { typedef EA_PREFIX_ALIGN(1024)    T    EA_POSTFIX_ALIGN(1024)    Type; };
-		template<typename T> struct AlignedType<T, 2048> { typedef EA_PREFIX_ALIGN(2048)    T    EA_POSTFIX_ALIGN(2048)    Type; };
-		template<typename T> struct AlignedType<T, 4096> { typedef EA_PREFIX_ALIGN(4096)    T    EA_POSTFIX_ALIGN(4096)    Type; };
+		template<typename T> struct AlignedType<T,    2> { typedef EASTL_PREFIX_ALIGN(   2)    T    EASTL_POSTFIX_ALIGN(   2)    Type; };
+		template<typename T> struct AlignedType<T,    4> { typedef EASTL_PREFIX_ALIGN(   4)    T    EASTL_POSTFIX_ALIGN(   4)    Type; };
+		template<typename T> struct AlignedType<T,    8> { typedef EASTL_PREFIX_ALIGN(   8)    T    EASTL_POSTFIX_ALIGN(   8)    Type; };
+		template<typename T> struct AlignedType<T,   16> { typedef EASTL_PREFIX_ALIGN(  16)    T    EASTL_POSTFIX_ALIGN(  16)    Type; };
+		template<typename T> struct AlignedType<T,   32> { typedef EASTL_PREFIX_ALIGN(  32)    T    EASTL_POSTFIX_ALIGN(  32)    Type; };
+		template<typename T> struct AlignedType<T,   64> { typedef EASTL_PREFIX_ALIGN(  64)    T    EASTL_POSTFIX_ALIGN(  64)    Type; };
+		template<typename T> struct AlignedType<T,  128> { typedef EASTL_PREFIX_ALIGN( 128)    T    EASTL_POSTFIX_ALIGN( 128)    Type; };
+		template<typename T> struct AlignedType<T,  256> { typedef EASTL_PREFIX_ALIGN( 256)    T    EASTL_POSTFIX_ALIGN( 256)    Type; };
+		template<typename T> struct AlignedType<T,  512> { typedef EASTL_PREFIX_ALIGN( 512)    T    EASTL_POSTFIX_ALIGN( 512)    Type; };
+		template<typename T> struct AlignedType<T, 1024> { typedef EASTL_PREFIX_ALIGN(1024)    T    EASTL_POSTFIX_ALIGN(1024)    Type; };
+		template<typename T> struct AlignedType<T, 2048> { typedef EASTL_PREFIX_ALIGN(2048)    T    EASTL_POSTFIX_ALIGN(2048)    Type; };
+		template<typename T> struct AlignedType<T, 4096> { typedef EASTL_PREFIX_ALIGN(4096)    T    EASTL_POSTFIX_ALIGN(4096)    Type; };
 		#if defined(EA_COMPILER_MSVC) && EA_COMPILER_VERSION >= 1900	// VS2015+
 			EA_RESTORE_VC_WARNING();
 		#endif

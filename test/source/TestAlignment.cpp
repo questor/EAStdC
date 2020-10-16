@@ -8,15 +8,15 @@
 #include <EATest/EATest.h>
 
 // Conditionally include SSE headers which some of the tests conditionally rely upon.
-#if EA_SSE
-	#if EA_SSE >= 1
+#if EASTL_SSE
+	#if EASTL_SSE >= 1
 		#include <xmmintrin.h>
 	#endif
-	#if EA_SSE >= 2
+	#if EASTL_SSE >= 2
 		#include <emmintrin.h>
 	#endif
 
-	#if EA_SSE >= 1
+	#if EASTL_SSE >= 1
 		EASTDC_DECLARE_TRIVIAL_DESTRUCTOR(__m128)
 		EASTDC_DECLARE_TRIVIAL_DESTRUCTOR(__m128i)
 	#endif
@@ -69,8 +69,6 @@ struct TestTemplate
 int TestAlignment()
 {
 	int nErrorCount(0);
-
-	EA::UnitTest::Report("TestAlignment\n");
 
 	///////////////////////////////////////////////////////////////////////////
 	// EAAlignOf
@@ -415,7 +413,7 @@ int TestAlignment()
 
 		// These tests instantiate SSE types to ensure they are supported by the AlignedArray.  Previously,
 		// these tests didn't work on Clang.
-		#if defined EA_SSE && (EA_SSE >= 1)
+		#if defined EASTL_SSE && (EASTL_SSE >= 1)
 			{
 				AlignedArray<__m128, kSize, kAlignment> mTestVectorArray;
 				
@@ -428,7 +426,7 @@ int TestAlignment()
 			}
 		#endif
 
-		#if defined EA_SSE && (EA_SSE >= 2)
+		#if defined EASTL_SSE && (EASTL_SSE >= 2)
 			{
 				AlignedArray<__m128i, kSize, kAlignment> mTestVectorArray;
 				

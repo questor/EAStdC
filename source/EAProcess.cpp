@@ -89,7 +89,7 @@ namespace StdC
 EASTDC_API void SetCurrentProcessPath(const char* pPath)
 {
 	#if EASTDC_SETCURRENTPROCESSPATH_REQUIRED
-		Strlcpy(gCurrentProcessPath, pPath, EAArrayCount(gCurrentProcessPath));
+		Strlcpy(gCurrentProcessPath, pPath, EASTLArrayCount(gCurrentProcessPath));
 	#else
 		EA_UNUSED(pPath);
 	#endif
@@ -127,7 +127,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 		// We cannot use GetModuleFileNameA here, because the text encoding of 
 		// GetModuleFileNameA is arbitrary and in any case is usually not UTF8. 
 		char16_t path16[kMaxPathLength];
-		GetCurrentProcessPath(path16, EAArrayCount(path16), pathFlags);
+		GetCurrentProcessPath(path16, EASTLArrayCount(path16), pathFlags);
 
 		const int intendedStrlen = Strlcpy(pPath, path16, (size_t)pathCapacity);
 
@@ -168,7 +168,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 		EA_ASSERT(pathCapacity > 0); EA_UNUSED(pathCapacity);
 
 		char16_t path16[kMaxDirectoryLength];
-		GetCurrentProcessDirectory(path16, EAArrayCount(path16), pathFlags);
+		GetCurrentProcessDirectory(path16, EASTLArrayCount(path16), pathFlags);
 
 		const int intendedStrlen = Strlcpy(pDirectory, path16, (size_t)pathCapacity);
 
@@ -217,7 +217,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 		EA_ASSERT(pathCapacity > 0);
 
 		char path8[kMaxPathLength];
-		GetCurrentProcessPath(path8, EAArrayCount(path8), pathFlags);
+		GetCurrentProcessPath(path8, EASTLArrayCount(path8), pathFlags);
 
 		const int intendedStrlen = Strlcpy(pPath, path8, pathCapacity);
 
@@ -264,7 +264,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 		EA_ASSERT(pathCapacity > 0);
 
 		char path8[kMaxDirectoryLength];    // We don't have access to EAIO here.
-		GetCurrentProcessDirectory(path8, EAArrayCount(path8), pathFlags);
+		GetCurrentProcessDirectory(path8, EASTLArrayCount(path8), pathFlags);
 
 		const int intendedStrlen = Strlcpy(pDirectory, path8, pathCapacity);
 
@@ -282,7 +282,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 		EA_ASSERT(pathCapacity > 0); EA_UNUSED(pathCapacity);
 
 		char path8[kMaxPathLength];
-		GetCurrentProcessPath(path8, EAArrayCount(path8), pathFlags);
+		GetCurrentProcessPath(path8, EASTLArrayCount(path8), pathFlags);
 
 		const int intendedStrlen = Strlcpy(pPath, path8, pathCapacity);
 
@@ -295,7 +295,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 	
 	static bool IsBundleFolder(char* pPath, int pathCapacity)
 	{
-		for(size_t i = 0; i < EAArrayCount(kBundleExtensions); i++)
+		for(size_t i = 0; i < EASTLArrayCount(kBundleExtensions); i++)
 		{
 			if(Striend(pPath, kBundleExtensions[i]))
 			{
@@ -361,7 +361,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 		EA_ASSERT(pathCapacity > 0); EA_UNUSED(pathCapacity);
 
 		char path8[kMaxDirectoryLength];    // We don't have access to EAIO here.
-		GetCurrentProcessDirectory(path8, EAArrayCount(path8), pathFlags);
+		GetCurrentProcessDirectory(path8, EASTLArrayCount(path8), pathFlags);
 
 		const int intendedStrlen = Strlcpy(pDirectory, path8, pathCapacity);
 
@@ -440,7 +440,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 		EA_ASSERT(pathCapacity > 0); EA_UNUSED(pathCapacity);
 
 		char path8[kMaxPathLength];
-		GetCurrentProcessPath(path8, EAArrayCount(path8), pathFlags);
+		GetCurrentProcessPath(path8, EASTLArrayCount(path8), pathFlags);
 
 		const int intendedStrlen = Strlcpy(pPath, path8, pathCapacity);
 
@@ -479,7 +479,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 		EA_ASSERT(pathCapacity > 0); EA_UNUSED(pathCapacity);
 
 		char path8[kMaxDirectoryLength];    // We don't have access to EAIO here.
-		GetCurrentProcessDirectory(path8, EAArrayCount(path8), pathFlags);
+		GetCurrentProcessDirectory(path8, EASTLArrayCount(path8), pathFlags);
 
 		const int intendedStrlen = Strlcpy(pDirectory, path8, pathCapacity);
 
@@ -562,7 +562,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 		EA_ASSERT(pathCapacity > 0);
 
 		char path8[kMaxPathLength];
-		GetCurrentProcessPath(path8, EAArrayCount(path8), pathFlags);
+		GetCurrentProcessPath(path8, EASTLArrayCount(path8), pathFlags);
 
 		const int intendedStrlen = Strlcpy(pPath, path8, (size_t)pathCapacity);
 
@@ -593,7 +593,7 @@ EASTDC_API void SetCurrentProcessPath(const char* pPath)
 	EASTDC_API size_t GetCurrentProcessDirectory(char16_t* pDirectory, int pathCapacity, int pathFlags)
 	{
 		char dir8[kMaxDirectoryLength];
-		GetCurrentProcessDirectory(dir8, EAArrayCount(dir8), pathFlags);
+		GetCurrentProcessDirectory(dir8, EASTLArrayCount(dir8), pathFlags);
 
 		const int intendedStrlen = Strlcpy(pDirectory, dir8, (size_t)pathCapacity);
 
@@ -639,7 +639,7 @@ EASTDC_API size_t GetCurrentProcessPath(char32_t* pPath, int pathCapacity, int p
 	EA_ASSERT(pathCapacity > 0); EA_UNUSED(pathCapacity);
 
 	char path8[kMaxPathLength];
-	GetCurrentProcessPath(path8, EAArrayCount(path8), pathFlags);
+	GetCurrentProcessPath(path8, EASTLArrayCount(path8), pathFlags);
 
 	const int intendedStrlen = Strlcpy(pPath, path8, (size_t)pathCapacity);
 
@@ -655,7 +655,7 @@ EASTDC_API size_t GetCurrentProcessDirectory(char32_t* pDirectory, int pathCapac
 	EA_ASSERT(pathCapacity > 0); EA_UNUSED(pathCapacity);
 
 	char path8[kMaxDirectoryLength];    // We don't have access to EAIO here.
-	GetCurrentProcessDirectory(path8, EAArrayCount(path8), pathFlags);
+	GetCurrentProcessDirectory(path8, EASTLArrayCount(path8), pathFlags);
 
 	const int intendedStrlen = Strlcpy(pDirectory, path8, (size_t)pathCapacity);
 
@@ -916,7 +916,7 @@ EASTDC_API bool SearchEnvironmentPath(const char16_t* pFileName, char16_t* pPath
 {
 	#if defined(EA_PLATFORM_WINDOWS) && EA_WINAPI_FAMILY_PARTITION(EA_WINAPI_PARTITION_DESKTOP)
 		if(!pEnvironmentVar)
-			pEnvironmentVar = EA_CHAR16("PATH");
+			pEnvironmentVar = EASTL_CHAR16("PATH");
 		_wsearchenv(reinterpret_cast<const wchar_t*>(pFileName), reinterpret_cast<const wchar_t*>(pEnvironmentVar), reinterpret_cast<wchar_t*>(pPath));
 		return (*pPath != 0);
 
@@ -1009,7 +1009,7 @@ EASTDC_API bool SearchEnvironmentPath(const char* pFileName, char* pPath, const 
 
 		if(ShellExecuteWFunction)
 		{
-			if(Strstr(pPath, EA_CHAR16("http://")) == pPath) // If the path begins with "http://" and is thus a URL...
+			if(Strstr(pPath, EASTL_CHAR16("http://")) == pPath) // If the path begins with "http://" and is thus a URL...
 			{
 				wchar_t pathMod[260 + 4];
 				Strcpy(pathMod, EA_WCHAR("url:"));

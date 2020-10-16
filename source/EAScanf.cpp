@@ -246,7 +246,7 @@ EASTDC_API int Vsscanf(const char32_t* pDestination, const char32_t* pFormat, va
 
 	EASTDC_API int Vcscanf(ReadFunctionW pReadFunctionW, void* pContext, const wchar_t* pFormat, va_list arguments)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			return Vcscanf(reinterpret_cast<ReadFunction16>(pReadFunctionW), pContext, reinterpret_cast<const char16_t *>(pFormat), arguments);
 		#else
 			return Vcscanf(reinterpret_cast<ReadFunction32>(pReadFunctionW), pContext, reinterpret_cast<const char32_t *>(pFormat), arguments);
@@ -255,7 +255,7 @@ EASTDC_API int Vsscanf(const char32_t* pDestination, const char32_t* pFormat, va
 
 	EASTDC_API int Vfscanf(FILE* pFile, const wchar_t* pFormat, va_list arguments)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			return Vfscanf(pFile, reinterpret_cast<const char16_t *>(pFormat), arguments);
 		#else
 			return Vfscanf(pFile, reinterpret_cast<const char32_t *>(pFormat), arguments);
@@ -264,7 +264,7 @@ EASTDC_API int Vsscanf(const char32_t* pDestination, const char32_t* pFormat, va
 
 	EASTDC_API int Vscanf(const wchar_t* pFormat, va_list arguments)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			return Vscanf(reinterpret_cast<const char16_t *>(pFormat), arguments);
 		#else
 			return Vscanf(reinterpret_cast<const char32_t *>(pFormat), arguments);
@@ -273,7 +273,7 @@ EASTDC_API int Vsscanf(const char32_t* pDestination, const char32_t* pFormat, va
 
 	EASTDC_API int Vsscanf(const wchar_t* pTextBuffer, const wchar_t* pFormat, va_list arguments)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			return Vsscanf(reinterpret_cast<const char16_t *>(pTextBuffer), reinterpret_cast<const char16_t *>(pFormat), arguments);
 		#else
 			return Vsscanf(reinterpret_cast<const char32_t *>(pTextBuffer), reinterpret_cast<const char32_t *>(pFormat), arguments);

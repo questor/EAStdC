@@ -12,7 +12,7 @@
 #define EASTDC_INTRUSIVELIST_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 EA_DISABLE_ALL_VC_WARNINGS()
 #include <stddef.h>
 EA_RESTORE_ALL_VC_WARNINGS()
@@ -243,8 +243,8 @@ namespace EA
 			bool         empty() const;
 			size_t       size() const;              ///< Returns the number of elements in the list; O(n).
 			void         clear();                   ///< Clears the list; O(1). No deallocation occurs.
-			void         pop_front();               ///< Removes an element from the front of the list; O(1). The element must exist, but is not deallocated.
-			void         pop_back();                ///< Removes an element from the back of the list; O(1). The element must exist, but is not deallocated.
+			void         popFront();               ///< Removes an element from the front of the list; O(1). The element must exist, but is not deallocated.
+			void         popBack();                ///< Removes an element from the back of the list; O(1). The element must exist, but is not deallocated.
 
 		}; // class intrusive_list_base
 
@@ -288,8 +288,8 @@ namespace EA
 			reference               back();                  ///< Returns a reference to the last element. The list must be empty.
 			const_reference         back() const;            ///< Returns a const reference to the last element. The list must be empty.
 
-			void        push_front(T& x);                    ///< Adds an element to the front of the list; O(1). The element is not copied. The element must not be in any other list.
-			void        push_back(T& x);                     ///< Adds an element to the back of the list; O(1). The element is not copied. The element must not be in any other list.
+			void        pushFront(T& x);                    ///< Adds an element to the front of the list; O(1). The element is not copied. The element must not be in any other list.
+			void        pushBack(T& x);                     ///< Adds an element to the back of the list; O(1). The element is not copied. The element must not be in any other list.
 
 			bool        contains(const T& x) const;          ///< Returns true if the given element is in the list; O(n). Equivalent to (locate(x) != end()).
 
@@ -456,14 +456,14 @@ namespace EA
 		}
 
 
-		inline void intrusive_list_base::pop_front()
+		inline void intrusive_list_base::popFront()
 		{
 			mAnchor.mpNext->mpNext->mpPrev = &mAnchor;
 			mAnchor.mpNext = mAnchor.mpNext->mpNext;
 		}
 
 
-		inline void intrusive_list_base::pop_back()
+		inline void intrusive_list_base::popBack()
 		{
 			mAnchor.mpPrev->mpPrev->mpNext = &mAnchor;
 			mAnchor.mpPrev = mAnchor.mpPrev->mpPrev;
@@ -581,7 +581,7 @@ namespace EA
 
 
 		template <typename T>
-		inline void intrusive_list<T>::push_front(T& x)
+		inline void intrusive_list<T>::pushFront(T& x)
 		{
 			x.mpNext = mAnchor.mpNext;
 			x.mpPrev = &mAnchor;
@@ -591,7 +591,7 @@ namespace EA
 
 
 		template <typename T>
-		inline void intrusive_list<T>::push_back(T& x)
+		inline void intrusive_list<T>::pushBack(T& x)
 		{
 			x.mpPrev = mAnchor.mpPrev;
 			x.mpNext = &mAnchor;

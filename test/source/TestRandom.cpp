@@ -7,12 +7,12 @@
 	#pragma warning(disable: 4244) // This warning is being generated due to a bug in VC++.
 #endif
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/EARandom.h>
 #include <EAStdC/EARandomDistribution.h>
 #include <EAStdCTest/EAStdCTest.h>
 #include <EATest/EATest.h>
-#include <EASTL/bitset.h>
+#include <eastl/bitset.h>
 
 #ifdef _MSC_VER
 	#pragma warning(push, 0)
@@ -153,8 +153,6 @@ namespace
 int TestRandom()
 {
 	int nErrorCount(0);
-
-	EA::UnitTest::Report("TestRandom\n");
 
 	{   // Bug report regression.
 		// User Fei Jiang reports that RandomLinearCongruential::RandomUnit32Uniform(uint32_t nLimit) returns 
@@ -595,9 +593,9 @@ int TestRandom()
 		#if defined(EA_PLATFORM_DESKTOP) && !defined(EA_DEBUG) // Do this test only on fast machines, as it's compute-intensive.
 			// Range tests with FakeIncrementingRandom
 			const size_t sizes[] = { 2, 5, 10 };
-			eastl::vector<uint32_t> countBuckets(sizes[EAArrayCount(sizes) - 1], 0);
+			eastl::vector<uint32_t> countBuckets(sizes[EASTLArrayCount(sizes) - 1], 0);
 
-			for(size_t a = 0; a < EAArrayCount(sizes); a++)
+			for(size_t a = 0; a < EASTLArrayCount(sizes); a++)
 			{
 				size_t s = sizes[a];
 

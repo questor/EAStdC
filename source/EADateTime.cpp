@@ -200,6 +200,15 @@ namespace StdC
 		return sInitialTime + t;
 	}
 
+	///////////////////////////////////////////////////////////////////////
+	// GetTimeMilliseconds
+	//
+	// Convenient wrapper for converting the nanosecond resolution of GetTime()
+	// to milliseconds.
+	EASTDC_API uint64_t GetTimeMilliseconds()
+	{
+		return GetTime() / 1000000;
+	}
 
 	#if 0 // Alternative variation, which on the surface seems more efficient.
 	/*
@@ -1427,7 +1436,7 @@ namespace StdC
 		};
 
 
-		static bool Append(const char* EA_RESTRICT p, char* EA_RESTRICT & pTimeString, size_t& capacity)
+		static bool Append(const char* EASTL_RESTRICT p, char* EASTL_RESTRICT & pTimeString, size_t& capacity)
 		{
 			for(; capacity; ++pTimeString, --capacity)
 			{
@@ -1439,7 +1448,7 @@ namespace StdC
 		}
 
 
-		static bool WriteInt(int n, int digits, char pad, bool removeLeadingZeroes, char* EA_RESTRICT & pTimeString, size_t& capacity) 
+		static bool WriteInt(int n, int digits, char pad, bool removeLeadingZeroes, char* EASTL_RESTRICT & pTimeString, size_t& capacity) 
 		{
 			char  buffer[10];
 			char* p;
@@ -1511,8 +1520,8 @@ namespace StdC
 	//     %#x                                                          Long date representation, appropriate to current locale. For example: "Tuesday, March 14, 1995".
 	//     %#d, %#H, %#I, %#j, %#m, %#M, %#S, %#U, %#w, %#W, %#y, %#Y   Remove leading zeros (if any).
 
-	EASTDC_API size_t Strftime(char* EA_RESTRICT pTimeString, size_t timeStringCapacity, 
-							   const char* EA_RESTRICT pFormat, const tm* EA_RESTRICT pTM, const TimeLocale* EA_RESTRICT pTimeLocale)
+	EASTDC_API size_t Strftime(char* EASTL_RESTRICT pTimeString, size_t timeStringCapacity, 
+							   const char* EASTL_RESTRICT pFormat, const tm* EASTL_RESTRICT pTM, const TimeLocale* EASTL_RESTRICT pTimeLocale)
 	{
 		using namespace Internal;
 
@@ -1940,7 +1949,7 @@ namespace StdC
 		return false;
 	}
 
-	static bool ParseDate(bool bAlt, const char *&p, tm* EA_RESTRICT pTM, const TimeLocale *pTimeLocale)
+	static bool ParseDate(bool bAlt, const char *&p, tm* EASTL_RESTRICT pTM, const TimeLocale *pTimeLocale)
 	{
 		#if EASTDC_WINDOWS_TIME_FUNCTIONS_AVAILABLE
 			EA_UNUSED(pTimeLocale);
@@ -2017,7 +2026,7 @@ namespace StdC
 		return true;
 	}
 
-	static bool ParseTime(bool bAlt, const char *&p, tm* EA_RESTRICT pTM, const TimeLocale *pTimeLocale)
+	static bool ParseTime(bool bAlt, const char *&p, tm* EASTL_RESTRICT pTM, const TimeLocale *pTimeLocale)
 	{
 		#if EASTDC_WINDOWS_TIME_FUNCTIONS_AVAILABLE
 			EA_UNUSED(pTimeLocale);
@@ -2092,7 +2101,7 @@ namespace StdC
 	}
 
 
-	EASTDC_API char* Strptime(const char* EA_RESTRICT pTimeString, const char* EA_RESTRICT pFormat, tm* EA_RESTRICT pTM, const TimeLocale* EA_RESTRICT pTimeLocale)
+	EASTDC_API char* Strptime(const char* EASTL_RESTRICT pTimeString, const char* EASTL_RESTRICT pFormat, tm* EASTL_RESTRICT pTM, const TimeLocale* EASTL_RESTRICT pTimeLocale)
 	{
 		using namespace Internal;
 

@@ -35,7 +35,7 @@
 	#pragma warning(disable: 4127)  // conditional expression is constant.
 #endif
 
-// To do: switch this to instead use <EABase/eastdarg.h>'s va_list_reference at about Summer of 2015:
+// To do: switch this to instead use <eastl/EABase/eastdarg.h>'s va_list_reference at about Summer of 2015:
 #if (defined(__GNUC__) && (defined(__x86__) || defined(__x86_64__)))
 	#define VA_LIST_REFERENCE(arguments) ((va_list*) arguments)
 #else
@@ -52,7 +52,7 @@ namespace SprintfLocal
 {
 
 
-int StringWriter8(const char* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext8, WriteFunctionState /*wfs*/)
+int StringWriter8(const char* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext8, WriteFunctionState /*wfs*/)
 {
 	using namespace SprintfLocal;
 
@@ -100,7 +100,7 @@ int StringWriter8(const char* EA_RESTRICT pData, size_t nCount, void* EA_RESTRIC
 	return 0;
 }
 
-int StringWriter16(const char16_t* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext16, WriteFunctionState /*wfs*/)
+int StringWriter16(const char16_t* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext16, WriteFunctionState /*wfs*/)
 {
 	using namespace SprintfLocal;
 
@@ -115,7 +115,7 @@ int StringWriter16(const char16_t* EA_RESTRICT pData, size_t nCount, void* EA_RE
 	return (int)(unsigned)nCount;
 }
 
-int StringWriter32(const char32_t* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext32, WriteFunctionState /*wfs*/)
+int StringWriter32(const char32_t* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext32, WriteFunctionState /*wfs*/)
 {
 	using namespace SprintfLocal;
 
@@ -133,7 +133,7 @@ int StringWriter32(const char32_t* EA_RESTRICT pData, size_t nCount, void* EA_RE
 
 
 
-int FILEWriter8(const char* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext8, WriteFunctionState /*wfs*/)
+int FILEWriter8(const char* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext8, WriteFunctionState /*wfs*/)
 {
 	FILE* const pFile = (FILE*)pContext8;
 	const size_t nResult = fwrite(pData, sizeof(char), nCount, pFile); // It's OK if nCount == 0.
@@ -142,7 +142,7 @@ int FILEWriter8(const char* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT 
 	return -1;
 }
 
-int FILEWriter16(const char16_t* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext16, WriteFunctionState /*wfs*/)
+int FILEWriter16(const char16_t* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext16, WriteFunctionState /*wfs*/)
 {
 	FILE* const pFile = (FILE*)pContext16;
 	const size_t nResult = fwrite(pData, sizeof(char16_t), nCount, pFile); // It's OK if nCount == 0.
@@ -151,7 +151,7 @@ int FILEWriter16(const char16_t* EA_RESTRICT pData, size_t nCount, void* EA_REST
 	return -1;
 }
 
-int FILEWriter32(const char32_t* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext32, WriteFunctionState /*wfs*/)
+int FILEWriter32(const char32_t* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext32, WriteFunctionState /*wfs*/)
 {
 	FILE* const pFile = (FILE*)pContext32;
 	const size_t nResult = fwrite(pData, sizeof(char32_t), nCount, pFile); // It's OK if nCount == 0.
@@ -165,7 +165,7 @@ int FILEWriter32(const char32_t* EA_RESTRICT pData, size_t nCount, void* EA_REST
 ///////////////////////////////////////////////////////////////////////////////
 // PlatformLogWriter8
 //
-int PlatformLogWriter8(const char* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext8, WriteFunctionState)
+int PlatformLogWriter8(const char* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext8, WriteFunctionState)
 {
 	#if defined(EA_PLATFORM_ANDROID)
 		// The __android_log_write function appends a \n to every call you make to it. This is a problem for 
@@ -178,7 +178,7 @@ int PlatformLogWriter8(const char* EA_RESTRICT pData, size_t nCount, void* EA_RE
 
 		if(nCount)
 		{
-			const size_t kBufferSize               = EAArrayCount(PlatformLogWriterContext8::mBuffer);
+			const size_t kBufferSize               = EASTLArrayCount(PlatformLogWriterContext8::mBuffer);
 			const size_t kBufferSizeActual         = kBufferSize - 1;           // -1 because we need to save space for a terminating 0 char that __android_log_write wants.
 			const size_t kPlatformBufferSize       = 512;                       // This is the size that's the max size the platform's log-writing function can handle.
 			const size_t kPlatformBufferSizeActual = kPlatformBufferSize - 1;   // -1 because we need to save space for a terminating 0 char that __android_log_write wants.
@@ -234,7 +234,7 @@ int PlatformLogWriter8(const char* EA_RESTRICT pData, size_t nCount, void* EA_RE
 
 				while(charIndex < nCount)
 				{
-					for(i = 0, iEnd = (EAArrayCount(buffer) - 1); (i < iEnd) && (charIndex < nCount); ++i, ++charIndex)
+					for(i = 0, iEnd = (EASTLArrayCount(buffer) - 1); (i < iEnd) && (charIndex < nCount); ++i, ++charIndex)
 						buffer[i] = pData[charIndex];
 					buffer[i] = 0;
 
@@ -293,8 +293,8 @@ struct IsSameType<T, T>
 // output with the appropriate data.
 //
 template <typename CharT>
-static int WriteLeftPadding(int(*pWriteFunction)(const CharT* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext, WriteFunctionState wfs),
-	void* EA_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, const CharT*& pBufferData, int nWriteCount)
+static int WriteLeftPadding(int(*pWriteFunction)(const CharT* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext, WriteFunctionState wfs),
+	void* EASTL_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, const CharT*& pBufferData, int nWriteCount)
 {
 	if(fd.mAlignment == kAlignmentLeft || fd.mnWidth <= nWriteCount)
 		return 0;
@@ -334,8 +334,8 @@ static int WriteLeftPadding(int(*pWriteFunction)(const CharT* EA_RESTRICT pData,
 // output with the appropriate data.
 //
 template <typename CharT>
-static int WriteRightPadding(int(*pWriteFunction)(const CharT* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext, WriteFunctionState wfs),
-	void* EA_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, int nWriteCount)
+static int WriteRightPadding(int(*pWriteFunction)(const CharT* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext, WriteFunctionState wfs),
+	void* EASTL_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, int nWriteCount)
 {
 	if(fd.mAlignment != kAlignmentLeft || fd.mnWidth <= nWriteCount)
 		return 0;
@@ -356,8 +356,8 @@ static int WriteRightPadding(int(*pWriteFunction)(const CharT* EA_RESTRICT pData
 // Write the given buffer with the required left and right padding
 //
 template <typename CharT>
-static int WriteBuffer(int(*pWriteFunction)(const CharT* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext, WriteFunctionState wfs),
-	void* EA_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, const CharT* pBufferData, int nWriteCount)
+static int WriteBuffer(int(*pWriteFunction)(const CharT* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext, WriteFunctionState wfs),
+	void* EASTL_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, const CharT* pBufferData, int nWriteCount)
 {
 	const CharT* pBufferDataEnd = pBufferData + nWriteCount;
 	int nWriteCountCurrent = nWriteCount; // We will write at least as much nWriteCount, possibly more if the format specified a specific width.
@@ -440,9 +440,10 @@ struct StringFormatHelper
 template <typename InCharT, typename OutCharT>
 struct StringFormatHelper<true, InCharT, OutCharT>
 {
-	int operator()(int(*pWriteFunction)(const OutCharT* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext, WriteFunctionState wfs),
-		void* EA_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, OutCharT* pScratchBuffer, const InCharT* pInBufferData)
+	int operator()(int(*pWriteFunction)(const OutCharT* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext, WriteFunctionState wfs),
+		void* EASTL_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, OutCharT* pScratchBuffer, const InCharT* pInBufferData)
 	{
+		EA_UNUSED(pScratchBuffer);
 		int nWriteCount = StringFormatLength(fd, pInBufferData);
 		return WriteBuffer(pWriteFunction, pWriteFunctionContext, fd, pInBufferData, nWriteCount);
 	}
@@ -451,8 +452,8 @@ struct StringFormatHelper<true, InCharT, OutCharT>
 template <typename InCharT, typename OutCharT>
 struct StringFormatHelper<false, InCharT, OutCharT>
 {
-	int operator()(int(*pWriteFunction)(const OutCharT* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext, WriteFunctionState wfs),
-		void* EA_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, OutCharT* pScratchBuffer, const InCharT* pInBufferData)
+	int operator()(int(*pWriteFunction)(const OutCharT* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext, WriteFunctionState wfs),
+		void* EASTL_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, OutCharT* pScratchBuffer, const InCharT* pInBufferData)
 	{
 		// We have a problem here. We are converting from one encoding to another.
 		// The only encoding that are supported are UTF-8, UCS-2 and UCS-4.  Any 
@@ -551,8 +552,8 @@ struct StringFormatHelper<false, InCharT, OutCharT>
 // length is returned and pointed to by ppOutBufferData.
 // 
 template <typename InCharT, typename OutCharT>
-int StringFormat(int(*pWriteFunction)(const OutCharT* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext, WriteFunctionState wfs),
-	void* EA_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, OutCharT* pScratchBuffer, const InCharT* pInBufferData)
+int StringFormat(int(*pWriteFunction)(const OutCharT* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext, WriteFunctionState wfs),
+	void* EASTL_RESTRICT pWriteFunctionContext, const SprintfLocal::FormatData& fd, OutCharT* pScratchBuffer, const InCharT* pInBufferData)
 {
 	// I don't see the C99 standard specifying the behaviour for a NULL string pointer, 
 	// but both GCC and MSVC use "(null)" when such a NULL pointer is encountered.
@@ -585,7 +586,7 @@ int StringFormat(int(*pWriteFunction)(const OutCharT* EA_RESTRICT pData, size_t 
 ///////////////////////////////////////////////////////////////////////////////
 //
 template <typename CharT>
-const CharT* ReadFormat(const CharT* EA_RESTRICT pFormat, SprintfLocal::FormatData* EA_RESTRICT pFormatData, va_list* EA_RESTRICT pArguments)
+const CharT* ReadFormat(const CharT* EASTL_RESTRICT pFormat, SprintfLocal::FormatData* EASTL_RESTRICT pFormatData, va_list* EASTL_RESTRICT pArguments)
 {
 	using namespace SprintfLocal;
 
@@ -932,7 +933,7 @@ const CharT* ReadFormat(const CharT* EA_RESTRICT pFormat, SprintfLocal::FormatDa
 // of the buffer and move backwards.
 //
 template <typename CharT, typename ValueT, typename UValueT>
-CharT* WriteLongHelper(const SprintfLocal::FormatData& fd, ValueT lValue, CharT* EA_RESTRICT pBufferEnd)
+CharT* WriteLongHelper(const SprintfLocal::FormatData& fd, ValueT lValue, CharT* EASTL_RESTRICT pBufferEnd)
 {
 	using namespace SprintfLocal;
 
@@ -1093,7 +1094,7 @@ CharT* WriteLongHelper(const SprintfLocal::FormatData& fd, ValueT lValue, CharT*
 // of the buffer and move backwards.
 //
 template <typename CharT>
-CharT* WriteLong(const SprintfLocal::FormatData& fd, long lValue, CharT* EA_RESTRICT pBufferEnd)
+CharT* WriteLong(const SprintfLocal::FormatData& fd, long lValue, CharT* EASTL_RESTRICT pBufferEnd)
 {
 	return WriteLongHelper<CharT, long, unsigned long>(fd, lValue, pBufferEnd);
 }
@@ -1108,7 +1109,7 @@ CharT* WriteLong(const SprintfLocal::FormatData& fd, long lValue, CharT* EA_REST
 // thus to be avoided if possible.
 //
 template <typename CharT>
-CharT* WriteLongLong(const SprintfLocal::FormatData& fd, long long lValue, CharT* EA_RESTRICT pBufferEnd)
+CharT* WriteLongLong(const SprintfLocal::FormatData& fd, long long lValue, CharT* EASTL_RESTRICT pBufferEnd)
 {
 	return WriteLongHelper<CharT, long long, unsigned long long> (fd, lValue, pBufferEnd);
 }
@@ -1118,7 +1119,7 @@ CharT* WriteLongLong(const SprintfLocal::FormatData& fd, long long lValue, CharT
 // WriteDouble
 //
 template <typename CharT>
-CharT* WriteDouble(const SprintfLocal::FormatData& fd, double dValue, CharT* EA_RESTRICT pBufferEnd)
+CharT* WriteDouble(const SprintfLocal::FormatData& fd, double dValue, CharT* EASTL_RESTRICT pBufferEnd)
 {
 	using namespace SprintfLocal;
 
@@ -1405,7 +1406,7 @@ CharT* WriteDouble(const SprintfLocal::FormatData& fd, double dValue, CharT* EA_
 //
 
 template <typename CharT>
-int VprintfCoreInternal(int(*pWriteFunction)(const CharT* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext, WriteFunctionState wfs), void* EA_RESTRICT pWriteFunctionContext, const CharT* EA_RESTRICT pFormat, va_list arguments)
+int VprintfCoreInternal(int(*pWriteFunction)(const CharT* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext, WriteFunctionState wfs), void* EASTL_RESTRICT pWriteFunctionContext, const CharT* EASTL_RESTRICT pFormat, va_list arguments)
 {
 	using namespace SprintfLocal;
 
@@ -1920,17 +1921,17 @@ FunctionError:
 ///////////////////////////////////////////////////////////////////////////////
 // VprintfCore
 //
-int VprintfCore(WriteFunction8 pWriteFunction8, void* EA_RESTRICT pWriteFunctionContext8, const char* EA_RESTRICT pFormat, va_list arguments)
+int VprintfCore(WriteFunction8 pWriteFunction8, void* EASTL_RESTRICT pWriteFunctionContext8, const char* EASTL_RESTRICT pFormat, va_list arguments)
 {
 	return VprintfCoreInternal(pWriteFunction8, pWriteFunctionContext8, pFormat, arguments);
 }
 
-int VprintfCore(WriteFunction16 pWriteFunction16, void* EA_RESTRICT pWriteFunctionContext16, const char16_t* EA_RESTRICT pFormat, va_list arguments)
+int VprintfCore(WriteFunction16 pWriteFunction16, void* EASTL_RESTRICT pWriteFunctionContext16, const char16_t* EASTL_RESTRICT pFormat, va_list arguments)
 {
 	return VprintfCoreInternal(pWriteFunction16, pWriteFunctionContext16, pFormat, arguments);
 }
 
-int VprintfCore(WriteFunction32 pWriteFunction32, void* EA_RESTRICT pWriteFunctionContext32, const char32_t* EA_RESTRICT pFormat, va_list arguments)
+int VprintfCore(WriteFunction32 pWriteFunction32, void* EASTL_RESTRICT pWriteFunctionContext32, const char32_t* EASTL_RESTRICT pFormat, va_list arguments)
 {
 	return VprintfCoreInternal(pWriteFunction32, pWriteFunctionContext32, pFormat, arguments);
 }

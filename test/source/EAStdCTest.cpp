@@ -25,7 +25,7 @@
 
 		static WChar16Map sTable; // Not thread safe.
 		ea_char16_str s = ea_char16_str(pText);
-		eastl::pair<WChar16Map::iterator, bool> result = sTable.insert(eastl::make_pair(pText, s));
+		eastl::pair<WChar16Map::iterator, bool> result = sTable.insert(eastl::makePair(pText, s));
 		return result.first->second.mpData;
 	}
 
@@ -42,7 +42,7 @@
 
 		static WChar32Map sTable; // Not thread safe.
 		ea_char32_str s = ea_char32_str(pText);
-		eastl::pair<WChar32Map::iterator, bool> result = sTable.insert(eastl::make_pair(pText, s));
+		eastl::pair<WChar32Map::iterator, bool> result = sTable.insert(eastl::makePair(pText, s));
 		return result.first->second.mpData;
 	}
 	char32_t char32_convert(wchar_t character)
@@ -157,7 +157,6 @@ void operator delete(void* p, char const*, int, unsigned, char const*, int)
 #if defined(EA_PLATFORM_SONY) 
 	size_t sceLibcHeapSize = 128*1024*1024;
 #endif
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // EAMain

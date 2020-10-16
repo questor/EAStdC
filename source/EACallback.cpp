@@ -29,7 +29,7 @@
 
 // We define the following macros from CoreAllocator here to avoid a dependency on the MemoryMan package.
 // #ifndef EA_CB_CA_NEW
-//     #define EA_CB_CA_NEW(Class, pAllocator, pName) new ((pAllocator)->Alloc(sizeof(Class), pName, 0, EA_ALIGN_OF(Class), 0)) Class
+//     #define EA_CB_CA_NEW(Class, pAllocator, pName) new ((pAllocator)->Alloc(sizeof(Class), pName, 0, EASTL_ALIGN_OF(Class), 0)) Class
 // #endif
 // 
 // #ifndef EA_CB_CA_DELETE
@@ -275,7 +275,7 @@ void Callback::ReleaseCallback()
 CallbackManager::CallbackVector::CallbackVector()
   : mpBegin(mLocalBuffer),
 	mpEnd(mLocalBuffer),
-	mpCapacity(mLocalBuffer + EAArrayCount(mLocalBuffer))
+	mpCapacity(mLocalBuffer + EASTLArrayCount(mLocalBuffer))
 {
 	#if defined(EA_DEBUG)
 		memset(mLocalBuffer, 0, sizeof(mLocalBuffer));
@@ -306,7 +306,7 @@ CallbackManager::CallbackVector::iterator CallbackManager::CallbackVector::erase
 }
 
 
-CallbackManager::CallbackVector::iterator CallbackManager::CallbackVector::push_back(value_type value)
+CallbackManager::CallbackVector::iterator CallbackManager::CallbackVector::pushBack(value_type value)
 {
 	if((mpEnd + 1) >= mpCapacity) // If there is insufficient existing capacity...
 	{
@@ -706,7 +706,7 @@ bool CallbackManager::Add(Callback* pCallback, bool bOneShot)
 		if(found == 0xffffffff) // If pCallback isn't already present...
 		{
 			if(found_empty == 0xffffffff) // If no empty slot was found...
-				mCallbackArray.push_back(pCallback);
+				mCallbackArray.pushBack(pCallback);
 			else 
 				mCallbackArray[found_empty] = pCallback;
 

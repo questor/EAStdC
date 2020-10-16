@@ -69,11 +69,11 @@
 </blockquote>
 <p>We'll discuss some of these briefly.</p>
 <h2>EAAlignOf</h2>
-<p>EAAlignOf is your basic macro for retrieving the alignment of an object by its type. Recent versions of EABase define EA_ALIGN_OF, so EAAlignOf is currently a duplication of the EABase functionality. </p>
+<p>EAAlignOf is your basic macro for retrieving the alignment of an object by its type. Recent versions of EABase define EASTL_ALIGN_OF, so EAAlignOf is currently a duplication of the EABase functionality. </p>
 <p>Example usage: </p>
 <pre class="code-example">printf(&quot;Alignment of type 'int' is %u.\n&quot;, (unsigned)EAAlignOf(int)); </pre>
 <h2>AlignedType</h2>
-<p> This class makes an aligned typedef for a given class based on a user-supplied class and alignment. This class exists because of a weakness in VC++ whereby it can only accept __declspec(align) and thus EA_PREFIX_ALIGN usage via an integer literal (e.g. &quot;16&quot;) and not an otherwise equivalent constant integral expression (e.g. sizeof Foo).</p>
+<p> This class makes an aligned typedef for a given class based on a user-supplied class and alignment. This class exists because of a weakness in VC++ whereby it can only accept __declspec(align) and thus EASTL_PREFIX_ALIGN usage via an integer literal (e.g. &quot;16&quot;) and not an otherwise equivalent constant integral expression (e.g. sizeof Foo).</p>
 <p>Example usage: </p>
 <pre class="code-example">const size_t kAlignment = 32; <span class="code-example-comment">// Note that in this case the alignment is defined elsewhere as a non-literal.</span><br>
 AlignedType&lt;Widget, kAlignment&gt;::Type widgetAlign128;<br>

@@ -4,7 +4,7 @@
 
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/EAFixedPoint.h>
 #include <EAStdCTest/EAStdCTest.h>
 #include <EATest/EATest.h>
@@ -22,16 +22,6 @@ static bool CompareValues(EA::StdC::SFixed16 a, double b)
 
 	const double c = Fixed16ToDouble(a.AsFixed());
 	return (fabs(c - b) < 0.01);
-	#undef Fixed16ToDouble
-}
-
-static bool CompareValues(EA::StdC::UFixed16 a, double b)
-{
-	#define Fixed16ToDouble(a) (((double)a) / 65536.0)
-
-	const double c = Fixed16ToDouble(a.AsFixed());
-	return (fabs(c - b) < 0.01);
-	#undef Fixed16ToDouble
 }
 
 
@@ -79,15 +69,12 @@ int TestFixedPoint()
 
 	int nErrorCount(0);
 
-	EA::UnitTest::Report("TestFixedPoint\n");
-
 	// Test SFixed16
 	{
-		SFixed16  a(1), b(2), c(3.f), d(1.0), x(-1.0);
+		SFixed16  a(1), b(2), c(3.f), d(1.0);
 		double    e = 3.2;
 		float     f = 4.5;
 		int       g =   6;
-
 
 		if(a.AsInt() != 1)
 			nErrorCount++;
@@ -97,15 +84,9 @@ int TestFixedPoint()
 			nErrorCount++;
 		if(c.AsUnsignedLong() != 3)
 			nErrorCount++;
-		if(x.AsInt() != -1)
-			nErrorCount++;
 		if(!CompareValues((double)a.AsFloat(), 1.0))
 			nErrorCount++;
 		if(!CompareValues(c.AsDouble(), 3.0))
-			nErrorCount++;
-
-		a = b * c;			//testing FixedMul without type conversion
-		if(!CompareValues(a, 6.0))
 			nErrorCount++;
 
 		a = b * f;
@@ -146,65 +127,42 @@ int TestFixedPoint()
 			nErrorCount++;
 	}
 
-	// Test UFixed16
 	{
-		UFixed16 a(1), b(2), c(3.f), d(1.0);
-		double    e = 3.2;
-		float     f = 4.5;
-		int       g =   6;
+		// FPTemplate operator<<(int numBits) const 
+		{
+			SFixed16 a(16);
 
-		if(a.AsInt() != 1)
-			nErrorCount++;
-		if(c.AsUnsignedInt() != 3)
-			nErrorCount++;
-		if(a.AsLong() != 1)
-			nErrorCount++;
-		if(c.AsUnsignedLong() != 3)
-			nErrorCount++;
-		if(!CompareValues((double)a.AsFloat(), 1.0))
-			nErrorCount++;
-		if(!CompareValues(c.AsDouble(), 3.0))
-			nErrorCount++;
+			auto expected = a.value << 1;
 
-		a = b * c;			//testing FixedMul without type conversion
-		if(!CompareValues(a, 6.0))
-			nErrorCount++;
+			a = (a << 1);
 
-		a = b * f;
-		if(!CompareValues(a, 9.0))
-			nErrorCount++;
+			if(!CompareValues(a.value, expected))
+				nErrorCount++;
+		}
 
-		a = b / d;
-		if(!CompareValues(a, 2.0))
-			nErrorCount++;
+		// FPTemplate operator>>(int numBits) const 
+		{
+			SFixed16 a(16);
 
-		a = b + d;
-		if(!CompareValues(a, 3.0))
-			nErrorCount++;
+			auto expected = a.value >> 1;
 
-		a = (c / e) + b + f;
-		if(!CompareValues(a, 7.4375))
-			nErrorCount++;
+			a = (a >> 1);
 
-		a = c / e * (b % g) + f / c;
-		if(!CompareValues(a, 3.375))
-			nErrorCount++;
+			if(!CompareValues(a.value, expected))
+				nErrorCount++;
+		}
+	}
 
-		a = g * -c / (b++);
-		if(!CompareValues(a, -9.0))
-			nErrorCount++;
-		if(!CompareValues(b, 3.0))
-			nErrorCount++;
-		--b; //Restore it to its original value.
-		if(!CompareValues(b, 2.0))
-			nErrorCount++;
+	// Reported regression - ensure operator<< and operator>> are implemented correctly.
+	{
+		SFixed16 a(16);
 
-		a = sin(d) + pow(b, e) * sqrt(d);
-		if(!CompareValues(a, 10.031))
-			nErrorCount++;
+		auto expected = a.value;
 
-		a = log(e) / log(f);
-		if(!CompareValues(a, 0.77333))
+		a = (a << 1);
+		a = (a >> 1);
+
+		if(!CompareValues(a.value, expected))
 			nErrorCount++;
 	}
 

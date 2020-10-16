@@ -5,8 +5,8 @@
 #ifndef EASTDC_VERSION_H
 #define EASTDC_VERSION_H
 
-#include <EABase/eabase.h>
-#if defined(EA_PRAGMA_ONCE_SUPPORTED)
+#include <eastl/EABase/eabase.h>
+#if defined(EASTL_PRAGMA_ONCE_SUPPORTED)
 	#pragma once
 #endif
 

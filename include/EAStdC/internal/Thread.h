@@ -6,7 +6,7 @@
 #define EASTDC_THREAD_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <eathread/eathread_atomic.h>
 #include <eathread/eathread_mutex.h>
 

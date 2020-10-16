@@ -6,7 +6,7 @@
 #define EASTDC_INTERNAL_SPRINTFCORE_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/internal/Config.h>
 #include <EAStdC/internal/stdioEA.h>
 #include <EAStdC/EASprintf.h>
@@ -230,15 +230,15 @@ struct SnprintfContext32
 #endif
 
 // Default output writers
-int StringWriter8     (const char*  EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext8,  WriteFunctionState wfs);
-int FILEWriter8       (const char*  EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext8,  WriteFunctionState wfs);
-int PlatformLogWriter8(const char*  EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext8,  WriteFunctionState wfs);
+int StringWriter8     (const char*  EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext8,  WriteFunctionState wfs);
+int FILEWriter8       (const char*  EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext8,  WriteFunctionState wfs);
+int PlatformLogWriter8(const char*  EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext8,  WriteFunctionState wfs);
 
-int StringWriter16   (const char16_t* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext16, WriteFunctionState wfs);
-int FILEWriter16     (const char16_t* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext16, WriteFunctionState wfs);
+int StringWriter16   (const char16_t* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext16, WriteFunctionState wfs);
+int FILEWriter16     (const char16_t* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext16, WriteFunctionState wfs);
 
-int StringWriter32   (const char32_t* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext32, WriteFunctionState wfs);
-int FILEWriter32     (const char32_t* EA_RESTRICT pData, size_t nCount, void* EA_RESTRICT pContext32, WriteFunctionState wfs);
+int StringWriter32   (const char32_t* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext32, WriteFunctionState wfs);
+int FILEWriter32     (const char32_t* EASTL_RESTRICT pData, size_t nCount, void* EASTL_RESTRICT pContext32, WriteFunctionState wfs);
 
 
 // VaListContainer
@@ -281,14 +281,14 @@ void EASprintfShutdown();
 ///////////////////////////////////////////////////////////////////////////////
 //
 template <typename CharT>
-const CharT* ReadFormat(const CharT* EA_RESTRICT pFormat, SprintfLocal::FormatData* EA_RESTRICT pFormatData, va_list* EA_RESTRICT pArguments);
+const CharT* ReadFormat(const CharT* EASTL_RESTRICT pFormat, SprintfLocal::FormatData* EASTL_RESTRICT pFormatData, va_list* EASTL_RESTRICT pArguments);
 
 ///////////////////////////////////////////////////////////////////////////////
 // VprintfCore
 //
-int VprintfCore(WriteFunction8  pWriteFunction8,  void* EA_RESTRICT pWriteFunctionContext8,  const char*  EA_RESTRICT pFormat, va_list arguments);
-int VprintfCore(WriteFunction16 pWriteFunction16, void* EA_RESTRICT pWriteFunctionContext16, const char16_t* EA_RESTRICT pFormat, va_list arguments);
-int VprintfCore(WriteFunction32 pWriteFunction32, void* EA_RESTRICT pWriteFunctionContext32, const char32_t* EA_RESTRICT pFormat, va_list arguments);
+int VprintfCore(WriteFunction8  pWriteFunction8,  void* EASTL_RESTRICT pWriteFunctionContext8,  const char*  EASTL_RESTRICT pFormat, va_list arguments);
+int VprintfCore(WriteFunction16 pWriteFunction16, void* EASTL_RESTRICT pWriteFunctionContext16, const char16_t* EASTL_RESTRICT pFormat, va_list arguments);
+int VprintfCore(WriteFunction32 pWriteFunction32, void* EASTL_RESTRICT pWriteFunctionContext32, const char32_t* EASTL_RESTRICT pFormat, va_list arguments);
 
 
 

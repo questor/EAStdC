@@ -44,7 +44,7 @@
 #define EASTDC_EAGLOBAL_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/internal/Config.h>
 #include <EAStdC/internal/IntrusiveList.h>
 
@@ -463,7 +463,7 @@ namespace EA
 			};
 
 			enum NodeAlignment {
-				kNodeAlignment = EA_ALIGN_OF(Node)
+				kNodeAlignment = EASTL_ALIGN_OF(Node)
 			};
 
 			static OSGlobalNode *Create();
@@ -491,18 +491,18 @@ namespace EA
 			#if defined(EA_COMPILER_MSVC) && EA_COMPILER_VERSION >= 1900	// VS2015+
 				EA_DISABLE_VC_WARNING(5029);  // nonstandard extension used: alignment attributes in C++ apply to variables, data members and tag types only
 			#endif
-			template<size_t size> struct AlignedBuffer<size, 2>    { typedef EA_PREFIX_ALIGN(2)    char Type[size] EA_POSTFIX_ALIGN(2);    };
-			template<size_t size> struct AlignedBuffer<size, 4>    { typedef EA_PREFIX_ALIGN(4)    char Type[size] EA_POSTFIX_ALIGN(4);    };
-			template<size_t size> struct AlignedBuffer<size, 8>    { typedef EA_PREFIX_ALIGN(8)    char Type[size] EA_POSTFIX_ALIGN(8);    };
-			template<size_t size> struct AlignedBuffer<size, 16>   { typedef EA_PREFIX_ALIGN(16)   char Type[size] EA_POSTFIX_ALIGN(16);   };
-			template<size_t size> struct AlignedBuffer<size, 32>   { typedef EA_PREFIX_ALIGN(32)   char Type[size] EA_POSTFIX_ALIGN(32);   };
-			template<size_t size> struct AlignedBuffer<size, 64>   { typedef EA_PREFIX_ALIGN(64)   char Type[size] EA_POSTFIX_ALIGN(64);   };
-			template<size_t size> struct AlignedBuffer<size, 128>  { typedef EA_PREFIX_ALIGN(128)  char Type[size] EA_POSTFIX_ALIGN(128);  };
-			template<size_t size> struct AlignedBuffer<size, 256>  { typedef EA_PREFIX_ALIGN(256)  char Type[size] EA_POSTFIX_ALIGN(256);  };
-			template<size_t size> struct AlignedBuffer<size, 512>  { typedef EA_PREFIX_ALIGN(512)  char Type[size] EA_POSTFIX_ALIGN(512);  };
-			template<size_t size> struct AlignedBuffer<size, 1024> { typedef EA_PREFIX_ALIGN(1024) char Type[size] EA_POSTFIX_ALIGN(1024); };
-			template<size_t size> struct AlignedBuffer<size, 2048> { typedef EA_PREFIX_ALIGN(2048) char Type[size] EA_POSTFIX_ALIGN(2048); };
-			template<size_t size> struct AlignedBuffer<size, 4096> { typedef EA_PREFIX_ALIGN(4096) char Type[size] EA_POSTFIX_ALIGN(4096); };
+			template<size_t size> struct AlignedBuffer<size, 2>    { typedef EASTL_PREFIX_ALIGN(2)    char Type[size] EASTL_POSTFIX_ALIGN(2);    };
+			template<size_t size> struct AlignedBuffer<size, 4>    { typedef EASTL_PREFIX_ALIGN(4)    char Type[size] EASTL_POSTFIX_ALIGN(4);    };
+			template<size_t size> struct AlignedBuffer<size, 8>    { typedef EASTL_PREFIX_ALIGN(8)    char Type[size] EASTL_POSTFIX_ALIGN(8);    };
+			template<size_t size> struct AlignedBuffer<size, 16>   { typedef EASTL_PREFIX_ALIGN(16)   char Type[size] EASTL_POSTFIX_ALIGN(16);   };
+			template<size_t size> struct AlignedBuffer<size, 32>   { typedef EASTL_PREFIX_ALIGN(32)   char Type[size] EASTL_POSTFIX_ALIGN(32);   };
+			template<size_t size> struct AlignedBuffer<size, 64>   { typedef EASTL_PREFIX_ALIGN(64)   char Type[size] EASTL_POSTFIX_ALIGN(64);   };
+			template<size_t size> struct AlignedBuffer<size, 128>  { typedef EASTL_PREFIX_ALIGN(128)  char Type[size] EASTL_POSTFIX_ALIGN(128);  };
+			template<size_t size> struct AlignedBuffer<size, 256>  { typedef EASTL_PREFIX_ALIGN(256)  char Type[size] EASTL_POSTFIX_ALIGN(256);  };
+			template<size_t size> struct AlignedBuffer<size, 512>  { typedef EASTL_PREFIX_ALIGN(512)  char Type[size] EASTL_POSTFIX_ALIGN(512);  };
+			template<size_t size> struct AlignedBuffer<size, 1024> { typedef EASTL_PREFIX_ALIGN(1024) char Type[size] EASTL_POSTFIX_ALIGN(1024); };
+			template<size_t size> struct AlignedBuffer<size, 2048> { typedef EASTL_PREFIX_ALIGN(2048) char Type[size] EASTL_POSTFIX_ALIGN(2048); };
+			template<size_t size> struct AlignedBuffer<size, 4096> { typedef EASTL_PREFIX_ALIGN(4096) char Type[size] EASTL_POSTFIX_ALIGN(4096); };
 			#if defined(EA_COMPILER_MSVC) && EA_COMPILER_VERSION >= 1900	// VS2015+
 				EA_RESTORE_VC_WARNING();
 			#endif
@@ -619,7 +619,7 @@ namespace EA
 				Node() : mObject() {}
 			};
 
-			static const size_t kNodeAlignment   = EA_ALIGN_OF(Node);
+			static const size_t kNodeAlignment   = EASTL_ALIGN_OF(Node);
 			static const int    kStorageTypeSize = sizeof(Node) + (kNodeAlignment - 1); // Add sufficient additional storage space so that we can align the base pointer to the correct boundary in the worst case.
 
 			Node * const mpOSGlobal;

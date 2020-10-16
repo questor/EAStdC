@@ -44,8 +44,6 @@ int TestGlobal()
 
 	int nErrorCount(0);
 
-	EA::UnitTest::Report("TestGlobal\n");
-
 	const uint32_t id = 0x8e9c5fd7;
 
 	GlobalTestObject::sSeqCounter = 0;
@@ -83,7 +81,7 @@ int TestGlobal()
 		AutoStaticOSGlobalPtr<AlignedTestObject, 0x52534562> pObj1;
 		AutoStaticOSGlobalPtr<AlignedTestObject, 0x93715355> pObj2;
 	
-		size_t requiredAlignment = EA_ALIGN_OF(AlignedTestObject);
+		size_t requiredAlignment = EASTL_ALIGN_OF(AlignedTestObject);
 		// Ensure the two objects are unique.
 		EATEST_VERIFY(pObj1.get() != pObj2.get() );
 		EATEST_VERIFY( (reinterpret_cast<uintptr_t>(pObj1.get()) % requiredAlignment) == 0 );

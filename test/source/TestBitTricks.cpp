@@ -32,8 +32,6 @@ int TestBitTricks()
 
 	int nErrorCount(0);
 
-	EA::UnitTest::Report("TestBitTricks\n");
-
 	int       n1 = 0, n2 = 0;
 	bool       b = false;
 	int        i = 0;
@@ -1280,9 +1278,9 @@ int TestBitTricks()
 	EATEST_VERIFY(!IsOffsetBinary());
 
 
-	// EAArrayCount
+	// EASTLArrayCount
 	int testArray[37]; (void) testArray;
-	u = EAArrayCount(testArray);
+	u = EASTLArrayCount(testArray);
 	EATEST_VERIFY(u == 37);
 
 

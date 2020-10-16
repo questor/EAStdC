@@ -122,40 +122,6 @@ static int TestCRTVsscanf(const char32_t* pBuffer, const char32_t* pFormat, ...)
 	return n;
 }
 
-
-
-static inline double DoubleAbsoluteDifference(double x1, double x2)
-{
-	return (x1 < x2) ? (x2 - x1) : (x1 - x2);
-}
-
-static inline bool DoubleEqual(double x1, double x2)
-{
-	if(x1 < 1e-15)
-		return (x2 < 1e-15);
-	else if(x2 < 1e-15)
-		return (x1 < 1e-15);
-	else
-		return DoubleAbsoluteDifference((x1 - x2) / x1, 1e-15) < 1e-13;
-}
-
-static inline double FloatAbsoluteDifference(float x1, float x2)
-{
-	return (x1 < x2) ? (x2 - x1) : (x1 - x2);
-}
-
-static inline bool FloatEqual(float x1, float x2)
-{
-	if(x1 < 1e-7f)
-		return (x2 < 1e-7f);
-	else if(x2 < 1e-7f)
-		return (x1 < 1e-7f);
-	else
-		return FloatAbsoluteDifference((x1 - x2) / x1, 1e-7f) < 1e-5f;
-}
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 // TestScanfLimits
 //
@@ -434,11 +400,11 @@ static int TestScanfMisc()
 			EATEST_VERIFY(n == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16(""), EA_CHAR16(""));
+			n = Sscanf(EASTL_CHAR16(""), EASTL_CHAR16(""));
 			EATEST_VERIFY(n == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32(""), EA_CHAR32(""));
+			n = Sscanf(EASTL_CHAR32(""), EASTL_CHAR32(""));
 			EATEST_VERIFY(n == 0);
 		}
 
@@ -449,12 +415,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(Strcmp(v.str8_[0], "a") == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("a"), EA_CHAR16("%s"), v.strw_[0]);
+			n = Sscanf(EASTL_CHAR16("a"), EASTL_CHAR16("%s"), v.strw_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("a")) == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("a"), EA_CHAR32("%s"), v.strw_[0]);
+			n = Sscanf(EASTL_CHAR32("a"), EASTL_CHAR32("%s"), v.strw_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("a")) == 0);
 		}
@@ -483,8 +449,8 @@ static int TestScanfMisc()
 				EATEST_VERIFY(Strcmp(v.str8_[1], "b") == 0);
 				EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("c")) == 0);
 				EATEST_VERIFY(Strcmp(v.str8_[2], "d") == 0);
-				EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("e")) == 0);
-				EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("f")) == 0);
+				EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("e")) == 0);
+				EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("f")) == 0);
 
 				v.Clear();
 				n = Sscanf("a b c d e f", "%hS %S %lS %I8S %I16S %I32S", &v.str8_[0], &v.strw_[0], &v.strw_[1], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
@@ -493,139 +459,139 @@ static int TestScanfMisc()
 				EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("b")) == 0);
 				EATEST_VERIFY(Strcmp(v.strw_[1], EA_WCHAR("c")) == 0);
 				EATEST_VERIFY(Strcmp(v.str8_[2], "d") == 0);
-				EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("e")) == 0);
-				EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("f")) == 0);
+				EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("e")) == 0);
+				EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("f")) == 0);
 			}
 
 			{   // char16_t
 				v.Clear();
 				#if EASCANF_MS_STYLE_S_FORMAT // Microsoft style means that the meanings of S/C and s/c are reversed for non-char Sprintf.
-					n = Sscanf(EA_CHAR16("a b c d e f"), EA_CHAR16("%hc %c %lc %I8c %I16c %I32c"), &v.char_[0], &v.wchar_[0], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
+					n = Sscanf(EASTL_CHAR16("a b c d e f"), EASTL_CHAR16("%hc %c %lc %I8c %I16c %I32c"), &v.char_[0], &v.wchar_[0], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY((v.char_[0] == 'a') && (v.wchar_[0] == 'b') && (v.wchar_[1] == 'c') && (v.char8_[0] == 'd') && (v.char16_[0] == 'e') && (v.char32_[0] == 'f'));
 				#else
-					n = Sscanf(EA_CHAR16("a b c d e f"), EA_CHAR16("%hc %c %lc %I8c %I16c %I32c"), &v.char_[0], &v.char_[1], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
+					n = Sscanf(EASTL_CHAR16("a b c d e f"), EASTL_CHAR16("%hc %c %lc %I8c %I16c %I32c"), &v.char_[0], &v.char_[1], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY((v.char_[0] == 'a') && (v.char_[1] == 'b') && (v.wchar_[1] == 'c') && (v.char8_[0] == 'd') && (v.char16_[0] == 'e') && (v.char32_[0] == 'f'));
 				#endif
 
 				v.Clear();
 				#if EASCANF_MS_STYLE_S_FORMAT
-					n = Sscanf(EA_CHAR16("a b c d e f"), EA_CHAR16("%hC %C %lC %I8C %I16C %I32C"), &v.char_[0], &v.char_[1], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
+					n = Sscanf(EASTL_CHAR16("a b c d e f"), EASTL_CHAR16("%hC %C %lC %I8C %I16C %I32C"), &v.char_[0], &v.char_[1], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY((v.char_[0] == 'a') && (v.char_[1] == 'b') && (v.wchar_[1] == 'c') && (v.char8_[0] == 'd') && (v.char16_[0] == 'e') && (v.char32_[0] == 'f'));
 				#else
-					n = Sscanf(EA_CHAR16("a b c d e f"), EA_CHAR16("%hC %C %lC %I8C %I16C %I32C"), &v.char_[0], &v.wchar_[0], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
+					n = Sscanf(EASTL_CHAR16("a b c d e f"), EASTL_CHAR16("%hC %C %lC %I8C %I16C %I32C"), &v.char_[0], &v.wchar_[0], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY((v.char_[0] == 'a') && (v.wchar_[0] == 'b') && (v.wchar_[1] == 'c') && (v.char8_[0] == 'd') && (v.char16_[0] == 'e') && (v.char32_[0] == 'f'));
 				#endif
 
 				v.Clear();
 				#if EASCANF_MS_STYLE_S_FORMAT
-					n = Sscanf(EA_CHAR16("a b c d e f"), EA_CHAR16("%hs %s %ls %I8s %I16s %I32s"), &v.str8_[0], &v.strw_[0], &v.strw_[1], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
+					n = Sscanf(EASTL_CHAR16("a b c d e f"), EASTL_CHAR16("%hs %s %ls %I8s %I16s %I32s"), &v.str8_[0], &v.strw_[0], &v.strw_[1], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY(Strcmp(v.str8_[0], "a") == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("b")) == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[1], EA_WCHAR("c")) == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[2], "d") == 0);
-					EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("e")) == 0);
-					EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("f")) == 0);
+					EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("e")) == 0);
+					EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("f")) == 0);
 				#else
-					n = Sscanf(EA_CHAR16("a b c d e f"), EA_CHAR16("%hs %s %ls %I8s %I16s %I32s"), &v.str8_[0], &v.str8_[1], &v.strw_[0], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
+					n = Sscanf(EASTL_CHAR16("a b c d e f"), EASTL_CHAR16("%hs %s %ls %I8s %I16s %I32s"), &v.str8_[0], &v.str8_[1], &v.strw_[0], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY(Strcmp(v.str8_[0], "a") == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[1], "b") == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("c")) == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[2], "d") == 0);
-					EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("e")) == 0);
-					EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("f")) == 0);
+					EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("e")) == 0);
+					EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("f")) == 0);
 				#endif
 
 				v.Clear();
 				#if EASCANF_MS_STYLE_S_FORMAT
-					n = Sscanf(EA_CHAR16("a b c d e f"), EA_CHAR16("%hS %S %lS %I8S %I16S %I32S"), &v.str8_[0], &v.str8_[1], &v.strw_[0], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
+					n = Sscanf(EASTL_CHAR16("a b c d e f"), EASTL_CHAR16("%hS %S %lS %I8S %I16S %I32S"), &v.str8_[0], &v.str8_[1], &v.strw_[0], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY(Strcmp(v.str8_[0], "a") == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[1], "b") == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("c")) == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[2], "d") == 0);
-					EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("e")) == 0);
-					EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("f")) == 0);
+					EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("e")) == 0);
+					EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("f")) == 0);
 				#else
-					n = Sscanf(EA_CHAR16("a b c d e f"), EA_CHAR16("%hS %S %lS %I8S %I16S %I32S"), &v.str8_[0], &v.strw_[0], &v.strw_[1], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
+					n = Sscanf(EASTL_CHAR16("a b c d e f"), EASTL_CHAR16("%hS %S %lS %I8S %I16S %I32S"), &v.str8_[0], &v.strw_[0], &v.strw_[1], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY(Strcmp(v.str8_[0], "a") == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("b")) == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[1], EA_WCHAR("c")) == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[2], "d") == 0);
-					EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("e")) == 0);
-					EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("f")) == 0);
+					EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("e")) == 0);
+					EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("f")) == 0);
 				#endif
 			}
 
 			{   // char32_t
 				v.Clear();
 				#if EASCANF_MS_STYLE_S_FORMAT // Microsoft style means that the meanings of S/C and s/c are reversed for non-char Sprintf.
-					n = Sscanf(EA_CHAR32("a b c d e f"), EA_CHAR32("%hc %c %lc %I8c %I16c %I32c"), &v.char_[0], &v.wchar_[0], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
+					n = Sscanf(EASTL_CHAR32("a b c d e f"), EASTL_CHAR32("%hc %c %lc %I8c %I16c %I32c"), &v.char_[0], &v.wchar_[0], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY((v.char_[0] == 'a') && (v.wchar_[0] == 'b') && (v.wchar_[1] == 'c') && (v.char8_[0] == 'd') && (v.char16_[0] == 'e') && (v.char32_[0] == 'f'));
 				#else
-					n = Sscanf(EA_CHAR32("a b c d e f"), EA_CHAR32("%hc %c %lc %I8c %I16c %I32c"), &v.char_[0], &v.char_[1], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
+					n = Sscanf(EASTL_CHAR32("a b c d e f"), EASTL_CHAR32("%hc %c %lc %I8c %I16c %I32c"), &v.char_[0], &v.char_[1], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY((v.char_[0] == 'a') && (v.char_[1] == 'b') && (v.wchar_[1] == 'c') && (v.char8_[0] == 'd') && (v.char16_[0] == 'e') && (v.char32_[0] == 'f'));
 				#endif
 
 				v.Clear();
 				#if EASCANF_MS_STYLE_S_FORMAT
-					n = Sscanf(EA_CHAR32("a b c d e f"), EA_CHAR32("%hC %C %lC %I8C %I16C %I32C"), &v.char_[0], &v.char_[1], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
+					n = Sscanf(EASTL_CHAR32("a b c d e f"), EASTL_CHAR32("%hC %C %lC %I8C %I16C %I32C"), &v.char_[0], &v.char_[1], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY((v.char_[0] == 'a') && (v.char_[1] == 'b') && (v.wchar_[1] == 'c') && (v.char8_[0] == 'd') && (v.char16_[0] == 'e') && (v.char32_[0] == 'f'));
 				#else
-					n = Sscanf(EA_CHAR32("a b c d e f"), EA_CHAR32("%hC %C %lC %I8C %I16C %I32C"), &v.char_[0], &v.wchar_[0], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
+					n = Sscanf(EASTL_CHAR32("a b c d e f"), EASTL_CHAR32("%hC %C %lC %I8C %I16C %I32C"), &v.char_[0], &v.wchar_[0], &v.wchar_[1], &v.char8_[0], &v.char16_[0], &v.char32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY((v.char_[0] == 'a') && (v.wchar_[0] == 'b') && (v.wchar_[1] == 'c') && (v.char8_[0] == 'd') && (v.char16_[0] == 'e') && (v.char32_[0] == 'f'));
 				#endif
 
 				v.Clear();
 				#if EASCANF_MS_STYLE_S_FORMAT
-					n = Sscanf(EA_CHAR32("a b c d e f"), EA_CHAR32("%hs %s %ls %I8s %I16s %I32s"), &v.str8_[0], &v.strw_[0], &v.strw_[1], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
+					n = Sscanf(EASTL_CHAR32("a b c d e f"), EASTL_CHAR32("%hs %s %ls %I8s %I16s %I32s"), &v.str8_[0], &v.strw_[0], &v.strw_[1], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY(Strcmp(v.str8_[0], "a") == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("b")) == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[1], EA_WCHAR("c")) == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[2], "d") == 0);
-					EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("e")) == 0);
-					EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("f")) == 0);
+					EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("e")) == 0);
+					EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("f")) == 0);
 				#else
-					n = Sscanf(EA_CHAR32("a b c d e f"), EA_CHAR32("%hs %s %ls %I8s %I16s %I32s"), &v.str8_[0], &v.str8_[1], &v.strw_[0], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
+					n = Sscanf(EASTL_CHAR32("a b c d e f"), EASTL_CHAR32("%hs %s %ls %I8s %I16s %I32s"), &v.str8_[0], &v.str8_[1], &v.strw_[0], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY(Strcmp(v.str8_[0], "a") == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[1], "b") == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("c")) == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[2], "d") == 0);
-					EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("e")) == 0);
-					EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("f")) == 0);
+					EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("e")) == 0);
+					EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("f")) == 0);
 				#endif
 
 				v.Clear();
 				#if EASCANF_MS_STYLE_S_FORMAT
-					n = Sscanf(EA_CHAR32("a b c d e f"), EA_CHAR32("%hS %S %lS %I8S %I16S %I32S"), &v.str8_[0], &v.str8_[1], &v.strw_[0], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
+					n = Sscanf(EASTL_CHAR32("a b c d e f"), EASTL_CHAR32("%hS %S %lS %I8S %I16S %I32S"), &v.str8_[0], &v.str8_[1], &v.strw_[0], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY(Strcmp(v.str8_[0], "a") == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[1], "b") == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("c")) == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[2], "d") == 0);
-					EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("e")) == 0);
-					EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("f")) == 0);
+					EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("e")) == 0);
+					EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("f")) == 0);
 				#else
-					n = Sscanf(EA_CHAR32("a b c d e f"), EA_CHAR32("%hS %S %lS %I8S %I16S %I32S"), &v.str8_[0], &v.strw_[0], &v.strw_[1], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
+					n = Sscanf(EASTL_CHAR32("a b c d e f"), EASTL_CHAR32("%hS %S %lS %I8S %I16S %I32S"), &v.str8_[0], &v.strw_[0], &v.strw_[1], &v.str8_[2], &v.str16_[0], &v.str32_[0]);
 					EATEST_VERIFY(n == 6);
 					EATEST_VERIFY(Strcmp(v.str8_[0], "a") == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("b")) == 0);
 					EATEST_VERIFY(Strcmp(v.strw_[1], EA_WCHAR("c")) == 0);
 					EATEST_VERIFY(Strcmp(v.str8_[2], "d") == 0);
-					EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("e")) == 0);
-					EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("f")) == 0);
+					EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("e")) == 0);
+					EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("f")) == 0);
 				#endif
 			}
 		}
@@ -638,15 +604,15 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == 123);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("abc 123"), EA_CHAR16("%I16s\t%i"), v.str16_[0], &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("abc 123"), EASTL_CHAR16("%I16s\t%i"), v.str16_[0], &v.int_[0]);
 			EATEST_VERIFY(n == 2);
-			EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("abc")) == 0);
+			EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("abc")) == 0);
 			EATEST_VERIFY(v.int_[0] == 123);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("abc 123"), EA_CHAR32("%I32s\t%i"), v.str32_[0], &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("abc 123"), EASTL_CHAR32("%I32s\t%i"), v.str32_[0], &v.int_[0]);
 			EATEST_VERIFY(n == 2);
-			EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("abc")) == 0);
+			EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("abc")) == 0);
 			EATEST_VERIFY(v.int_[0] == 123);
 		}
 
@@ -657,12 +623,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.double_[0] == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0"), EA_CHAR16("%lf"), &v.double_[0]);
+			n = Sscanf(EASTL_CHAR16("0"), EASTL_CHAR16("%lf"), &v.double_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.double_[0] == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0"), EA_CHAR32("%lf"), &v.double_[0]);
+			n = Sscanf(EASTL_CHAR32("0"), EASTL_CHAR32("%lf"), &v.double_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.double_[0] == 0);
 		}
@@ -674,12 +640,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(FloatEqual(v.float_[0], -123.456f));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-123.456"), EA_CHAR16("%f"), &v.float_[0]);
+			n = Sscanf(EASTL_CHAR16("-123.456"), EASTL_CHAR16("%f"), &v.float_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(FloatEqual(v.float_[0], -123.456f));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-123.456"), EA_CHAR32("%f"), &v.float_[0]);
+			n = Sscanf(EASTL_CHAR32("-123.456"), EASTL_CHAR32("%f"), &v.float_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(FloatEqual(v.float_[0], -123.456f));
 		}
@@ -691,12 +657,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(DoubleEqual(v.double_[0], -123.456));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-123.456"), EA_CHAR16("%lf"), &v.double_[0]);
+			n = Sscanf(EASTL_CHAR16("-123.456"), EASTL_CHAR16("%lf"), &v.double_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(DoubleEqual(v.double_[0], -123.456));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-123.456"), EA_CHAR32("%lf"), &v.double_[0]);
+			n = Sscanf(EASTL_CHAR32("-123.456"), EASTL_CHAR32("%lf"), &v.double_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(DoubleEqual(v.double_[0], -123.456));
 		}
@@ -708,12 +674,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.double_[0] == -123.456e4);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-123.456e4"), EA_CHAR16("%lf"), &v.double_[0]);
+			n = Sscanf(EASTL_CHAR16("-123.456e4"), EASTL_CHAR16("%lf"), &v.double_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.double_[0] == -123.456e4);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-123.456e4"), EA_CHAR32("%lf"), &v.double_[0]);
+			n = Sscanf(EASTL_CHAR32("-123.456e4"), EASTL_CHAR32("%lf"), &v.double_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.double_[0] == -123.456e4);
 		}
@@ -726,13 +692,13 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == 2);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("12 abcdef"), EA_CHAR16("%4u%n"), &v.uint_[0], &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("12 abcdef"), EASTL_CHAR16("%4u%n"), &v.uint_[0], &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.uint_[0] == 12);
 			EATEST_VERIFY(v.int_[0] == 2);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("12 abcdef"), EA_CHAR32("%4u%n"), &v.uint_[0], &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("12 abcdef"), EASTL_CHAR32("%4u%n"), &v.uint_[0], &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.uint_[0] == 12);
 			EATEST_VERIFY(v.int_[0] == 2);
@@ -749,19 +715,19 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.uint_[1] == 0x12345678);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("Test, more text -999 1.345e22 0x12345678"), EA_CHAR16("%I16s %I16s %*s %i %lf 0x%08x"), v.str16_[0], v.str16_[1], &v.int_[0], &v.double_[0], &v.uint_[1]);
+			n = Sscanf(EASTL_CHAR16("Test, more text -999 1.345e22 0x12345678"), EASTL_CHAR16("%I16s %I16s %*s %i %lf 0x%08x"), v.str16_[0], v.str16_[1], &v.int_[0], &v.double_[0], &v.uint_[1]);
 			EATEST_VERIFY(n == 5);
-			EATEST_VERIFY(!Strcmp(EA_CHAR16("Test,"), v.str16_[0]));
-			EATEST_VERIFY(!Strcmp(EA_CHAR16("more"), v.str16_[1]));
+			EATEST_VERIFY(!Strcmp(EASTL_CHAR16("Test,"), v.str16_[0]));
+			EATEST_VERIFY(!Strcmp(EASTL_CHAR16("more"), v.str16_[1]));
 			EATEST_VERIFY(v.int_[0] == -999);
 			EATEST_VERIFY(DoubleEqual(v.double_[0], 1.345e22));
 			EATEST_VERIFY(v.uint_[1] == 0x12345678);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("Test, more text -999 1.345e22 0x12345678"), EA_CHAR32("%I32s %I32s %*s %i %lf 0x%08x"), v.str32_[0], v.str32_[1], &v.int_[0], &v.double_[0], &v.uint_[1]);
+			n = Sscanf(EASTL_CHAR32("Test, more text -999 1.345e22 0x12345678"), EASTL_CHAR32("%I32s %I32s %*s %i %lf 0x%08x"), v.str32_[0], v.str32_[1], &v.int_[0], &v.double_[0], &v.uint_[1]);
 			EATEST_VERIFY(n == 5);
-			EATEST_VERIFY(!Strcmp(EA_CHAR32("Test,"), v.str32_[0]));
-			EATEST_VERIFY(!Strcmp(EA_CHAR32("more"), v.str32_[1]));
+			EATEST_VERIFY(!Strcmp(EASTL_CHAR32("Test,"), v.str32_[0]));
+			EATEST_VERIFY(!Strcmp(EASTL_CHAR32("more"), v.str32_[1]));
 			EATEST_VERIFY(v.int_[0] == -999);
 			EATEST_VERIFY(DoubleEqual(v.double_[0], 1.345e22));
 			EATEST_VERIFY(v.uint_[1] == 0x12345678);
@@ -838,7 +804,7 @@ static int TestScanfMisc()
 
 		{
 			v.Clear();
-			n = Sscanf(EA_CHAR16("a \x00A9\x2260"), EA_CHAR16("%hs %hs"), v.str8_[0], v.str8_[1]);
+			n = Sscanf(EASTL_CHAR16("a \x00A9\x2260"), EASTL_CHAR16("%hs %hs"), v.str8_[0], v.str8_[1]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY((uint8_t)v.str8_[0][0] == 'a');
 			EATEST_VERIFY((uint8_t)v.str8_[0][1] == 0);
@@ -850,7 +816,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY((uint8_t)v.str8_[1][5] == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("a \x00A9\x2260"), EA_CHAR32("%hs %hs"), v.str8_[0], v.str8_[1]);
+			n = Sscanf(EASTL_CHAR32("a \x00A9\x2260"), EASTL_CHAR32("%hs %hs"), v.str8_[0], v.str8_[1]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY((uint8_t)v.str8_[0][0] == 'a');
 			EATEST_VERIFY((uint8_t)v.str8_[0][1] == 0);
@@ -874,13 +840,13 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.char_[0] == 'a');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("12a"), EA_CHAR16("%ld%c"), &v.long_[0], &v.wchar_[0]);
+			n = Sscanf(EASTL_CHAR16("12a"), EASTL_CHAR16("%ld%c"), &v.long_[0], &v.wchar_[0]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(v.long_[0] == 12);
 			EATEST_VERIFY(v.wchar_[0] == 'a');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("12a"), EA_CHAR32("%ld%c"), &v.long_[0], &v.wchar_[0]);
+			n = Sscanf(EASTL_CHAR32("12a"), EASTL_CHAR32("%ld%c"), &v.long_[0], &v.wchar_[0]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(v.long_[0] == 12);
 			EATEST_VERIFY(v.wchar_[0] == 'a');
@@ -894,13 +860,13 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[1] == 480);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("#define width 640 #define height 480"), EA_CHAR16("#define %*s %d #define %*s %d"), &v.int_[0], &v.int_[1]);
+			n = Sscanf(EASTL_CHAR16("#define width 640 #define height 480"), EASTL_CHAR16("#define %*s %d #define %*s %d"), &v.int_[0], &v.int_[1]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(v.int_[0] == 640);
 			EATEST_VERIFY(v.int_[1] == 480);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("#define width 640 #define height 480"), EA_CHAR32("#define %*s %d #define %*s %d"), &v.int_[0], &v.int_[1]);
+			n = Sscanf(EASTL_CHAR32("#define width 640 #define height 480"), EASTL_CHAR32("#define %*s %d #define %*s %d"), &v.int_[0], &v.int_[1]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(v.int_[0] == 640);
 			EATEST_VERIFY(v.int_[1] == 480);
@@ -915,14 +881,14 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[2] == 1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("00010101"), EA_CHAR16("%04d%02d%02d"), &v.int_[0], &v.int_[1], &v.int_[2]);
+			n = Sscanf(EASTL_CHAR16("00010101"), EASTL_CHAR16("%04d%02d%02d"), &v.int_[0], &v.int_[1], &v.int_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY(v.int_[0] == 1);
 			EATEST_VERIFY(v.int_[1] == 1);
 			EATEST_VERIFY(v.int_[2] == 1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("00010101"), EA_CHAR32("%04d%02d%02d"), &v.int_[0], &v.int_[1], &v.int_[2]);
+			n = Sscanf(EASTL_CHAR32("00010101"), EASTL_CHAR32("%04d%02d%02d"), &v.int_[0], &v.int_[1], &v.int_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY(v.int_[0] == 1);
 			EATEST_VERIFY(v.int_[1] == 1);
@@ -936,12 +902,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY((uint32_t)v.long_[0] == 0xfafbfcfd);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0xfafbfcfd"), EA_CHAR16("%lx"), &v.long_[0]);
+			n = Sscanf(EASTL_CHAR16("0xfafbfcfd"), EASTL_CHAR16("%lx"), &v.long_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY((uint32_t)v.long_[0] == 0xfafbfcfd);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0xfafbfcfd"), EA_CHAR32("%lx"), &v.long_[0]);
+			n = Sscanf(EASTL_CHAR32("0xfafbfcfd"), EASTL_CHAR32("%lx"), &v.long_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY((uint32_t)v.long_[0] == 0xfafbfcfd);
 		}
@@ -956,7 +922,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.uint_[3] ==   0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("127.255.3.0"), EA_CHAR16("%u.%u.%u.%u"), &v.uint_[0], &v.uint_[1], &v.uint_[2], &v.uint_[3]);
+			n = Sscanf(EASTL_CHAR16("127.255.3.0"), EASTL_CHAR16("%u.%u.%u.%u"), &v.uint_[0], &v.uint_[1], &v.uint_[2], &v.uint_[3]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(v.uint_[0] == 127);
 			EATEST_VERIFY(v.uint_[1] == 255);
@@ -964,7 +930,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.uint_[3] ==   0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("127.255.3.0"), EA_CHAR32("%u.%u.%u.%u"), &v.uint_[0], &v.uint_[1], &v.uint_[2], &v.uint_[3]);
+			n = Sscanf(EASTL_CHAR32("127.255.3.0"), EASTL_CHAR32("%u.%u.%u.%u"), &v.uint_[0], &v.uint_[1], &v.uint_[2], &v.uint_[3]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(v.uint_[0] == 127);
 			EATEST_VERIFY(v.uint_[1] == 255);
@@ -982,7 +948,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[3] == 127);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0.255.3.127"), EA_CHAR16("%d.%d.%d.%d"), &v.int_[0], &v.int_[1], &v.int_[2], &v.int_[3]);
+			n = Sscanf(EASTL_CHAR16("0.255.3.127"), EASTL_CHAR16("%d.%d.%d.%d"), &v.int_[0], &v.int_[1], &v.int_[2], &v.int_[3]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(v.int_[0] ==   0);
 			EATEST_VERIFY(v.int_[1] == 255);
@@ -990,7 +956,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[3] == 127);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0.255.3.127"), EA_CHAR32("%d.%d.%d.%d"), &v.int_[0], &v.int_[1], &v.int_[2], &v.int_[3]);
+			n = Sscanf(EASTL_CHAR32("0.255.3.127"), EASTL_CHAR32("%d.%d.%d.%d"), &v.int_[0], &v.int_[1], &v.int_[2], &v.int_[3]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(v.int_[0] ==   0);
 			EATEST_VERIFY(v.int_[1] == 255);
@@ -1007,14 +973,14 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[2] == 0xee);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("ff12ee"), EA_CHAR16("%2x%2x%2x"), &v.int_[0], &v.int_[1], &v.int_[2]);
+			n = Sscanf(EASTL_CHAR16("ff12ee"), EASTL_CHAR16("%2x%2x%2x"), &v.int_[0], &v.int_[1], &v.int_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY(v.int_[0] == 0xff);
 			EATEST_VERIFY(v.int_[1] == 0x12);
 			EATEST_VERIFY(v.int_[2] == 0xee);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("ff12ee"), EA_CHAR32("%2x%2x%2x"), &v.int_[0], &v.int_[1], &v.int_[2]);
+			n = Sscanf(EASTL_CHAR32("ff12ee"), EASTL_CHAR32("%2x%2x%2x"), &v.int_[0], &v.int_[1], &v.int_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY(v.int_[0] == 0xff);
 			EATEST_VERIFY(v.int_[1] == 0x12);
@@ -1030,14 +996,14 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.uint8_[2] == 0xe);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("f2e"), EA_CHAR16("%1hhx%1hhx%1hhx"), &v.uint8_[0], &v.uint8_[1], &v.uint8_[2]);
+			n = Sscanf(EASTL_CHAR16("f2e"), EASTL_CHAR16("%1hhx%1hhx%1hhx"), &v.uint8_[0], &v.uint8_[1], &v.uint8_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY(v.uint8_[0] == 0xf);
 			EATEST_VERIFY(v.uint8_[1] == 0x2);
 			EATEST_VERIFY(v.uint8_[2] == 0xe);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("f2e"), EA_CHAR32("%1hhx%1hhx%1hhx"), &v.uint8_[0], &v.uint8_[1], &v.uint8_[2]);
+			n = Sscanf(EASTL_CHAR32("f2e"), EASTL_CHAR32("%1hhx%1hhx%1hhx"), &v.uint8_[0], &v.uint8_[1], &v.uint8_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY(v.uint8_[0] == 0xf);
 			EATEST_VERIFY(v.uint8_[1] == 0x2);
@@ -1053,16 +1019,16 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == 567);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("Test/123.4 567"), EA_CHAR16("%4I16s/%5f %3d"), v.str16_[0], &v.float_[0], &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("Test/123.4 567"), EASTL_CHAR16("%4I16s/%5f %3d"), v.str16_[0], &v.float_[0], &v.int_[0]);
 			EATEST_VERIFY(n == 3);
-			EATEST_VERIFY(!Strcmp(v.str16_[0], EA_CHAR16("Test")));
+			EATEST_VERIFY(!Strcmp(v.str16_[0], EASTL_CHAR16("Test")));
 			EATEST_VERIFY(FloatEqual(v.float_[0], 123.4f));
 			EATEST_VERIFY(v.int_[0] == 567);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("Test/123.4 567"), EA_CHAR32("%4I32s/%5f %3d"), v.str32_[0], &v.float_[0], &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("Test/123.4 567"), EASTL_CHAR32("%4I32s/%5f %3d"), v.str32_[0], &v.float_[0], &v.int_[0]);
 			EATEST_VERIFY(n == 3);
-			EATEST_VERIFY(!Strcmp(v.str32_[0], EA_CHAR32("Test")));
+			EATEST_VERIFY(!Strcmp(v.str32_[0], EASTL_CHAR32("Test")));
 			EATEST_VERIFY(FloatEqual(v.float_[0], 123.4f));
 			EATEST_VERIFY(v.int_[0] == 567);
 		}
@@ -1077,20 +1043,20 @@ static int TestScanfMisc()
 			EATEST_VERIFY(!Strcmp(v.str8_[3], "mnopqrstu"));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("abdefg-hijk-a-mnopqrstu\n"), EA_CHAR16("%32I16[^-]-%32I16[^-]-%32I16[^-]-%32I16[^\n\r]"), v.str16_[0], v.str16_[1], v.str16_[2], v.str16_[3]);
+			n = Sscanf(EASTL_CHAR16("abdefg-hijk-a-mnopqrstu\n"), EASTL_CHAR16("%32I16[^-]-%32I16[^-]-%32I16[^-]-%32I16[^\n\r]"), v.str16_[0], v.str16_[1], v.str16_[2], v.str16_[3]);
 			EATEST_VERIFY(n == 4);
-			EATEST_VERIFY(!Strcmp(v.str16_[0], EA_CHAR16("abdefg")));
-			EATEST_VERIFY(!Strcmp(v.str16_[1], EA_CHAR16("hijk")));
-			EATEST_VERIFY(!Strcmp(v.str16_[2], EA_CHAR16("a")));
-			EATEST_VERIFY(!Strcmp(v.str16_[3], EA_CHAR16("mnopqrstu")));
+			EATEST_VERIFY(!Strcmp(v.str16_[0], EASTL_CHAR16("abdefg")));
+			EATEST_VERIFY(!Strcmp(v.str16_[1], EASTL_CHAR16("hijk")));
+			EATEST_VERIFY(!Strcmp(v.str16_[2], EASTL_CHAR16("a")));
+			EATEST_VERIFY(!Strcmp(v.str16_[3], EASTL_CHAR16("mnopqrstu")));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("abdefg-hijk-a-mnopqrstu\n"), EA_CHAR32("%32I32[^-]-%32I32[^-]-%32I32[^-]-%32I32[^\n\r]"), v.str32_[0], v.str32_[1], v.str32_[2], v.str32_[3]);
+			n = Sscanf(EASTL_CHAR32("abdefg-hijk-a-mnopqrstu\n"), EASTL_CHAR32("%32I32[^-]-%32I32[^-]-%32I32[^-]-%32I32[^\n\r]"), v.str32_[0], v.str32_[1], v.str32_[2], v.str32_[3]);
 			EATEST_VERIFY(n == 4);
-			EATEST_VERIFY(!Strcmp(v.str32_[0], EA_CHAR32("abdefg")));
-			EATEST_VERIFY(!Strcmp(v.str32_[1], EA_CHAR32("hijk")));
-			EATEST_VERIFY(!Strcmp(v.str32_[2], EA_CHAR32("a")));
-			EATEST_VERIFY(!Strcmp(v.str32_[3], EA_CHAR32("mnopqrstu")));
+			EATEST_VERIFY(!Strcmp(v.str32_[0], EASTL_CHAR32("abdefg")));
+			EATEST_VERIFY(!Strcmp(v.str32_[1], EASTL_CHAR32("hijk")));
+			EATEST_VERIFY(!Strcmp(v.str32_[2], EASTL_CHAR32("a")));
+			EATEST_VERIFY(!Strcmp(v.str32_[3], EASTL_CHAR32("mnopqrstu")));
 		}
 
 		{
@@ -1101,13 +1067,13 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.short_[1] == -18);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("[17;-18R"), EA_CHAR16("[%hu;%huR"), &v.short_[0], &v.short_[1]);
+			n = Sscanf(EASTL_CHAR16("[17;-18R"), EASTL_CHAR16("[%hu;%huR"), &v.short_[0], &v.short_[1]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(v.short_[0] == 17);
 			EATEST_VERIFY(v.short_[1] == -18);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("[17;-18R"), EA_CHAR32("[%hu;%huR"), &v.short_[0], &v.short_[1]);
+			n = Sscanf(EASTL_CHAR32("[17;-18R"), EASTL_CHAR32("[%hu;%huR"), &v.short_[0], &v.short_[1]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(v.short_[0] == 17);
 			EATEST_VERIFY(v.short_[1] == -18);
@@ -1123,7 +1089,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[3] == 0x04);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0x01-0x02-0304"), EA_CHAR16("%08x-%04x-%02x%02x"), &v.int_[0], &v.int_[1], &v.int_[2], &v.int_[3]);
+			n = Sscanf(EASTL_CHAR16("0x01-0x02-0304"), EASTL_CHAR16("%08x-%04x-%02x%02x"), &v.int_[0], &v.int_[1], &v.int_[2], &v.int_[3]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(v.int_[0] == 0x01);
 			EATEST_VERIFY(v.int_[1] == 0x02);
@@ -1131,7 +1097,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[3] == 0x04);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0x01-0x02-0304"), EA_CHAR32("%08x-%04x-%02x%02x"), &v.int_[0], &v.int_[1], &v.int_[2], &v.int_[3]);
+			n = Sscanf(EASTL_CHAR32("0x01-0x02-0304"), EASTL_CHAR32("%08x-%04x-%02x%02x"), &v.int_[0], &v.int_[1], &v.int_[2], &v.int_[3]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(v.int_[0] == 0x01);
 			EATEST_VERIFY(v.int_[1] == 0x02);
@@ -1149,7 +1115,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[1] == 0x1a);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-3.14 .2 48 1a"), EA_CHAR16("%f %f %x %x"), &v.float_[0], &v.float_[1], &v.int_[0], &v.int_[1]);
+			n = Sscanf(EASTL_CHAR16("-3.14 .2 48 1a"), EASTL_CHAR16("%f %f %x %x"), &v.float_[0], &v.float_[1], &v.int_[0], &v.int_[1]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(FloatEqual(v.float_[0], -3.14f));
 			EATEST_VERIFY(FloatEqual(v.float_[1], .2f));
@@ -1157,7 +1123,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[1] == 0x1a);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-3.14 .2 48 1a"), EA_CHAR32("%f %f %x %x"), &v.float_[0], &v.float_[1], &v.int_[0], &v.int_[1]);
+			n = Sscanf(EASTL_CHAR32("-3.14 .2 48 1a"), EASTL_CHAR32("%f %f %x %x"), &v.float_[0], &v.float_[1], &v.int_[0], &v.int_[1]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(FloatEqual(v.float_[0], -3.14f));
 			EATEST_VERIFY(FloatEqual(v.float_[1], .2f));
@@ -1188,19 +1154,19 @@ static int TestScanfMisc()
 
 			{
 				v.Clear();
-				n = EA::StdC::Sscanf(EA_CHAR16("_s"), EA_CHAR16("%x_%I16c"), &v.int_[0], &v.char16_[1]);
+				n = EA::StdC::Sscanf(EASTL_CHAR16("_s"), EASTL_CHAR16("%x_%I16c"), &v.int_[0], &v.char16_[1]);
 				EATEST_VERIFY(n == 0);
 				EATEST_VERIFY(v.int_[0] == -1);
 				EATEST_VERIFY((uint16_t)v.char16_[1] == 0xffff);
 
 				v.Clear();
-				n = EA::StdC::Sscanf(EA_CHAR16("1a01_"), EA_CHAR16("%x_%I16c"), &v.int_[0], &v.char16_[1]);  // EAStdC was mistakenly reading this as 0x1a018 instead of 0x1a01
+				n = EA::StdC::Sscanf(EASTL_CHAR16("1a01_"), EASTL_CHAR16("%x_%I16c"), &v.int_[0], &v.char16_[1]);  // EAStdC was mistakenly reading this as 0x1a018 instead of 0x1a01
 				EATEST_VERIFY(n == 1);
 				EATEST_VERIFY(v.int_[0] == 0x1a01);
 				EATEST_VERIFY((uint16_t)v.char16_[1] == 0xffff);
 
 				v.Clear();
-				n = EA::StdC::Sscanf(EA_CHAR16("1a01_s"), EA_CHAR16("%x_%I16c"), &v.int_[0], &v.char16_[1]);
+				n = EA::StdC::Sscanf(EASTL_CHAR16("1a01_s"), EASTL_CHAR16("%x_%I16c"), &v.int_[0], &v.char16_[1]);
 				EATEST_VERIFY(n == 2);
 				EATEST_VERIFY(v.int_[0] == 0x1a01);
 				EATEST_VERIFY(v.char16_[1] == 's');
@@ -1208,19 +1174,19 @@ static int TestScanfMisc()
 
 			{
 				v.Clear();
-				n = EA::StdC::Sscanf(EA_CHAR32("_s"), EA_CHAR32("%x_%I32c"), &v.int_[0], &v.char32_[1]);
+				n = EA::StdC::Sscanf(EASTL_CHAR32("_s"), EASTL_CHAR32("%x_%I32c"), &v.int_[0], &v.char32_[1]);
 				EATEST_VERIFY(n == 0);
 				EATEST_VERIFY(v.int_[0] == -1);
 				EATEST_VERIFY((uint32_t)v.char32_[1] == 0xffffffff);
 
 				v.Clear();
-				n = EA::StdC::Sscanf(EA_CHAR32("1a01_"), EA_CHAR32("%x_%I32c"), &v.int_[0], &v.char32_[1]);  // EAStdC was mistakenly reading this as 0x1a018 instead of 0x1a01
+				n = EA::StdC::Sscanf(EASTL_CHAR32("1a01_"), EASTL_CHAR32("%x_%I32c"), &v.int_[0], &v.char32_[1]);  // EAStdC was mistakenly reading this as 0x1a018 instead of 0x1a01
 				EATEST_VERIFY(n == 1);
 				EATEST_VERIFY(v.int_[0] == 0x1a01);
 				EATEST_VERIFY((uint32_t)v.char32_[1] == 0xffffffff);
 
 				v.Clear();
-				n = EA::StdC::Sscanf(EA_CHAR32("1a01_s"), EA_CHAR32("%x_%I32c"), &v.int_[0], &v.char32_[1]);
+				n = EA::StdC::Sscanf(EASTL_CHAR32("1a01_s"), EASTL_CHAR32("%x_%I32c"), &v.int_[0], &v.char32_[1]);
 				EATEST_VERIFY(n == 2);
 				EATEST_VERIFY(v.int_[0] == 0x1a01);
 				EATEST_VERIFY(v.char32_[1] == 's');
@@ -1236,14 +1202,14 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.char8_[0] == ')');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16(" for (int x = 0; x < 17; ++x)"), EA_CHAR16(" for %*[^(](%n%*[^)]%n%I16c\n"), &v.int_[0], &v.int_[1], &v.char16_[0]);
+			n = Sscanf(EASTL_CHAR16(" for (int x = 0; x < 17; ++x)"), EASTL_CHAR16(" for %*[^(](%n%*[^)]%n%I16c\n"), &v.int_[0], &v.int_[1], &v.char16_[0]);
 			EATEST_VERIFY(n == 1);  // %n doesn't count towards the return value, so the expected result is 1 and not 3.
 			EATEST_VERIFY(v.int_[0] == 6);
 			EATEST_VERIFY(v.int_[1] == 28);
 			EATEST_VERIFY(v.char16_[0] == ')');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32(" for (int x = 0; x < 17; ++x)"), EA_CHAR32(" for %*[^(](%n%*[^)]%n%I32c\n"), &v.int_[0], &v.int_[1], &v.char32_[0]);
+			n = Sscanf(EASTL_CHAR32(" for (int x = 0; x < 17; ++x)"), EASTL_CHAR32(" for %*[^(](%n%*[^)]%n%I32c\n"), &v.int_[0], &v.int_[1], &v.char32_[0]);
 			EATEST_VERIFY(n == 1);  // %n doesn't count towards the return value, so the expected result is 1 and not 3.
 			EATEST_VERIFY(v.int_[0] == 6);
 			EATEST_VERIFY(v.int_[1] == 28);
@@ -1310,7 +1276,7 @@ static int TestScanfMisc()
 		//n = Sscanf("2147483647 -2147483648 17777777777 18446744073709551615 ffffffffffffffff", "%"SCNdPTR " %"SCNiPTR " %"SCNoPTR " %"SCNuPTR " %"SCNxPTR, &dPtr, &iPtr, &oPtr, &uPtr, &xPtr);
 
 		v.Clear();
-		//n = Sscanf( sValue, EA_CHAR16( "%g,%g,%g,%g" ), &rf.mLeft, &rf.mTop, &rf.mRight, &rf.mBottom ) != 4)
+		//n = Sscanf( sValue, EASTL_CHAR16( "%g,%g,%g,%g" ), &rf.mLeft, &rf.mTop, &rf.mRight, &rf.mBottom ) != 4)
 
 		v.Clear();
 		//n = Sscanf(sctheader+4,"%14lf%14lf%12lf%12lf",&faspectx,&faspecty,&fheight,&fwidth);
@@ -1324,11 +1290,11 @@ static int TestScanfMisc()
 			EATEST_VERIFY(n == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("%"), EA_CHAR16("%%"));
+			n = Sscanf(EASTL_CHAR16("%"), EASTL_CHAR16("%%"));
 			EATEST_VERIFY(n == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("%"), EA_CHAR32("%%"));
+			n = Sscanf(EASTL_CHAR32("%"), EASTL_CHAR32("%%"));
 			EATEST_VERIFY(n == 0);
 		}
 
@@ -1338,11 +1304,11 @@ static int TestScanfMisc()
 			EATEST_VERIFY(n == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0 1 2 3 4 5 6 7 8 9 10 11 a 13 14"), EA_CHAR16("%*d%*i%*o%*u%*x%*X%*e%*E%*f%*g%*G%*s%*[abc]%*c%*p"));
+			n = Sscanf(EASTL_CHAR16("0 1 2 3 4 5 6 7 8 9 10 11 a 13 14"), EASTL_CHAR16("%*d%*i%*o%*u%*x%*X%*e%*E%*f%*g%*G%*s%*[abc]%*c%*p"));
 			EATEST_VERIFY(n == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0 1 2 3 4 5 6 7 8 9 10 11 a 13 14"), EA_CHAR32("%*d%*i%*o%*u%*x%*X%*e%*E%*f%*g%*G%*s%*[abc]%*c%*p"));
+			n = Sscanf(EASTL_CHAR32("0 1 2 3 4 5 6 7 8 9 10 11 a 13 14"), EASTL_CHAR32("%*d%*i%*o%*u%*x%*X%*e%*E%*f%*g%*G%*s%*[abc]%*c%*p"));
 			EATEST_VERIFY(n == 0);
 		}
 
@@ -1352,11 +1318,11 @@ static int TestScanfMisc()
 			EATEST_VERIFY(n == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("123"), EA_CHAR16("%0d"), &v.int_[0]);      // We should just ignore the field, as if it was %*d.
+			n = Sscanf(EASTL_CHAR16("123"), EASTL_CHAR16("%0d"), &v.int_[0]);      // We should just ignore the field, as if it was %*d.
 			EATEST_VERIFY(n == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("123"), EA_CHAR32("%0d"), &v.int_[0]);      // We should just ignore the field, as if it was %*d.
+			n = Sscanf(EASTL_CHAR32("123"), EASTL_CHAR32("%0d"), &v.int_[0]);      // We should just ignore the field, as if it was %*d.
 			EATEST_VERIFY(n == 0);
 		}
 
@@ -1374,7 +1340,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.float_[7] == -0.f);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-0.0 -0.0 -0.0 -0.0 -0.0 -0.0 -0.0 -0.0"), EA_CHAR16("%e %E %f %F %g %G %f %f"), &v.float_[0], &v.float_[1], &v.float_[2], &v.float_[3], &v.float_[4], &v.float_[5], &v.float_[6], &v.float_[7]);
+			n = Sscanf(EASTL_CHAR16("-0.0 -0.0 -0.0 -0.0 -0.0 -0.0 -0.0 -0.0"), EASTL_CHAR16("%e %E %f %F %g %G %f %f"), &v.float_[0], &v.float_[1], &v.float_[2], &v.float_[3], &v.float_[4], &v.float_[5], &v.float_[6], &v.float_[7]);
 			EATEST_VERIFY(n == 8);
 			EATEST_VERIFY(v.float_[0] == -0.f);
 			EATEST_VERIFY(v.float_[1] == -0.f);
@@ -1386,7 +1352,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.float_[7] == -0.f);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-0.0 -0.0 -0.0 -0.0 -0.0 -0.0 -0.0 -0.0"), EA_CHAR32("%e %E %f %F %g %G %f %f"), &v.float_[0], &v.float_[1], &v.float_[2], &v.float_[3], &v.float_[4], &v.float_[5], &v.float_[6], &v.float_[7]);
+			n = Sscanf(EASTL_CHAR32("-0.0 -0.0 -0.0 -0.0 -0.0 -0.0 -0.0 -0.0"), EASTL_CHAR32("%e %E %f %F %g %G %f %f"), &v.float_[0], &v.float_[1], &v.float_[2], &v.float_[3], &v.float_[4], &v.float_[5], &v.float_[6], &v.float_[7]);
 			EATEST_VERIFY(n == 8);
 			EATEST_VERIFY(v.float_[0] == -0.f);
 			EATEST_VERIFY(v.float_[1] == -0.f);
@@ -1412,7 +1378,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(IsNAN(v.float_[7]));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("inF -inf nan -Nan INF -inf nan -NaN"), EA_CHAR16("%e %E %f %F %g %G %f %f"), &v.float_[0], &v.float_[1], &v.float_[2], &v.float_[3], &v.float_[4], &v.float_[5], &v.float_[6], &v.float_[7]);
+			n = Sscanf(EASTL_CHAR16("inF -inf nan -Nan INF -inf nan -NaN"), EASTL_CHAR16("%e %E %f %F %g %G %f %f"), &v.float_[0], &v.float_[1], &v.float_[2], &v.float_[3], &v.float_[4], &v.float_[5], &v.float_[6], &v.float_[7]);
 			EATEST_VERIFY(n == 8);
 			EATEST_VERIFY(IsInfinite(v.float_[0]));
 			EATEST_VERIFY(IsInfinite(v.float_[1]));
@@ -1424,7 +1390,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(IsNAN(v.float_[7]));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("inF -inf nan -Nan INF -inf nan -NaN"), EA_CHAR32("%e %E %f %F %g %G %f %f"), &v.float_[0], &v.float_[1], &v.float_[2], &v.float_[3], &v.float_[4], &v.float_[5], &v.float_[6], &v.float_[7]);
+			n = Sscanf(EASTL_CHAR32("inF -inf nan -Nan INF -inf nan -NaN"), EASTL_CHAR32("%e %E %f %F %g %G %f %f"), &v.float_[0], &v.float_[1], &v.float_[2], &v.float_[3], &v.float_[4], &v.float_[5], &v.float_[6], &v.float_[7]);
 			EATEST_VERIFY(n == 8);
 			EATEST_VERIFY(IsInfinite(v.float_[0]));
 			EATEST_VERIFY(IsInfinite(v.float_[1]));
@@ -1488,7 +1454,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.short_[6] == 25);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0 1 012 55555 0x4ff 0x5FF x"), EA_CHAR16("%hd%hi%ho%hu%hx%hX%hn"), &v.short_[0], &v.short_[1], &v.short_[2], &v.ushort_[3], &v.short_[4], &v.short_[5], &v.short_[6]);
+			n = Sscanf(EASTL_CHAR16("0 1 012 55555 0x4ff 0x5FF x"), EASTL_CHAR16("%hd%hi%ho%hu%hx%hX%hn"), &v.short_[0], &v.short_[1], &v.short_[2], &v.ushort_[3], &v.short_[4], &v.short_[5], &v.short_[6]);
 			EATEST_VERIFY(n == 6);
 			EATEST_VERIFY(v.short_[0] == 0);
 			EATEST_VERIFY(v.short_[1] == 1);
@@ -1499,7 +1465,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.short_[6] == 25);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0 1 012 55555 0x4ff 0x5FF x"), EA_CHAR32("%hd%hi%ho%hu%hx%hX%hn"), &v.short_[0], &v.short_[1], &v.short_[2], &v.ushort_[3], &v.short_[4], &v.short_[5], &v.short_[6]);
+			n = Sscanf(EASTL_CHAR32("0 1 012 55555 0x4ff 0x5FF x"), EASTL_CHAR32("%hd%hi%ho%hu%hx%hX%hn"), &v.short_[0], &v.short_[1], &v.short_[2], &v.ushort_[3], &v.short_[4], &v.short_[5], &v.short_[6]);
 			EATEST_VERIFY(n == 6);
 			EATEST_VERIFY(v.short_[0] == 0);
 			EATEST_VERIFY(v.short_[1] == 1);
@@ -1523,7 +1489,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int8_[6] == 11);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0 1 2 3 4 5 x"), EA_CHAR16("%hhd%hhi%hho%hhu%hhx%hhX%hhn"), &v.int8_[0], &v.int8_[1], &v.int8_[2], &v.int8_[3], &v.int8_[4], &v.int8_[5], &v.int8_[6]);
+			n = Sscanf(EASTL_CHAR16("0 1 2 3 4 5 x"), EASTL_CHAR16("%hhd%hhi%hho%hhu%hhx%hhX%hhn"), &v.int8_[0], &v.int8_[1], &v.int8_[2], &v.int8_[3], &v.int8_[4], &v.int8_[5], &v.int8_[6]);
 			EATEST_VERIFY(n == 6);
 			EATEST_VERIFY(v.int8_[0] == 0);
 			EATEST_VERIFY(v.int8_[1] == 1);
@@ -1534,7 +1500,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int8_[6] == 11);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0 1 2 3 4 5 x"), EA_CHAR32("%hhd%hhi%hho%hhu%hhx%hhX%hhn"), &v.int8_[0], &v.int8_[1], &v.int8_[2], &v.int8_[3], &v.int8_[4], &v.int8_[5], &v.int8_[6]);
+			n = Sscanf(EASTL_CHAR32("0 1 2 3 4 5 x"), EASTL_CHAR32("%hhd%hhi%hho%hhu%hhx%hhX%hhn"), &v.int8_[0], &v.int8_[1], &v.int8_[2], &v.int8_[3], &v.int8_[4], &v.int8_[5], &v.int8_[6]);
 			EATEST_VERIFY(n == 6);
 			EATEST_VERIFY(v.int8_[0] == 0);
 			EATEST_VERIFY(v.int8_[1] == 1);
@@ -1558,7 +1524,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.long_[6] == 11);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0 1 2 3 4 5 z"), EA_CHAR16("%ld%li%lo%lu%lx%lX%ln"), &v.long_[0], &v.long_[1], &v.long_[2], &v.long_[3], &v.long_[4], &v.long_[5], &v.long_[6]);
+			n = Sscanf(EASTL_CHAR16("0 1 2 3 4 5 z"), EASTL_CHAR16("%ld%li%lo%lu%lx%lX%ln"), &v.long_[0], &v.long_[1], &v.long_[2], &v.long_[3], &v.long_[4], &v.long_[5], &v.long_[6]);
 			EATEST_VERIFY(n == 6);
 			EATEST_VERIFY(v.long_[0] == 0);
 			EATEST_VERIFY(v.long_[1] == 1);
@@ -1569,7 +1535,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.long_[6] == 11);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0 1 2 3 4 5 z"), EA_CHAR32("%ld%li%lo%lu%lx%lX%ln"), &v.long_[0], &v.long_[1], &v.long_[2], &v.long_[3], &v.long_[4], &v.long_[5], &v.long_[6]);
+			n = Sscanf(EASTL_CHAR32("0 1 2 3 4 5 z"), EASTL_CHAR32("%ld%li%lo%lu%lx%lX%ln"), &v.long_[0], &v.long_[1], &v.long_[2], &v.long_[3], &v.long_[4], &v.long_[5], &v.long_[6]);
 			EATEST_VERIFY(n == 6);
 			EATEST_VERIFY(v.long_[0] == 0);
 			EATEST_VERIFY(v.long_[1] == 1);
@@ -1592,7 +1558,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(DoubleEqual(v.double_[5], 234.567));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("1e-1\t 1e-2\t 123.456\t 234.567\t 123.456\t 234.567"), EA_CHAR16("%le %lE %lf %lF %lg %lG"), &v.double_[0], &v.double_[1], &v.double_[2], &v.double_[3], &v.double_[4], &v.double_[5]);
+			n = Sscanf(EASTL_CHAR16("1e-1\t 1e-2\t 123.456\t 234.567\t 123.456\t 234.567"), EASTL_CHAR16("%le %lE %lf %lF %lg %lG"), &v.double_[0], &v.double_[1], &v.double_[2], &v.double_[3], &v.double_[4], &v.double_[5]);
 			EATEST_VERIFY(n == 6);
 			EATEST_VERIFY(v.double_[0] == 1e-1);
 			EATEST_VERIFY(v.double_[1] == 1e-2);
@@ -1602,7 +1568,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(DoubleEqual(v.double_[5], 234.567));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("1e-1\t 1e-2\t 123.456\t 234.567\t 123.456\t 234.567"), EA_CHAR32("%le %lE %lf %lF %lg %lG"), &v.double_[0], &v.double_[1], &v.double_[2], &v.double_[3], &v.double_[4], &v.double_[5]);
+			n = Sscanf(EASTL_CHAR32("1e-1\t 1e-2\t 123.456\t 234.567\t 123.456\t 234.567"), EASTL_CHAR32("%le %lE %lf %lF %lg %lG"), &v.double_[0], &v.double_[1], &v.double_[2], &v.double_[3], &v.double_[4], &v.double_[5]);
 			EATEST_VERIFY(n == 6);
 			EATEST_VERIFY(v.double_[0] == 1e-1);
 			EATEST_VERIFY(v.double_[1] == 1e-2);
@@ -1626,7 +1592,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.str32_[0][1] == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("a\x1234_ \x5678"), EA_CHAR16("%I16s %I32s"), v.str16_[0], v.str32_[0]);
+			n = Sscanf(EASTL_CHAR16("a\x1234_ \x5678"), EASTL_CHAR16("%I16s %I32s"), v.str16_[0], v.str32_[0]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(v.str16_[0][0] == 'a');
 			EATEST_VERIFY(v.str16_[0][1] == 0x1234);
@@ -1636,7 +1602,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.str32_[0][1] == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("a\x1234_ \x5678"), EA_CHAR32("%I16s %I32s"), v.str16_[0], v.str32_[0]);
+			n = Sscanf(EASTL_CHAR32("a\x1234_ \x5678"), EASTL_CHAR32("%I16s %I32s"), v.str16_[0], v.str32_[0]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(v.str16_[0][0] == 'a');
 			EATEST_VERIFY(v.str16_[0][1] == 0x1234);
@@ -1652,24 +1618,24 @@ static int TestScanfMisc()
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(Strcmp(v.str8_[0],  "ab") == 0);
 			EATEST_VERIFY(Strcmp(v.strw_[0],  EA_WCHAR("cd")) == 0);
-			EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("ef")) == 0);
-			EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("gh")) == 0);
+			EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("ef")) == 0);
+			EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("gh")) == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("abcdefghij"), EA_CHAR16("%h[ab]%l[cd]%I16[ef]%I32[gh]"), v.str8_[0], v.strw_[0], v.str16_[0], v.str32_[0]);
+			n = Sscanf(EASTL_CHAR16("abcdefghij"), EASTL_CHAR16("%h[ab]%l[cd]%I16[ef]%I32[gh]"), v.str8_[0], v.strw_[0], v.str16_[0], v.str32_[0]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(Strcmp(v.str8_[0],  "ab") == 0);
 			EATEST_VERIFY(Strcmp(v.strw_[0],  EA_WCHAR("cd")) == 0);
-			EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("ef")) == 0);
-			EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("gh")) == 0);
+			EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("ef")) == 0);
+			EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("gh")) == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("abcdefghij"), EA_CHAR32("%h[ab]%l[cd]%I16[ef]%I32[gh]"), v.str8_[0], v.strw_[0], v.str16_[0], v.str32_[0]);
+			n = Sscanf(EASTL_CHAR32("abcdefghij"), EASTL_CHAR32("%h[ab]%l[cd]%I16[ef]%I32[gh]"), v.str8_[0], v.strw_[0], v.str16_[0], v.str32_[0]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY(Strcmp(v.str8_[0],  "ab") == 0);
 			EATEST_VERIFY(Strcmp(v.strw_[0],  EA_WCHAR("cd")) == 0);
-			EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("ef")) == 0);
-			EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("gh")) == 0);
+			EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("ef")) == 0);
+			EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("gh")) == 0);
 		}
 
 		{ // Test %[^] 
@@ -1677,22 +1643,22 @@ static int TestScanfMisc()
 			n = Sscanf("abcdefghij", "%h[^cd]%l[^ef]%I16[^gh]%I32[^ij]", v.str8_[0], v.strw_[0], v.str16_[0], v.str32_[0]);
 			EATEST_VERIFY(Strcmp(v.str8_[0],  "ab") == 0);
 			EATEST_VERIFY(Strcmp(v.strw_[0],  EA_WCHAR("cd")) == 0);
-			EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("ef")) == 0);
-			EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("gh")) == 0);
+			EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("ef")) == 0);
+			EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("gh")) == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("abcdefghij"), EA_CHAR16("%h[^cd]%l[^ef]%I16[^gh]%I32[^ij]"), v.str8_[0], v.strw_[0], v.str16_[0], v.str32_[0]);
+			n = Sscanf(EASTL_CHAR16("abcdefghij"), EASTL_CHAR16("%h[^cd]%l[^ef]%I16[^gh]%I32[^ij]"), v.str8_[0], v.strw_[0], v.str16_[0], v.str32_[0]);
 			EATEST_VERIFY(Strcmp(v.str8_[0],  "ab") == 0);
 			EATEST_VERIFY(Strcmp(v.strw_[0],  EA_WCHAR("cd")) == 0);
-			EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("ef")) == 0);
-			EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("gh")) == 0);
+			EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("ef")) == 0);
+			EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("gh")) == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("abcdefghij"), EA_CHAR32("%h[^cd]%l[^ef]%I16[^gh]%I32[^ij]"), v.str8_[0], v.strw_[0], v.str16_[0], v.str32_[0]);
+			n = Sscanf(EASTL_CHAR32("abcdefghij"), EASTL_CHAR32("%h[^cd]%l[^ef]%I16[^gh]%I32[^ij]"), v.str8_[0], v.strw_[0], v.str16_[0], v.str32_[0]);
 			EATEST_VERIFY(Strcmp(v.str8_[0],  "ab") == 0);
 			EATEST_VERIFY(Strcmp(v.strw_[0],  EA_WCHAR("cd")) == 0);
-			EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("ef")) == 0);
-			EATEST_VERIFY(Strcmp(v.str32_[0], EA_CHAR32("gh")) == 0);
+			EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("ef")) == 0);
+			EATEST_VERIFY(Strcmp(v.str32_[0], EASTL_CHAR32("gh")) == 0);
 		}
 
 		{
@@ -1706,13 +1672,13 @@ static int TestScanfMisc()
 			//EATEST_VERIFY(v.char32_[0] == 0xd7ff);
 
 			//v.Clear();
-			//n = Sscanf(EA_CHAR16("\xed\x9f\xbf\xed\x9f\xbf"), EA_CHAR16("%I16c %I32c"), &v.char16_[0], &v.char32_[0]);
+			//n = Sscanf(EASTL_CHAR16("\xed\x9f\xbf\xed\x9f\xbf"), EASTL_CHAR16("%I16c %I32c"), &v.char16_[0], &v.char32_[0]);
 			//EATEST_VERIFY(n == 2);
 			//EATEST_VERIFY(v.char16_[0] == 0xd7ff);
 			//EATEST_VERIFY(v.char32_[0] == 0xd7ff);
 
 			//v.Clear();
-			//n = Sscanf(EA_CHAR32("\xed\x9f\xbf\xed\x9f\xbf"), EA_CHAR32("%I16c %I32c"), &v.char16_[0], &v.char32_[0]);
+			//n = Sscanf(EASTL_CHAR32("\xed\x9f\xbf\xed\x9f\xbf"), EASTL_CHAR32("%I16c %I32c"), &v.char16_[0], &v.char32_[0]);
 			//EATEST_VERIFY(n == 2);
 			//EATEST_VERIFY(v.char16_[0] == 0xd7ff);
 			//EATEST_VERIFY(v.char32_[0] == 0xd7ff);
@@ -1731,7 +1697,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.longlong_[6] == 17);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-0 -1 012 3 10 20"), EA_CHAR16("%lld%lli%llo%llu%llx%llX%lln"), &v.longlong_[0], &v.longlong_[1], &v.longlong_[2], &v.longlong_[3], &v.longlong_[4], &v.longlong_[5], &v.longlong_[6]);
+			n = Sscanf(EASTL_CHAR16("-0 -1 012 3 10 20"), EASTL_CHAR16("%lld%lli%llo%llu%llx%llX%lln"), &v.longlong_[0], &v.longlong_[1], &v.longlong_[2], &v.longlong_[3], &v.longlong_[4], &v.longlong_[5], &v.longlong_[6]);
 			EATEST_VERIFY(n == 6);
 			EATEST_VERIFY(v.longlong_[0] == -0);
 			EATEST_VERIFY(v.longlong_[1] == -1);
@@ -1742,7 +1708,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.longlong_[6] == 17);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-0 -1 012 3 10 20"), EA_CHAR32("%lld%lli%llo%llu%llx%llX%lln"), &v.longlong_[0], &v.longlong_[1], &v.longlong_[2], &v.longlong_[3], &v.longlong_[4], &v.longlong_[5], &v.longlong_[6]);
+			n = Sscanf(EASTL_CHAR32("-0 -1 012 3 10 20"), EASTL_CHAR32("%lld%lli%llo%llu%llx%llX%lln"), &v.longlong_[0], &v.longlong_[1], &v.longlong_[2], &v.longlong_[3], &v.longlong_[4], &v.longlong_[5], &v.longlong_[6]);
 			EATEST_VERIFY(n == 6);
 			EATEST_VERIFY(v.longlong_[0] == -0);
 			EATEST_VERIFY(v.longlong_[1] == -1);
@@ -1762,13 +1728,13 @@ static int TestScanfMisc()
 
 			v.Clear();
 			v.int_[0] = 0xdd;
-			n = Sscanf(EA_CHAR16(""), EA_CHAR16("%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16(""), EASTL_CHAR16("%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0] == 0xdd);
 
 			v.Clear();
 			v.int_[0] = 0xdd;
-			n = Sscanf(EA_CHAR32(""), EA_CHAR32("%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32(""), EASTL_CHAR32("%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0] == 0xdd);
 		}
@@ -1780,12 +1746,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == 0x519);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0x519"), EA_CHAR16("%x"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("0x519"), EASTL_CHAR16("%x"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 0x519);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0x519"), EA_CHAR32("%x"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("0x519"), EASTL_CHAR32("%x"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 0x519);
 		}
@@ -1797,12 +1763,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == 0x51a);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0x51ag"), EA_CHAR16("%x"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("0x51ag"), EASTL_CHAR16("%x"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 0x51a);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0x51ag"), EA_CHAR32("%x"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("0x51ag"), EASTL_CHAR32("%x"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 0x51a);
 		}
@@ -1814,12 +1780,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == -1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-1"), EA_CHAR16("%x"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("-1"), EASTL_CHAR16("%x"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == -1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-1"), EA_CHAR32("%x"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("-1"), EASTL_CHAR32("%x"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == -1);
 		}
@@ -1831,12 +1797,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == 12);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("\"%12@"), EA_CHAR16("\"%%%d%%"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("\"%12@"), EASTL_CHAR16("\"%%%d%%"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 12);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("\"%12@"), EA_CHAR32("\"%%%d%%"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("\"%12@"), EASTL_CHAR32("\"%%%d%%"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 12);
 		}
@@ -1849,13 +1815,13 @@ static int TestScanfMisc()
 			EATEST_VERIFY(FloatEqual(v.float_[1], 2.2f));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("1.1\t2.2"), EA_CHAR16("%f\t%f"), &v.float_[0], &v.float_[1]);
+			n = Sscanf(EASTL_CHAR16("1.1\t2.2"), EASTL_CHAR16("%f\t%f"), &v.float_[0], &v.float_[1]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(FloatEqual(v.float_[0], 1.1f));
 			EATEST_VERIFY(FloatEqual(v.float_[1], 2.2f));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("1.1\t2.2"), EA_CHAR32("%f\t%f"), &v.float_[0], &v.float_[1]);
+			n = Sscanf(EASTL_CHAR32("1.1\t2.2"), EASTL_CHAR32("%f\t%f"), &v.float_[0], &v.float_[1]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(FloatEqual(v.float_[0], 1.1f));
 			EATEST_VERIFY(FloatEqual(v.float_[1], 2.2f));
@@ -1869,21 +1835,21 @@ static int TestScanfMisc()
 
 			v.Clear();
 			#if EASCANF_MS_STYLE_S_FORMAT
-				n = Sscanf(EA_CHAR16("  Hello World\n"), EA_CHAR16("%*c%[^\n]"), v.strw_[0]);
+				n = Sscanf(EASTL_CHAR16("  Hello World\n"), EASTL_CHAR16("%*c%[^\n]"), v.strw_[0]);
 				EATEST_VERIFY(n == 1);
 				EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR(" Hello World")) == 0);
 			#else
-				n = Sscanf(EA_CHAR16("  Hello World\n"), EA_CHAR16("%*c%[^\n]"), v.str8_[0]);
+				n = Sscanf(EASTL_CHAR16("  Hello World\n"), EASTL_CHAR16("%*c%[^\n]"), v.str8_[0]);
 				EATEST_VERIFY(n == 1);
 				EATEST_VERIFY(Strcmp(v.str8_[0], " Hello World") == 0);
 			#endif
 
 			#if EASCANF_MS_STYLE_S_FORMAT
-				n = Sscanf(EA_CHAR32("  Hello World\n"), EA_CHAR32("%*c%[^\n]"), v.strw_[0]);
+				n = Sscanf(EASTL_CHAR32("  Hello World\n"), EASTL_CHAR32("%*c%[^\n]"), v.strw_[0]);
 				EATEST_VERIFY(n == 1);
 				EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR(" Hello World")) == 0);
 			#else
-				n = Sscanf(EA_CHAR32("  Hello World\n"), EA_CHAR32("%*c%[^\n]"), v.str8_[0]);
+				n = Sscanf(EASTL_CHAR32("  Hello World\n"), EASTL_CHAR32("%*c%[^\n]"), v.str8_[0]);
 				EATEST_VERIFY(n == 1);
 				EATEST_VERIFY(Strcmp(v.str8_[0], " Hello World") == 0);
 			#endif
@@ -1896,12 +1862,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.char8_[0] == 'h');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("abcefgdh"), EA_CHAR16("%*[a-cb-g]%I16c"), &v.char16_[0]);
+			n = Sscanf(EASTL_CHAR16("abcefgdh"), EASTL_CHAR16("%*[a-cb-g]%I16c"), &v.char16_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.char16_[0] == 'h');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("abcefgdh"), EA_CHAR32("%*[a-cb-g]%I32c"), &v.char32_[0]);
+			n = Sscanf(EASTL_CHAR32("abcefgdh"), EASTL_CHAR32("%*[a-cb-g]%I32c"), &v.char32_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.char32_[0] == 'h');
 		}
@@ -1913,12 +1879,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.char8_[0] == 'h');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("abcefgdh"), EA_CHAR16("%*[a-cd-de-g]%I16c"), &v.char16_[0]);
+			n = Sscanf(EASTL_CHAR16("abcefgdh"), EASTL_CHAR16("%*[a-cd-de-g]%I16c"), &v.char16_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.char16_[0] == 'h');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("abcefgdh"), EA_CHAR32("%*[a-cd-de-g]%I32c"), &v.char32_[0]);
+			n = Sscanf(EASTL_CHAR32("abcefgdh"), EASTL_CHAR32("%*[a-cd-de-g]%I32c"), &v.char32_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.char32_[0] == 'h');
 		}
@@ -1932,14 +1898,14 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[2] == 2);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("3:5:7"), EA_CHAR16("%d%n:%n"), &v.int_[0], &v.int_[1], &v.int_[2]);
+			n = Sscanf(EASTL_CHAR16("3:5:7"), EASTL_CHAR16("%d%n:%n"), &v.int_[0], &v.int_[1], &v.int_[2]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 3);
 			EATEST_VERIFY(v.int_[1] == 1);
 			EATEST_VERIFY(v.int_[2] == 2);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("3:5:7"), EA_CHAR32("%d%n:%n"), &v.int_[0], &v.int_[1], &v.int_[2]);
+			n = Sscanf(EASTL_CHAR32("3:5:7"), EASTL_CHAR32("%d%n:%n"), &v.int_[0], &v.int_[1], &v.int_[2]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 3);
 			EATEST_VERIFY(v.int_[1] == 1);
@@ -1953,12 +1919,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == 1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("5:7"), EA_CHAR16("%*c%n"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("5:7"), EASTL_CHAR16("%*c%n"), &v.int_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0] == 1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("5:7"), EA_CHAR32("%*c%n"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("5:7"), EASTL_CHAR32("%*c%n"), &v.int_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0] == 1);
 		}
@@ -1970,12 +1936,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == -1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-1"), EA_CHAR16("%i"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("-1"), EASTL_CHAR16("%i"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == -1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-1"), EA_CHAR32("%i"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("-1"), EASTL_CHAR32("%i"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == -1);
 		}
@@ -1987,12 +1953,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == 255);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0xff"), EA_CHAR16("%i"), &v.int_[0]); // %i differs from %d in that it acts like strtol with a base of 0 (auto-detect) as opposed to a base of 10.
+			n = Sscanf(EASTL_CHAR16("0xff"), EASTL_CHAR16("%i"), &v.int_[0]); // %i differs from %d in that it acts like strtol with a base of 0 (auto-detect) as opposed to a base of 10.
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 255);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0xff"), EA_CHAR32("%i"), &v.int_[0]); // %i differs from %d in that it acts like strtol with a base of 0 (auto-detect) as opposed to a base of 10.
+			n = Sscanf(EASTL_CHAR32("0xff"), EASTL_CHAR32("%i"), &v.int_[0]); // %i differs from %d in that it acts like strtol with a base of 0 (auto-detect) as opposed to a base of 10.
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 255);
 		}
@@ -2004,12 +1970,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == 017);         // See C99 7.20.1.4 p3 and p5, 6.4.4.1
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("017"), EA_CHAR16("%i"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("017"), EASTL_CHAR16("%i"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 017);         // See C99 7.20.1.4 p3 and p5, 6.4.4.1
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("017"), EA_CHAR32("%i"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("017"), EASTL_CHAR32("%i"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 017);         // See C99 7.20.1.4 p3 and p5, 6.4.4.1
 		}
@@ -2021,12 +1987,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == -1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-1"), EA_CHAR16("%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("-1"), EASTL_CHAR16("%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == -1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-1"), EA_CHAR32("%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("-1"), EASTL_CHAR32("%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == -1);
 		}
@@ -2038,12 +2004,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == 0);          // %d should not treat 0x sequences as hexidecimal.
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0xff"), EA_CHAR16("%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("0xff"), EASTL_CHAR16("%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 0);          // %d should not treat 0x sequences as hexidecimal.
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0xff"), EA_CHAR32("%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("0xff"), EASTL_CHAR32("%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == 0);          // %d should not treat 0x sequences as hexidecimal.
 		}
@@ -2055,12 +2021,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == -1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-1"), EA_CHAR16("%o"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("-1"), EASTL_CHAR16("%o"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == -1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-1"), EA_CHAR32("%o"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("-1"), EASTL_CHAR32("%o"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == -1);
 		}
@@ -2072,12 +2038,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[0] == -1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("-1"), EA_CHAR16("%u"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("-1"), EASTL_CHAR16("%u"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == -1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("-1"), EA_CHAR32("%u"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("-1"), EASTL_CHAR32("%u"), &v.int_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.int_[0] == -1);
 		}
@@ -2089,12 +2055,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY((v.char8_[0] == 'x') && (v.wchar_[0] == 'y') && (v.char16_[0] == 'z') && (v.char32_[0] == 'w'));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("xyzwa"), EA_CHAR16("%hc%lc%I16c%I32c"), &v.char8_[0], &v.wchar_[0], &v.char16_[0], &v.char32_[0]);
+			n = Sscanf(EASTL_CHAR16("xyzwa"), EASTL_CHAR16("%hc%lc%I16c%I32c"), &v.char8_[0], &v.wchar_[0], &v.char16_[0], &v.char32_[0]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY((v.char8_[0] == 'x') && (v.wchar_[0] == 'y') && (v.char16_[0] == 'z') && (v.char32_[0] == 'w'));
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("xyzwa"), EA_CHAR16("%hc%lc%I16c%I32c"), &v.char8_[0], &v.wchar_[0], &v.char16_[0], &v.char32_[0]);
+			n = Sscanf(EASTL_CHAR16("xyzwa"), EASTL_CHAR16("%hc%lc%I16c%I32c"), &v.char8_[0], &v.wchar_[0], &v.char16_[0], &v.char32_[0]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY((v.char8_[0] == 'x') && (v.wchar_[0] == 'y') && (v.char16_[0] == 'z') && (v.char32_[0] == 'w'));
 		}
@@ -2106,12 +2072,12 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.char8_[0] == ' ');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16(" xyz"), EA_CHAR16("%I16c"), &v.char16_[0]);
+			n = Sscanf(EASTL_CHAR16(" xyz"), EASTL_CHAR16("%I16c"), &v.char16_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.char16_[0] == ' ');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32(" xyz"), EA_CHAR32("%I32c"), &v.char32_[0]);
+			n = Sscanf(EASTL_CHAR32(" xyz"), EASTL_CHAR32("%I32c"), &v.char32_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.char32_[0] == ' ');
 		}
@@ -2128,11 +2094,11 @@ static int TestScanfMisc()
 			v.Clear();
 			#if EASCANF_MS_STYLE_S_FORMAT
 				v.wchar_[0] = 0xdd;
-				n = Sscanf(EA_CHAR16("10:11"), EA_CHAR16("%d:%d%c"), &v.int_[0], &v.int_[1], &v.wchar_[0]);
+				n = Sscanf(EASTL_CHAR16("10:11"), EASTL_CHAR16("%d:%d%c"), &v.int_[0], &v.int_[1], &v.wchar_[0]);
 				EATEST_VERIFY(v.wchar_[0] == 0xdd);
 			#else
 				v.char8_[0] = (char)(uint8_t)0xdd;
-				n = Sscanf(EA_CHAR16("10:11"), EA_CHAR16("%d:%d%c"), &v.int_[0], &v.int_[1], &v.char8_[0]);
+				n = Sscanf(EASTL_CHAR16("10:11"), EASTL_CHAR16("%d:%d%c"), &v.int_[0], &v.int_[1], &v.char8_[0]);
 				EATEST_VERIFY(v.char8_[0] == (char)(uint8_t)0xdd);
 			#endif
 			EATEST_VERIFY(n == 2);
@@ -2142,11 +2108,11 @@ static int TestScanfMisc()
 			v.Clear();
 			#if EASCANF_MS_STYLE_S_FORMAT
 				v.wchar_[0] = 0xdd;
-				n = Sscanf(EA_CHAR32("10:11"), EA_CHAR32("%d:%d%c"), &v.int_[0], &v.int_[1], &v.wchar_[0]);
+				n = Sscanf(EASTL_CHAR32("10:11"), EASTL_CHAR32("%d:%d%c"), &v.int_[0], &v.int_[1], &v.wchar_[0]);
 				EATEST_VERIFY(v.wchar_[0] == 0xdd);
 			#else
 				v.char8_[0] = (char)(uint8_t)0xdd;
-				n = Sscanf(EA_CHAR32("10:11"), EA_CHAR32("%d:%d%c"), &v.int_[0], &v.int_[1], &v.char8_[0]);
+				n = Sscanf(EASTL_CHAR32("10:11"), EASTL_CHAR32("%d:%d%c"), &v.int_[0], &v.int_[1], &v.char8_[0]);
 				EATEST_VERIFY(v.char8_[0] == (char)(uint8_t)0xdd);
 			#endif
 			EATEST_VERIFY(n == 2);
@@ -2163,18 +2129,18 @@ static int TestScanfMisc()
 			EATEST_VERIFY(Strcmp(v.str8_[1], "def") == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("abc   def"), EA_CHAR16("%I16s %n%I32s"), v.str16_[0], &v.int_[0], v.str32_[1]);
+			n = Sscanf(EASTL_CHAR16("abc   def"), EASTL_CHAR16("%I16s %n%I32s"), v.str16_[0], &v.int_[0], v.str32_[1]);
 			EATEST_VERIFY(n == 2);
-			EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("abc")) == 0);
+			EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("abc")) == 0);
 			EATEST_VERIFY(v.int_[0] == 6);
-			EATEST_VERIFY(Strcmp(v.str32_[1], EA_CHAR32("def")) == 0);
+			EATEST_VERIFY(Strcmp(v.str32_[1], EASTL_CHAR32("def")) == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("abc   def"), EA_CHAR32("%I16s %n%I32s"), v.str16_[0], &v.int_[0], v.str32_[1]);
+			n = Sscanf(EASTL_CHAR32("abc   def"), EASTL_CHAR32("%I16s %n%I32s"), v.str16_[0], &v.int_[0], v.str32_[1]);
 			EATEST_VERIFY(n == 2);
-			EATEST_VERIFY(Strcmp(v.str16_[0], EA_CHAR16("abc")) == 0);
+			EATEST_VERIFY(Strcmp(v.str16_[0], EASTL_CHAR16("abc")) == 0);
 			EATEST_VERIFY(v.int_[0] == 6);
-			EATEST_VERIFY(Strcmp(v.str32_[1], EA_CHAR32("def")) == 0);
+			EATEST_VERIFY(Strcmp(v.str32_[1], EASTL_CHAR32("def")) == 0);
 		}
 
 		{
@@ -2186,14 +2152,14 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int_[2] == 4);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("1:23"), EA_CHAR16("%d:%d%n"), &v.int_[0], &v.int_[1], &v.int_[2]);
+			n = Sscanf(EASTL_CHAR16("1:23"), EASTL_CHAR16("%d:%d%n"), &v.int_[0], &v.int_[1], &v.int_[2]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(v.int_[0] == 1);
 			EATEST_VERIFY(v.int_[1] == 23);
 			EATEST_VERIFY(v.int_[2] == 4);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("1:23"), EA_CHAR32("%d:%d%n"), &v.int_[0], &v.int_[1], &v.int_[2]);
+			n = Sscanf(EASTL_CHAR32("1:23"), EASTL_CHAR32("%d:%d%n"), &v.int_[0], &v.int_[1], &v.int_[2]);
 			EATEST_VERIFY(n == 2);
 			EATEST_VERIFY(v.int_[0] == 1);
 			EATEST_VERIFY(v.int_[1] == 23);
@@ -2214,7 +2180,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int64_[0]    == 1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("_"), EA_CHAR16("_%n%hn%hhn%ln%lln%I8n%I16n%I32n%I64n"), &v.int_[0], &v.short_[0], &v.char_[0], &v.long_[0], &v.longlong_[0], &v.int8_[0], &v.int16_[0], &v.int32_[0], &v.int64_[0]);
+			n = Sscanf(EASTL_CHAR16("_"), EASTL_CHAR16("_%n%hn%hhn%ln%lln%I8n%I16n%I32n%I64n"), &v.int_[0], &v.short_[0], &v.char_[0], &v.long_[0], &v.longlong_[0], &v.int8_[0], &v.int16_[0], &v.int32_[0], &v.int64_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0]      == 1);
 			EATEST_VERIFY(v.short_[0]    == 1);
@@ -2226,7 +2192,7 @@ static int TestScanfMisc()
 			EATEST_VERIFY(v.int64_[0]    == 1);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("_"), EA_CHAR32("_%n%hn%hhn%ln%lln%I8n%I32n%I32n%I64n"), &v.int_[0], &v.short_[0], &v.char_[0], &v.long_[0], &v.longlong_[0], &v.int8_[0], &v.int32_[0], &v.int32_[0], &v.int64_[0]);
+			n = Sscanf(EASTL_CHAR32("_"), EASTL_CHAR32("_%n%hn%hhn%ln%lln%I8n%I32n%I32n%I64n"), &v.int_[0], &v.short_[0], &v.char_[0], &v.long_[0], &v.longlong_[0], &v.int8_[0], &v.int32_[0], &v.int32_[0], &v.int64_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0]      == 1);
 			EATEST_VERIFY(v.short_[0]    == 1);
@@ -2257,7 +2223,7 @@ static int TestScanfMisc()
 		EA::StdC::Sscanf( ".750", "%f", &a);
 		EATEST_VERIFY(FloatEqual(a,  .750f));
 
-		EA::StdC::Sscanf(EA_CHAR16(".750"), EA_CHAR16("%f"), &a);
+		EA::StdC::Sscanf(EASTL_CHAR16(".750"), EASTL_CHAR16("%f"), &a);
 		EATEST_VERIFY(FloatEqual(a,  .750f));
 	}
 
@@ -2291,10 +2257,10 @@ static int TestScanfUnusual()
 			n = TestCRTVsscanf("", "");
 			EATEST_VERIFY(n == 0);
 
-			n = TestCRTVsscanf(EA_CHAR16(""), EA_CHAR16(""));
+			n = TestCRTVsscanf(EASTL_CHAR16(""), EASTL_CHAR16(""));
 			EATEST_VERIFY(n == 0);
 
-			n = TestCRTVsscanf(EA_CHAR32(""), EA_CHAR32(""));
+			n = TestCRTVsscanf(EASTL_CHAR32(""), EASTL_CHAR32(""));
 			EATEST_VERIFY(n == 0);
 		}
 
@@ -2333,12 +2299,12 @@ static int TestScanfUnusual()
 			EATEST_VERIFY((uintptr_t)v.voidptr_[0] == 0xffffffff);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0xffffffff"), EA_CHAR16("%lp"), &v.voidptr_[0]);
+			n = Sscanf(EASTL_CHAR16("0xffffffff"), EASTL_CHAR16("%lp"), &v.voidptr_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY((uintptr_t)v.voidptr_[0] == 0xffffffff);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0xffffffff"), EA_CHAR32("%lp"), &v.voidptr_[0]);
+			n = Sscanf(EASTL_CHAR32("0xffffffff"), EASTL_CHAR32("%lp"), &v.voidptr_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY((uintptr_t)v.voidptr_[0] == 0xffffffff);
 		}
@@ -2351,12 +2317,12 @@ static int TestScanfUnusual()
 			EATEST_VERIFY((uintptr_t)v.voidptr_[0] == 0xffffffff);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("0xffffffff"), EA_CHAR16("%hp"), &v.voidptr_[0]);
+			n = Sscanf(EASTL_CHAR16("0xffffffff"), EASTL_CHAR16("%hp"), &v.voidptr_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY((uintptr_t)v.voidptr_[0] == 0xffffffff);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("0xffffffff"), EA_CHAR32("%hp"), &v.voidptr_[0]);
+			n = Sscanf(EASTL_CHAR32("0xffffffff"), EASTL_CHAR32("%hp"), &v.voidptr_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY((uintptr_t)v.voidptr_[0] == 0xffffffff);
 		}
@@ -2368,12 +2334,12 @@ static int TestScanfUnusual()
 			EATEST_VERIFY(Strcmp(v.str8_[0], "2.0") == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("2.0"), EA_CHAR16("%hs"), v.str8_[0]);
+			n = Sscanf(EASTL_CHAR16("2.0"), EASTL_CHAR16("%hs"), v.str8_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(Strcmp(v.str8_[0], "2.0") == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("2.0"), EA_CHAR32("%hs"), v.str8_[0]);
+			n = Sscanf(EASTL_CHAR32("2.0"), EASTL_CHAR32("%hs"), v.str8_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(Strcmp(v.str8_[0], "2.0") == 0);
 		}
@@ -2385,12 +2351,12 @@ static int TestScanfUnusual()
 			EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("2.0")) == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("2.0"), EA_CHAR16("%ls"), v.strw_[0]);
+			n = Sscanf(EASTL_CHAR16("2.0"), EASTL_CHAR16("%ls"), v.strw_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("2.0")) == 0);
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("2.0"), EA_CHAR32("%ls"), v.strw_[0]);
+			n = Sscanf(EASTL_CHAR32("2.0"), EASTL_CHAR32("%ls"), v.strw_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(Strcmp(v.strw_[0], EA_WCHAR("2.0")) == 0);
 		}
@@ -2402,12 +2368,12 @@ static int TestScanfUnusual()
 			EATEST_VERIFY(v.char8_[0] == '2');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("2.0"), EA_CHAR16("%hc"), &v.char8_[0]);
+			n = Sscanf(EASTL_CHAR16("2.0"), EASTL_CHAR16("%hc"), &v.char8_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.char8_[0] == '2');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("2.0"), EA_CHAR32("%hc"), &v.char8_[0]);
+			n = Sscanf(EASTL_CHAR32("2.0"), EASTL_CHAR32("%hc"), &v.char8_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.char8_[0] == '2');
 		}
@@ -2419,12 +2385,12 @@ static int TestScanfUnusual()
 			EATEST_VERIFY(v.wchar_[0] == '2');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR16("2.0"), EA_CHAR16("%lc"), &v.wchar_[0]);
+			n = Sscanf(EASTL_CHAR16("2.0"), EASTL_CHAR16("%lc"), &v.wchar_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.wchar_[0] == '2');
 
 			v.Clear();
-			n = Sscanf(EA_CHAR32("2.0"), EA_CHAR32("%lc"), &v.wchar_[0]);
+			n = Sscanf(EASTL_CHAR32("2.0"), EASTL_CHAR32("%lc"), &v.wchar_[0]);
 			EATEST_VERIFY(n == 1);
 			EATEST_VERIFY(v.wchar_[0] == '2');
 		}
@@ -2443,14 +2409,14 @@ static int TestScanfUnusual()
 
 			v.Clear();
 			v.int_[0] = 0xdd;
-			n = Sscanf(EA_CHAR16("%4"), EA_CHAR16("%*%%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("%4"), EASTL_CHAR16("%*%%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0] == 0xdd);
 			VERIFY_ASSERTCOUNT(1);
 
 			v.Clear();
 			v.int_[0] = 0xdd;
-			n = Sscanf(EA_CHAR32("%4"), EA_CHAR32("%*%%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("%4"), EASTL_CHAR32("%*%%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0] == 0xdd);
 			VERIFY_ASSERTCOUNT(1);
@@ -2466,14 +2432,14 @@ static int TestScanfUnusual()
 
 			v.Clear();
 			v.int_[0] = 0xdd;
-			n = Sscanf(EA_CHAR16("%4"), EA_CHAR16("%2%%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("%4"), EASTL_CHAR16("%2%%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0] == 0xdd);
 			VERIFY_ASSERTCOUNT(1);
 
 			v.Clear();
 			v.int_[0] = 0xdd;
-			n = Sscanf(EA_CHAR32("%4"), EA_CHAR32("%2%%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("%4"), EASTL_CHAR32("%2%%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0] == 0xdd);
 			VERIFY_ASSERTCOUNT(1);
@@ -2489,14 +2455,14 @@ static int TestScanfUnusual()
 
 			v.Clear();
 			v.int_[0] = 0xdd;
-			n = Sscanf(EA_CHAR16("%4"), EA_CHAR16("%h%%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR16("%4"), EASTL_CHAR16("%h%%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0] == 0xdd);
 			VERIFY_ASSERTCOUNT(1);
 
 			v.Clear();
 			v.int_[0] = 0xdd;
-			n = Sscanf(EA_CHAR32("%4"), EA_CHAR32("%h%%d"), &v.int_[0]);
+			n = Sscanf(EASTL_CHAR32("%4"), EASTL_CHAR32("%h%%d"), &v.int_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.int_[0] == 0xdd);
 			VERIFY_ASSERTCOUNT(1);
@@ -2512,14 +2478,14 @@ static int TestScanfUnusual()
 
 			v.Clear();
 			Strcpy(v.str8_[0], "x");
-			n = Sscanf(EA_CHAR16("abcd"), EA_CHAR16("%[]abcd"), v.str8_[0]);
+			n = Sscanf(EASTL_CHAR16("abcd"), EASTL_CHAR16("%[]abcd"), v.str8_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(Strcmp(v.str8_[0], "x") == 0);
 			VERIFY_ASSERTCOUNT(1);
 
 			v.Clear();
 			Strcpy(v.str8_[0], "x");
-			n = Sscanf(EA_CHAR32("abcd"), EA_CHAR32("%[]abcd"), v.str8_[0]);
+			n = Sscanf(EASTL_CHAR32("abcd"), EASTL_CHAR32("%[]abcd"), v.str8_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(Strcmp(v.str8_[0], "x") == 0);
 			VERIFY_ASSERTCOUNT(1);
@@ -2535,14 +2501,14 @@ static int TestScanfUnusual()
 
 			v.Clear();
 			v.float_[0] = -1.f;
-			n = Sscanf(EA_CHAR16("2.0"), EA_CHAR16("%hf"), &v.float_[0]);
+			n = Sscanf(EASTL_CHAR16("2.0"), EASTL_CHAR16("%hf"), &v.float_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.float_[0] == -1.f);
 			VERIFY_ASSERTCOUNT(1);
 
 			v.Clear();
 			v.float_[0] = -1.f;
-			n = Sscanf(EA_CHAR32("2.0"), EA_CHAR32("%hf"), &v.float_[0]);
+			n = Sscanf(EASTL_CHAR32("2.0"), EASTL_CHAR32("%hf"), &v.float_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.float_[0] == -1.f);
 			VERIFY_ASSERTCOUNT(1);
@@ -2557,13 +2523,13 @@ static int TestScanfUnusual()
 
 			v.Clear();
 			Strcpy(v.str8_[0], "x");
-			n = Sscanf(EA_CHAR16("2.0"), EA_CHAR16("%h[2.]"), v.str8_[0]);
+			n = Sscanf(EASTL_CHAR16("2.0"), EASTL_CHAR16("%h[2.]"), v.str8_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(Strcmp(v.str8_[0], "x") == 0);
 
 			v.Clear();
 			Strcpy(v.str8_[0], "x");
-			n = Sscanf(EA_CHAR32("2.0"), EA_CHAR32("%h[2.]"), v.str8_[0]);
+			n = Sscanf(EASTL_CHAR32("2.0"), EASTL_CHAR32("%h[2.]"), v.str8_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(Strcmp(v.str8_[0], "x") == 0);
 		} */
@@ -2578,14 +2544,14 @@ static int TestScanfUnusual()
 
 			v.Clear();
 			v.uint64_[0] = 0xdd;
-			n = Sscanf(EA_CHAR16("abcd"), EA_CHAR16("%h"), &v.uint64_[0]);
+			n = Sscanf(EASTL_CHAR16("abcd"), EASTL_CHAR16("%h"), &v.uint64_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.uint64_[0] == 0xdd);
 			VERIFY_ASSERTCOUNT(1);
 
 			v.Clear();
 			v.uint64_[0] = 0xdd;
-			n = Sscanf(EA_CHAR32("abcd"), EA_CHAR32("%h"), &v.uint64_[0]);
+			n = Sscanf(EASTL_CHAR32("abcd"), EASTL_CHAR32("%h"), &v.uint64_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.uint64_[0] == 0xdd);
 			VERIFY_ASSERTCOUNT(1);
@@ -2601,14 +2567,14 @@ static int TestScanfUnusual()
 
 			v.Clear();
 			v.uint64_[0] = 0xdd;
-			n = Sscanf(EA_CHAR16("abcd"), EA_CHAR16("%l."), &v.uint64_[0]);
+			n = Sscanf(EASTL_CHAR16("abcd"), EASTL_CHAR16("%l."), &v.uint64_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.uint64_[0] == 0xdd);
 			VERIFY_ASSERTCOUNT(1);
 
 			v.Clear();
 			v.uint64_[0] = 0xdd;
-			n = Sscanf(EA_CHAR32("abcd"), EA_CHAR32("%l."), &v.uint64_[0]);
+			n = Sscanf(EASTL_CHAR32("abcd"), EASTL_CHAR32("%l."), &v.uint64_[0]);
 			EATEST_VERIFY(n == 0);
 			EATEST_VERIFY(v.uint64_[0] == 0xdd);
 			VERIFY_ASSERTCOUNT(1);
@@ -2724,11 +2690,11 @@ static int TestScanfExtensions()
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int8_[0] == INT8_MAX) && (v.int8_[1] == INT8_MIN) && (v.uint8_[2] == UINT8_MAX));
 
-			n = Sscanf(EA_CHAR16("127 -128 255"), EA_CHAR16("%I8d %I8i %I8u"), &v.int8_[0], &v.int8_[1], &v.uint8_[2]);
+			n = Sscanf(EASTL_CHAR16("127 -128 255"), EASTL_CHAR16("%I8d %I8i %I8u"), &v.int8_[0], &v.int8_[1], &v.uint8_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int8_[0] == INT8_MAX) && (v.int8_[1] == INT8_MIN) && (v.uint8_[2] == UINT8_MAX));
 
-			n = Sscanf(EA_CHAR32("127 -128 255"), EA_CHAR32("%I8d %I8i %I8u"), &v.int8_[0], &v.int8_[1], &v.uint8_[2]);
+			n = Sscanf(EASTL_CHAR32("127 -128 255"), EASTL_CHAR32("%I8d %I8i %I8u"), &v.int8_[0], &v.int8_[1], &v.uint8_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int8_[0] == INT8_MAX) && (v.int8_[1] == INT8_MIN) && (v.uint8_[2] == UINT8_MAX));
 		}
@@ -2743,7 +2709,7 @@ static int TestScanfExtensions()
 			// the line below fails on iPhone due to an apparent Clang compiler bug.
 			//EATEST_VERIFY((v.int16_[0] == INT16_MAX) && (v.int16_[1] == INT16_MIN) && (v.uint16_[2] == UINT16_MAX));
 
-			n = Sscanf(EA_CHAR16("32767 -32768 65535"), EA_CHAR16("%I16d %I16i %I16u"), &v.int16_[0], &v.int16_[1], &v.uint16_[2]);
+			n = Sscanf(EASTL_CHAR16("32767 -32768 65535"), EASTL_CHAR16("%I16d %I16i %I16u"), &v.int16_[0], &v.int16_[1], &v.uint16_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int16_[0] == INT16_MAX));
 			EATEST_VERIFY((v.int16_[1] == INT16_MIN));
@@ -2752,7 +2718,7 @@ static int TestScanfExtensions()
 			// the line below fails on iPhone due to an apparent Clang compiler bug.
 			//EATEST_VERIFY((v.int16_[0] == INT16_MAX) && (v.int16_[1] == INT16_MIN) && (v.uint16_[2] == UINT16_MAX));
 
-			n = Sscanf(EA_CHAR32("32767 -32768 65535"), EA_CHAR32("%I16d %I16i %I16u"), &v.int16_[0], &v.int16_[1], &v.uint16_[2]);
+			n = Sscanf(EASTL_CHAR32("32767 -32768 65535"), EASTL_CHAR32("%I16d %I16i %I16u"), &v.int16_[0], &v.int16_[1], &v.uint16_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int16_[0] == INT16_MAX));
 			EATEST_VERIFY((v.int16_[1] == INT16_MIN));
@@ -2767,11 +2733,11 @@ static int TestScanfExtensions()
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int32_[0] == INT32_MAX) && (v.int32_[1] == INT32_MIN) && (v.uint32_[2] == UINT32_MAX));
 
-			n = Sscanf(EA_CHAR16("2147483647 -2147483648 4294967295"), EA_CHAR16("%I32d %I32i %I32u"), &v.int32_[0], &v.int32_[1], &v.uint32_[2]);
+			n = Sscanf(EASTL_CHAR16("2147483647 -2147483648 4294967295"), EASTL_CHAR16("%I32d %I32i %I32u"), &v.int32_[0], &v.int32_[1], &v.uint32_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int32_[0] == INT32_MAX) && (v.int32_[1] == INT32_MIN) && (v.uint32_[2] == UINT32_MAX));
 
-			n = Sscanf(EA_CHAR32("2147483647 -2147483648 4294967295"), EA_CHAR32("%I32d %I32i %I32u"), &v.int32_[0], &v.int32_[1], &v.uint32_[2]);
+			n = Sscanf(EASTL_CHAR32("2147483647 -2147483648 4294967295"), EASTL_CHAR32("%I32d %I32i %I32u"), &v.int32_[0], &v.int32_[1], &v.uint32_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int32_[0] == INT32_MAX) && (v.int32_[1] == INT32_MIN) && (v.uint32_[2] == UINT32_MAX));
 		}
@@ -2781,11 +2747,11 @@ static int TestScanfExtensions()
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int64_[0] == INT64_MAX) && (v.int64_[1] == INT64_MIN) && (v.uint64_[2] == UINT64_MAX));
 
-			n = Sscanf(EA_CHAR16("9223372036854775807 -9223372036854775808 18446744073709551615"), EA_CHAR16("%I64d %I64i %I64u"), &v.int64_[0], &v.int64_[1], &v.uint64_[2]);
+			n = Sscanf(EASTL_CHAR16("9223372036854775807 -9223372036854775808 18446744073709551615"), EASTL_CHAR16("%I64d %I64i %I64u"), &v.int64_[0], &v.int64_[1], &v.uint64_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int64_[0] == INT64_MAX) && (v.int64_[1] == INT64_MIN) && (v.uint64_[2] == UINT64_MAX));
 
-			n = Sscanf(EA_CHAR32("9223372036854775807 -9223372036854775808 18446744073709551615"), EA_CHAR32("%I64d %I64i %I64u"), &v.int64_[0], &v.int64_[1], &v.uint64_[2]);
+			n = Sscanf(EASTL_CHAR32("9223372036854775807 -9223372036854775808 18446744073709551615"), EASTL_CHAR32("%I64d %I64i %I64u"), &v.int64_[0], &v.int64_[1], &v.uint64_[2]);
 			EATEST_VERIFY(n == 3);
 			EATEST_VERIFY((v.int64_[0] == INT64_MAX) && (v.int64_[1] == INT64_MIN) && (v.uint64_[2] == UINT64_MAX));
 		}
@@ -2797,7 +2763,7 @@ static int TestScanfExtensions()
 		// int128_t  int128_[4]; // int128_t has constructors and so is not a POD and cannot be part of the Values union.
 		// uint128_t uint128_[4];
 		// 
-		// n = Sscanf(EA_CHAR16("170141183460469231731687303715884105727 -170141183460469231731687303715884105728 340282366920938463463374607431768211455"), EA_CHAR16("%I128d %I128i %I128u"), &int128_[0], &int128_[1], &uint128_[2]);
+		// n = Sscanf(EASTL_CHAR16("170141183460469231731687303715884105727 -170141183460469231731687303715884105728 340282366920938463463374607431768211455"), EASTL_CHAR16("%I128d %I128i %I128u"), &int128_[0], &int128_[1], &uint128_[2]);
 		// EATEST_VERIFY(n == 3);
 		// EATEST_VERIFY((int128_[0]  == int128_t("170141183460469231731687303715884105727")) && 
 		//               (int128_[1]  == int128_t("-170141183460469231731687303715884105728")) && 
@@ -2813,11 +2779,11 @@ static int TestScanfExtensions()
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY((v.uint8_[0] == 0xd7) && (v.uint16_[0] == 0x762B) && (v.uint32_[0] == 0xB6F61C67) && (v.uint64_[0] == UINT64_C(0x74EC1A3F3873E773)));
 
-			n = Sscanf(EA_CHAR16("11010111 111011000101011 10110110111101100001110001100111 111010011101100000110100011111100111000011100111110011101110011"), EA_CHAR16("%I8b %I16b %I32b %I64b"), &v.uint8_[0], &v.uint16_[0], &v.uint32_[0], &v.uint64_[0]);
+			n = Sscanf(EASTL_CHAR16("11010111 111011000101011 10110110111101100001110001100111 111010011101100000110100011111100111000011100111110011101110011"), EASTL_CHAR16("%I8b %I16b %I32b %I64b"), &v.uint8_[0], &v.uint16_[0], &v.uint32_[0], &v.uint64_[0]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY((v.uint8_[0] == 0xd7) && (v.uint16_[0] == 0x762B) && (v.uint32_[0] == 0xB6F61C67) && (v.uint64_[0] == UINT64_C(0x74EC1A3F3873E773)));
 
-			n = Sscanf(EA_CHAR32("11010111 111011000101011 10110110111101100001110001100111 111010011101100000110100011111100111000011100111110011101110011"), EA_CHAR32("%I8b %I16b %I32b %I64b"), &v.uint8_[0], &v.uint16_[0], &v.uint32_[0], &v.uint64_[0]);
+			n = Sscanf(EASTL_CHAR32("11010111 111011000101011 10110110111101100001110001100111 111010011101100000110100011111100111000011100111110011101110011"), EASTL_CHAR32("%I8b %I16b %I32b %I64b"), &v.uint8_[0], &v.uint16_[0], &v.uint32_[0], &v.uint64_[0]);
 			EATEST_VERIFY(n == 4);
 			EATEST_VERIFY((v.uint8_[0] == 0xd7) && (v.uint16_[0] == 0x762B) && (v.uint32_[0] == 0xB6F61C67) && (v.uint64_[0] == UINT64_C(0x74EC1A3F3873E773)));
 		}
@@ -2984,8 +2950,6 @@ static int TestScanfErrors()
 int TestScanf()
 {
 	int nErrorCount = 0;
-
-	EA::UnitTest::Report("TestScanf\n");
 
 	nErrorCount += TestScanfLimits();
 	nErrorCount += TestScanfMisc();

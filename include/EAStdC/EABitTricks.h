@@ -41,7 +41,7 @@
 
 
 #include <EAStdC/internal/Config.h>
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <limits.h>
 
 
@@ -97,7 +97,7 @@ namespace StdC
 			template <> struct is_signed<char>            : public true_type{};
 			template <> struct is_signed<const char>      : public true_type{};
 		#endif
-		#ifndef EA_WCHAR_T_NON_NATIVE // If wchar_t is a native type instead of simply a define to an existing type...
+		#ifndef EASTL_WCHAR_T_NON_NATIVE // If wchar_t is a native type instead of simply a define to an existing type...
 			#if defined(__WCHAR_MAX__) && ((__WCHAR_MAX__ == 2147483647) || (__WCHAR_MAX__ == 32767)) // GCC defines __WCHAR_MAX__ for most platforms.
 				template <> struct is_signed<wchar_t>         : public true_type{};
 				template <> struct is_signed<const wchar_t>   : public true_type{};
@@ -141,7 +141,7 @@ namespace StdC
 		struct add_signed<unsigned long long>
 		{ typedef long long type; };
 
-		#ifndef EA_WCHAR_T_NON_NATIVE // If wchar_t is a native type instead of simply a define to an existing type...
+		#ifndef EASTL_WCHAR_T_NON_NATIVE // If wchar_t is a native type instead of simply a define to an existing type...
 			#if (defined(__WCHAR_MAX__) && (__WCHAR_MAX__ == 4294967295U)) // If wchar_t is a 32 bit unsigned value...
 				template<>
 				struct add_signed<wchar_t>
@@ -444,26 +444,23 @@ namespace StdC
 	/// This implementation is taken from the AMD x86 optimization guide.
 	/// Example:
 	///     11001010 -> 4
-	inline int CountBits(uint32_t x){ // Branchless version
-#if defined(EASTDC_SSE_POPCNT)
-
-			return _mm_popcnt_u32(x);
-#else
-
+	inline int CountBits(uint32_t x) // Branchless version
+	{ 
+	#if defined(EASTDC_SSE_POPCNT)
+		return _mm_popcnt_u32(x);
+	#else
 		x = x - ((x >> 1) & 0x55555555);
 		x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
 		x = (x + (x >> 4)) & 0x0F0F0F0F;
 		return (int)((x * 0x01010101) >> 24);
-
-#endif
+	#endif
 	}
 
-	inline int CountBits64(uint64_t x){ // Branchless version
-#if defined(EASTDC_SSE_POPCNT) && defined(EA_PROCESSOR_X86_64)
-
+	inline int CountBits64(uint64_t x) // Branchless version
+	{ 
+	#if defined(EASTDC_SSE_POPCNT) && defined(EA_PROCESSOR_X86_64)
 		return (int)_mm_popcnt_u64(x);
-#else
-
+	#else
 		#if (EA_PLATFORM_WORD_SIZE < 8)
 			return CountBits((uint32_t)(x >> 32)) + CountBits((uint32_t)x);
 		#else
@@ -472,8 +469,7 @@ namespace StdC
 			x = (x + (x >> 4)) & UINT64_C(0x0F0F0F0F0F0F0F0F);
 			return (int)((x * UINT64_C(0x0101010101010101)) >> 56);
 		#endif
-
-#endif
+	#endif
 	}
 
 	/// RotateLeft

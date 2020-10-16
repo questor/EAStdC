@@ -6,7 +6,7 @@
 #define EASTDC_INTERNAL_CONFIG_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <stddef.h>
 
 
@@ -32,8 +32,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef EASTDC_VERSION
-	#define EASTDC_VERSION   "1.26.03"
-	#define EASTDC_VERSION_N  12603
+	#define EASTDC_VERSION   "1.26.07"
+	#define EASTDC_VERSION_N  12607
 #endif
 
 
@@ -345,7 +345,7 @@ void  operator delete[](void* p, size_t alignment, size_t alignmentOffset, const
 //     void* p = pCoreAllocator->Alloc(37, EASTDC_ALLOC_PREFIX, 0);
 //
 // Example usage:
-//     gMessageServer.GetMessageQueue().get_allocator().set_name(EASTDC_ALLOC_PREFIX "MessageSystem/Queue");
+//     gMessageServer.GetMessageQueue().getAllocator().setName(EASTDC_ALLOC_PREFIX "MessageSystem/Queue");
 //
 #ifndef EASTDC_ALLOC_PREFIX
 	#define EASTDC_ALLOC_PREFIX "EAStdC/"
@@ -560,7 +560,7 @@ void  operator delete[](void* p, size_t alignment, size_t alignmentOffset, const
 // x86 Android and OSX require popcnt target feature enabled on clang inorder to compile
 // which is why they are excluded for now
 #ifndef EASTDC_SSE_POPCNT
-	#if ((defined(EA_SSE4_2) && EA_SSE4_2) || (defined(EA_SSE4A) && EA_SSE4A)) && \
+	#if ((defined(EASTL_SSE4_2) && EASTL_SSE4_2) || (defined(EASTL_SSE4A) && EASTL_SSE4A)) && \
 		(!defined(EA_PLATFORM_OSX) && !defined(EA_PLATFORM_ANDROID))
 		#define EASTDC_SSE_POPCNT 1
 	#endif
@@ -574,27 +574,27 @@ void  operator delete[](void* p, size_t alignment, size_t alignmentOffset, const
 /////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// EA_CHAR16
+// EASTL_CHAR16
 // Present in recent versions of EABase.
 //
-// EA_CHAR16 is defined in EABase 2.0.20 and later. If we are using an earlier
+// EASTL_CHAR16 is defined in EABase 2.0.20 and later. If we are using an earlier
 // version of EABase then we replicate what EABase 2.0.20 does.
 //
-#ifndef EA_CHAR16
-	#if !defined(EA_CHAR16_NATIVE)
+#ifndef EASTL_CHAR16
+	#if !defined(EASTL_CHAR16_NATIVE)
 		#if defined(_MSC_VER) && (_MSC_VER >= 1600) && defined(_HAS_CHAR16_T_LANGUAGE_SUPPORT) && _HAS_CHAR16_T_LANGUAGE_SUPPORT // VS2010+
-			#define EA_CHAR16_NATIVE 1
+			#define EASTL_CHAR16_NATIVE 1
 		#elif defined(__GNUC__) && ((__GNUC__ * 100 + __GNUC_MINOR__) >= 404) && (defined(__GXX_EXPERIMENTAL_CXX0X__) || defined(__STDC_VERSION__)) // g++ (C++ compiler) 4.4+ with -std=c++0x or gcc (C compiler) 4.4+ with -std=gnu99
-			#define EA_CHAR16_NATIVE 1
+			#define EASTL_CHAR16_NATIVE 1
 		#else
-			#define EA_CHAR16_NATIVE 0
+			#define EASTL_CHAR16_NATIVE 0
 		#endif
 	#endif
 
-	#if EA_CHAR16_NATIVE && !defined(_MSC_VER) // Microsoft doesn't support char16_t string literals.
-		#define EA_CHAR16(s) u ## s
-	#elif (EA_WCHAR_SIZE == 2)
-		#define EA_CHAR16(s) L ## s
+	#if EASTL_CHAR16_NATIVE && !defined(_MSC_VER) // Microsoft doesn't support char16_t string literals.
+		#define EASTL_CHAR16(s) u ## s
+	#elif (EASTL_WCHAR_SIZE == 2)
+		#define EASTL_CHAR16(s) L ## s
 	#endif
 #endif
 

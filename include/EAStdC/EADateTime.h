@@ -470,6 +470,12 @@ namespace StdC
 	/// GetTime values to seconds/nanoseconds used by the DateTime class.
 	EASTDC_API uint64_t GetTime();
 
+	/// GetTimeMilliseconds
+	/// Returns the number of milliseconds elapsed since January 1, 1970 UTC.
+	/// This is simply a convenient wrapper for GetTime() / 1000000 (ie.
+	/// converting the nanosecond resolution of GetTime() to milliseconds).
+	EASTDC_API uint64_t GetTimeMilliseconds();
+
 	/// GetTimePrecision
 	/// Returns the precision, in nanoseconds, of GetTime().
 	/// A return value of 1 means GetTime indeed returns nanosecond values with nanosecond precision.
@@ -655,8 +661,8 @@ namespace StdC
 	/// See http://www.opengroup.org/onlinepubs/009695399/functions/strftime.html
 	/// This function doesn't guarantee locale-correctness. For localized time and date 
 	/// formatting, consider the EALocale package or Localizer package.11
-	EASTDC_API size_t Strftime(char* EA_RESTRICT pTimeString, size_t timeStringCapacity, const char* EA_RESTRICT pFormat, 
-								const tm* EA_RESTRICT pTime, const TimeLocale* EA_RESTRICT pTimeLocale = NULL);
+	EASTDC_API size_t Strftime(char* EASTL_RESTRICT pTimeString, size_t timeStringCapacity, const char* EASTL_RESTRICT pFormat, 
+								const tm* EASTL_RESTRICT pTime, const TimeLocale* EASTL_RESTRICT pTimeLocale = NULL);
 
 	/// Strptime
 	/// Converts time string to tm struct.
@@ -665,8 +671,8 @@ namespace StdC
 	/// See http://www.opengroup.org/onlinepubs/009695399/functions/strptime.html
 	/// This function doesn't guarantee locale-correctness. For localized time and date 
 	/// formatting, consider the EALocale package or Localizer package.
-	EASTDC_API char* Strptime(const char* EA_RESTRICT pTimeString, const char* EA_RESTRICT pFormat, 
-								tm* EA_RESTRICT pTime, const TimeLocale* EA_RESTRICT pTimeLocale = NULL);
+	EASTDC_API char* Strptime(const char* EASTL_RESTRICT pTimeString, const char* EASTL_RESTRICT pFormat, 
+								tm* EASTL_RESTRICT pTime, const TimeLocale* EASTL_RESTRICT pTimeLocale = NULL);
 
 
 } // namespace StdC

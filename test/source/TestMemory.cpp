@@ -14,7 +14,7 @@
 #include <EATest/EATest.h>
 #include <string.h>
 #include <EAStdC/EAAlignment.h>
-#include <EASTL/vector.h>
+#include <eastl/vector.h>
 
 #if defined(_MSC_VER)
 	#pragma warning(push)
@@ -129,7 +129,7 @@ static int TestMemset()
 		for(size_t i = 0; i < 16; ++i)
 		{
 			// Randomly choose a copy size, but make sure the predifined ones are always tested.
-			const size_t copyCount = (i < EAArrayCount(kPredefinedMemSizes) && (kPredefinedMemSizes[i] < 4096)) ? kPredefinedMemSizes[i] : r.RandomUint32Uniform(4096);
+			const size_t copyCount = (i < EASTLArrayCount(kPredefinedMemSizes) && (kPredefinedMemSizes[i] < 4096)) ? kPredefinedMemSizes[i] : r.RandomUint32Uniform(4096);
 			const size_t copySize  = copyCount * sizeof(uint8_t);
 
 			for(size_t j = 0; j < 7; ++j)
@@ -198,7 +198,7 @@ static int TestMemset()
 		for(size_t i = 0; i < 16; ++i)
 		{
 			// Randomly choose a copy count, but make sure the predifined ones are always tested.
-			const size_t copyCount = (i < EAArrayCount(kPredefinedMemSizes) && (kPredefinedMemSizes[i] < 2048)) ? kPredefinedMemSizes[i] : r.RandomUint32Uniform(2048);
+			const size_t copyCount = (i < EASTLArrayCount(kPredefinedMemSizes) && (kPredefinedMemSizes[i] < 2048)) ? kPredefinedMemSizes[i] : r.RandomUint32Uniform(2048);
 			const size_t copySize  = copyCount * sizeof(uint16_t);
 
 			for(size_t j = 0; j < 7; ++j)
@@ -237,7 +237,7 @@ static int TestMemset()
 		for(size_t i = 0; i < 16; ++i)
 		{
 			// Randomly choose a copy count, but make sure the predifined ones are always tested.
-			const size_t copyCount = (i < EAArrayCount(kPredefinedMemSizes) && (kPredefinedMemSizes[i] < 1024)) ? kPredefinedMemSizes[i] : r.RandomUint32Uniform(1024);
+			const size_t copyCount = (i < EASTLArrayCount(kPredefinedMemSizes) && (kPredefinedMemSizes[i] < 1024)) ? kPredefinedMemSizes[i] : r.RandomUint32Uniform(1024);
 			const size_t copySize  = copyCount * sizeof(uint32_t);
 
 			for(size_t j = 0; j < 7; ++j)
@@ -276,7 +276,7 @@ static int TestMemset()
 		for(size_t i = 0; i < 16; ++i)
 		{
 			// Randomly choose a copy count, but make sure the predifined ones are always tested.
-			const size_t copyCount = (i < EAArrayCount(kPredefinedMemSizes) && (kPredefinedMemSizes[i] < 512)) ? kPredefinedMemSizes[i] : r.RandomUint32Uniform(512);
+			const size_t copyCount = (i < EASTLArrayCount(kPredefinedMemSizes) && (kPredefinedMemSizes[i] < 512)) ? kPredefinedMemSizes[i] : r.RandomUint32Uniform(512);
 			const size_t copySize  = copyCount * sizeof(uint64_t);
 
 			for(size_t j = 0; j < 7; ++j)
@@ -455,7 +455,7 @@ static int TestMemclear()
 		for(size_t i = 0; i < 16; ++i)
 		{
 			// Randomly choose a copy size, but make sure the predefined ones are always tested.
-			const size_t copyCount = (i < EAArrayCount(kPredefinedMemSizes) && (kPredefinedMemSizes[i] < 4096)) ? kPredefinedMemSizes[i] : r.RandomUint32Uniform(4096);
+			const size_t copyCount = (i < EASTLArrayCount(kPredefinedMemSizes) && (kPredefinedMemSizes[i] < 4096)) ? kPredefinedMemSizes[i] : r.RandomUint32Uniform(4096);
 			const size_t copySize  = copyCount * sizeof(uint8_t);
 
 			for(size_t j = 0; j < 7; ++j)
@@ -577,7 +577,7 @@ static int TestMemcheck()
 
 		// Some platforms' (e.g. x86) compilers don't align 64 bit values on 64 bit boundaries. So we guarantee it here, as Memcheck64 expects it.
 		// Additionally, some of the platforms we test for require 16 bit alignment of types, so we use that instead of 8.
-		static EA_ALIGNED(const U64, bytes[5], 16) = { { UINT64_C(0x0001020304050607) }, { UINT64_C(0x0001020304050607) }, { UINT64_C(0x0001020304050607) }, { UINT64_C(0x0001020304050607) }, { UINT64_C(0x0001020304050607) } };
+		static EASTL_ALIGNED(const U64, bytes[5], 16) = { { UINT64_C(0x0001020304050607) }, { UINT64_C(0x0001020304050607) }, { UINT64_C(0x0001020304050607) }, { UINT64_C(0x0001020304050607) }, { UINT64_C(0x0001020304050607) } };
 
 		for(int i = 0; i <= 8; ++i)
 		{
@@ -635,9 +635,9 @@ static int TestMemcmp()
 
 	#if EASTDC_MEMCPY16_ENABLED
 		{   // Memcmp16
-			char16_t buffer1[] = EA_CHAR16("01234567a");
-			char16_t buffer2[] = EA_CHAR16("01234567b");
-			char16_t buffer3[] = EA_CHAR16("01234567c");
+			char16_t buffer1[] = EASTL_CHAR16("01234567a");
+			char16_t buffer2[] = EASTL_CHAR16("01234567b");
+			char16_t buffer3[] = EASTL_CHAR16("01234567c");
 
 			EATEST_VERIFY(Memcmp(buffer1, buffer1, 9) == 0);
 			EATEST_VERIFY(Memcmp(buffer2, buffer1, 9) >  0);
@@ -696,8 +696,8 @@ static int TestMemcpy()
 
 	#if EASTDC_MEMCPY16_ENABLED
 		{   // Memcpy16
-			char16_t buffer1[] = EA_CHAR16("         ");
-			char16_t buffer2[] = EA_CHAR16("01234567b");
+			char16_t buffer1[] = EASTL_CHAR16("         ");
+			char16_t buffer2[] = EASTL_CHAR16("01234567b");
 
 			EATEST_VERIFY(buffer1 == (char16_t*)Memcpy((void*)buffer1, (void*)buffer2, 9 * sizeof(char16_t)));
 			EATEST_VERIFY(memcmp(buffer2, buffer1, 9 * sizeof(char16_t)) ==  0);
@@ -710,7 +710,7 @@ static int TestMemcpy()
 		EA::StdC::Random r;
 		const void* pCheck;
 
-		for(size_t i = 0; i < EAArrayCount(kPredefinedMemSizes); ++i)
+		for(size_t i = 0; i < EASTLArrayCount(kPredefinedMemSizes); ++i)
 		{
 			const size_t copySize = kPredefinedMemSizes[i];
 
@@ -867,9 +867,9 @@ static int TestMemmove()
 
 	#if EASTDC_MEMCPY16_ENABLED
 		{   // Memmove16
-			char16_t buffer1[] = EA_CHAR16("..........."); 
-			char16_t buffer2[] = EA_CHAR16(".......0123"); 
-			char16_t buffer3[] = EA_CHAR16("0123......."); 
+			char16_t buffer1[] = EASTL_CHAR16("..........."); 
+			char16_t buffer2[] = EASTL_CHAR16(".......0123"); 
+			char16_t buffer3[] = EASTL_CHAR16("0123......."); 
 
 			EATEST_VERIFY(buffer1 == (char16_t*)Memmove((void*)buffer1, (void*)buffer2, Strlen(buffer2) * sizeof(char16_t)));
 			EATEST_VERIFY(memcmp(buffer1, buffer2, Strlen(buffer2) * sizeof(char16_t)) ==  0);
@@ -1233,8 +1233,6 @@ static void TestMemclearSpeed()
 
 int TestMemory()
 {
-	EA::UnitTest::Report("TestMemory\n");
-
 	int nErrorCount = 0;
 
 	// Set up large aligned memory blocks for memory tests.

@@ -89,7 +89,7 @@
 #define EASTDC_EASTRING_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/internal/Config.h>
 EA_DISABLE_ALL_VC_WARNINGS()
 #include <stddef.h>
@@ -269,14 +269,14 @@ EASTDC_API char32_t* StringnCopy(char32_t* pDestination, const char32_t* pSource
 /// Example usage:
 ///  The following code fragment illustrates the simple case:
 ///      char *s, *p, buffer[BUFFERSIZE];
-///      Strlcpy(buffer, s, EAArrayCount(buffer));
-///      Strlcat(buffer, p, EAArrayCount(buffer));
+///      Strlcpy(buffer, s, EASTLArrayCount(buffer));
+///      Strlcat(buffer, p, EASTLArrayCount(buffer));
 ///      
 ///  To detect truncation, perhaps while building a path, the following might be used:
 ///      char *dir, *file, path[_MAX_PATH];
-///      if(Strlcpy(path, dir, EAArrayCount(path)) >= EAArrayCount(path))
+///      if(Strlcpy(path, dir, EASTLArrayCount(path)) >= EASTLArrayCount(path))
 ///          goto toolong;
-///      if(Strlcat(path, file, EAArrayCount(path)) >= EAArrayCount(path))
+///      if(Strlcat(path, file, EASTLArrayCount(path)) >= EASTLArrayCount(path))
 ///          goto toolong;
 /// 
 EASTDC_API size_t Strlcpy(char*     pDestination, const char*     pSource, size_t nDestCapacity);
@@ -309,10 +309,12 @@ EASTDC_API int Strlcpy(char16_t* pDest, const char32_t* pSource, size_t nDestCap
 #if EA_CHAR8_UNIQUE
 	inline int Strlcpy(char8_t* pDestination, const char* pSource, size_t nDestCapacity, size_t nSourceLength = kSizeTypeUnset)
 	{
+		EA_UNUSED(nSourceLength);
 		return (int)Strlcpy((char*)pDestination, pSource, nDestCapacity);
 	}
 	inline int Strlcpy(char* pDestination, const char8_t* pSource, size_t nDestCapacity, size_t nSourceLength = kSizeTypeUnset)
 	{
+		EA_UNUSED(nSourceLength);
 		return (int)Strlcpy(pDestination, (const char*)pSource, nDestCapacity);
 	}
 
@@ -703,14 +705,14 @@ EASTDC_API char32_t* StringnCat(char32_t* pDestination, const char32_t* pSource,
 /// Example usage:
 ///  The following code fragment illustrates the simple case:
 ///      char *s, *p, buffer[BUFFERSIZE];
-///      Strlcpy(buffer, s, EAArrayCount(buffer));
-///      Strlcat(buffer, p, EAArrayCount(buffer));
+///      Strlcpy(buffer, s, EASTLArrayCount(buffer));
+///      Strlcat(buffer, p, EASTLArrayCount(buffer));
 ///      
 ///  To detect truncation, perhaps while building a path, the following might be used:
 ///      char *dir, *file, path[_MAX_PATH];
-///      if(Strlcpy(path, dir, EAArrayCount(path)) >= EAArrayCount(path))
+///      if(Strlcpy(path, dir, EASTLArrayCount(path)) >= EASTLArrayCount(path))
 ///          goto toolong;
-///      if(Strlcat(path, file, EAArrayCount(path)) >= EAArrayCount(path))
+///      if(Strlcat(path, file, EASTLArrayCount(path)) >= EASTLArrayCount(path))
 ///          goto toolong;
 ///
 EASTDC_API size_t Strlcat(char*     pDestination, const char*     pSource, size_t nDestCapacity);
@@ -2093,7 +2095,7 @@ namespace StdC
 
 	inline EASTDC_API double Strtod(const char16_t* pString, char16_t** ppStringEnd)
 	{
-		#if (EA_WCHAR_SIZE == 2) && defined(EA_HAVE_WCHAR_IMPL)
+		#if (EASTL_WCHAR_SIZE == 2) && defined(EA_HAVE_WCHAR_IMPL)
 			return wcstod(reinterpret_cast<const wchar_t*>(pString), reinterpret_cast<wchar_t**>(reinterpret_cast<void*>(ppStringEnd)));
 		#else
 			// EA_PLATFORM_PLAYSTATION2, __CYGWIN__
@@ -2126,7 +2128,7 @@ namespace StdC
 
 	inline EASTDC_API double Strtod(const char32_t* pString, char32_t** ppStringEnd)
 	{
-		#if (EA_WCHAR_SIZE == 4) && defined(EA_HAVE_WCHAR_IMPL)
+		#if (EASTL_WCHAR_SIZE == 4) && defined(EA_HAVE_WCHAR_IMPL)
 			return wcstod(reinterpret_cast<const wchar_t*>(pString), reinterpret_cast<wchar_t**>(ppStringEnd));
 		#else
 			// We convert from char32_t to char and convert that.
@@ -2301,7 +2303,7 @@ namespace StdC
 	#undef EASTDC_UNICODE_CHAR_CAST
 	#endif
 
-	#if (EA_WCHAR_SIZE == 2)
+	#if (EASTL_WCHAR_SIZE == 2)
 		#define EASTDC_UNICODE_CHAR_PTR_PTR_CAST(x)       reinterpret_cast<char16_t **>(reinterpret_cast<void*>(x))
 		#define EASTDC_UNICODE_CONST_CHAR_PTR_CAST(x)     reinterpret_cast<const char16_t *>(x)
 		#define EASTDC_UNICODE_CONST_CHAR_PTR_PTR_CAST(x) reinterpret_cast<const char16_t **>(x)
@@ -2356,7 +2358,7 @@ namespace StdC
 
 	inline int Strlcpy(wchar_t* pDestination, const char16_t* pSource, size_t nDestCapacity, size_t nSourceLength)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			EA_UNUSED(nSourceLength); // To do: This pathway is broken in that this version of Strlcpy allows a source length to be specified, whereas this pathway doesn't use it.
 			return static_cast<int>(Strlcpy(EASTDC_UNICODE_CHAR_PTR_CAST(pDestination), pSource, nDestCapacity));
 		#else
@@ -2366,7 +2368,7 @@ namespace StdC
 
 	inline int Strlcpy(wchar_t* pDestination, const char32_t* pSource, size_t nDestCapacity, size_t nSourceLength)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			return static_cast<int>(Strlcpy(EASTDC_UNICODE_CHAR_PTR_CAST(pDestination), pSource, nDestCapacity, nSourceLength));
 		#else
 			EA_UNUSED(nSourceLength);
@@ -2381,7 +2383,7 @@ namespace StdC
 
 	inline int Strlcpy(char16_t* pDestination, const wchar_t* pSource, size_t nDestCapacity, size_t nSourceLength)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			EA_UNUSED(nSourceLength); // To do: This pathway is broken in that this version of Strlcpy allows a source length to be specified, whereas this pathway doesn't use it.
 			return static_cast<int>(Strlcpy(pDestination, EASTDC_UNICODE_CONST_CHAR_PTR_CAST(pSource), nDestCapacity));
 		#else
@@ -2391,7 +2393,7 @@ namespace StdC
 
 	inline int Strlcpy(char32_t* pDestination, const wchar_t* pSource, size_t nDestCapacity, size_t nSourceLength)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			return static_cast<int>(Strlcpy(pDestination, EASTDC_UNICODE_CONST_CHAR_PTR_CAST(pSource), nDestCapacity, nSourceLength));
 		#else
 			EA_UNUSED(nSourceLength);
@@ -2406,7 +2408,7 @@ namespace StdC
 
 	inline bool Strlcpy(char16_t* pDestination, const wchar_t* pSource, size_t nDestCapacity, size_t nSourceLength, size_t& nDestUsed, size_t& nSourceUsed)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			EA_UNUSED(nSourceLength); // To do: This pathway is broken in that this version of Strlcpy allows a source length to be specified, whereas this pathway doesn't use it.
 			nDestUsed = nSourceUsed = static_cast<size_t>(Strlcpy(pDestination, EASTDC_UNICODE_CONST_CHAR_PTR_CAST(pSource), nDestCapacity));
 			return true;
@@ -2417,7 +2419,7 @@ namespace StdC
 
 	inline bool Strlcpy(char32_t* pDestination, const wchar_t* pSource, size_t nDestCapacity, size_t nSourceLength, size_t& nDestUsed, size_t& nSourceUsed)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			return Strlcpy(pDestination, EASTDC_UNICODE_CONST_CHAR_PTR_CAST(pSource), nDestCapacity, nSourceLength, nDestUsed, nSourceUsed);
 		#else
 			EA_UNUSED(nSourceLength); // To do: This pathway is broken in that this version of Strlcpy allows a source length to be specified, whereas this pathway doesn't use it.
@@ -2433,7 +2435,7 @@ namespace StdC
 
 	inline bool Strlcpy(wchar_t* pDestination, const char16_t* pSource, size_t nDestCapacity, size_t nSourceLength, size_t& nDestUsed, size_t& nSourceUsed)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			EA_UNUSED(nSourceLength); // To do: This pathway is broken in that this version of Strlcpy allows a source length to be specified, whereas this pathway doesn't use it.
 			nDestUsed = nSourceUsed = static_cast<size_t>(Strlcpy(EASTDC_UNICODE_CHAR_PTR_CAST(pDestination), pSource, nDestCapacity));
 			return true;
@@ -2444,7 +2446,7 @@ namespace StdC
 
 	inline bool Strlcpy(wchar_t* pDestination, const char32_t* pSource, size_t nDestCapacity, size_t nSourceLength, size_t& nDestUsed, size_t& nSourceUsed)
 	{
-		#if (EA_WCHAR_SIZE == 2)
+		#if (EASTL_WCHAR_SIZE == 2)
 			return Strlcpy(EASTDC_UNICODE_CHAR_PTR_CAST(pDestination), pSource, nDestCapacity, nSourceLength, nDestUsed, nSourceUsed);
 		#else
 			EA_UNUSED(nSourceLength); // To do: This pathway is broken in that this version of Strlcpy allows a source length to be specified, whereas this pathway doesn't use it.

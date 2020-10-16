@@ -16,7 +16,7 @@
 
 
 #include <EAStdC/internal/Config.h>
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 
 
 ///////////////////////////////////////////////////////////////////////////////

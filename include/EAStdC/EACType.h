@@ -34,7 +34,7 @@
 #define EASTDC_EACTYPE_H
 
 
-#include <EABase/eabase.h>
+#include <eastl/EABase/eabase.h>
 #include <EAStdC/internal/Config.h>
 
 

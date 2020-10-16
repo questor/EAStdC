@@ -57,23 +57,23 @@ namespace StdC
 	/// See EASprintf.h for documentation on the Printf family.
 	/// See also http://www.cplusplus.com/reference/clibrary/cstdio/printf.html
 	///
-	EASTDC_API int OCprintf(WriteFunction8 pWriteFunction, void* EA_RESTRICT pContext, const char* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OFprintf(FILE* EA_RESTRICT pFile, const char* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OPrintf(const char* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OSprintf(char* EA_RESTRICT pDestination, const char* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OSnprintf(char* EA_RESTRICT pDestination, size_t n, const char* EA_RESTRICT pFormat, ...);
+	EASTDC_API int OCprintf(WriteFunction8 pWriteFunction, void* EASTL_RESTRICT pContext, const char* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OFprintf(FILE* EASTL_RESTRICT pFile, const char* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OPrintf(const char* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OSprintf(char* EASTL_RESTRICT pDestination, const char* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OSnprintf(char* EASTL_RESTRICT pDestination, size_t n, const char* EASTL_RESTRICT pFormat, ...);
 
-	EASTDC_API int OCprintf(WriteFunction16 pWriteFunction, void* EA_RESTRICT pContext, const char16_t* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OFprintf(FILE* EA_RESTRICT pFile, const char16_t* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OPrintf(const char16_t* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OSprintf(char16_t* EA_RESTRICT pDestination, const char16_t* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OSnprintf(char16_t* EA_RESTRICT pDestination, size_t n, const char16_t* EA_RESTRICT pFormat, ...);
+	EASTDC_API int OCprintf(WriteFunction16 pWriteFunction, void* EASTL_RESTRICT pContext, const char16_t* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OFprintf(FILE* EASTL_RESTRICT pFile, const char16_t* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OPrintf(const char16_t* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OSprintf(char16_t* EASTL_RESTRICT pDestination, const char16_t* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OSnprintf(char16_t* EASTL_RESTRICT pDestination, size_t n, const char16_t* EASTL_RESTRICT pFormat, ...);
 
-	EASTDC_API int OCprintf(WriteFunction32 pWriteFunction, void* EA_RESTRICT pContext, const char32_t* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OFprintf(FILE* EA_RESTRICT pFile, const char32_t* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OPrintf(const char32_t* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OSprintf(char32_t* EA_RESTRICT pDestination, const char32_t* EA_RESTRICT pFormat, ...);
-	EASTDC_API int OSnprintf(char32_t* EA_RESTRICT pDestination, size_t n, const char32_t* EA_RESTRICT pFormat, ...);
+	EASTDC_API int OCprintf(WriteFunction32 pWriteFunction, void* EASTL_RESTRICT pContext, const char32_t* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OFprintf(FILE* EASTL_RESTRICT pFile, const char32_t* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OPrintf(const char32_t* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OSprintf(char32_t* EASTL_RESTRICT pDestination, const char32_t* EASTL_RESTRICT pFormat, ...);
+	EASTDC_API int OSnprintf(char32_t* EASTL_RESTRICT pDestination, size_t n, const char32_t* EASTL_RESTRICT pFormat, ...);
 
 
 
@@ -83,26 +83,26 @@ namespace StdC
 	/// See EASprintf.h for documentation on the Vprintf family.
 	/// See also http://www.cplusplus.com/reference/clibrary/cstdio/printf.html
 	///
-	EASTDC_API int OVcprintf(WriteFunction8 pWriteFunction8, void* EA_RESTRICT pContext, const char* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVfprintf(FILE* EA_RESTRICT pFile, const char* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVprintf(const char* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVsprintf(char* EA_RESTRICT pDestination, const char* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVsnprintf(char* EA_RESTRICT pDestination, size_t n, const char* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVscprintf(const char* EA_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVcprintf(WriteFunction8 pWriteFunction8, void* EASTL_RESTRICT pContext, const char* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVfprintf(FILE* EASTL_RESTRICT pFile, const char* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVprintf(const char* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVsprintf(char* EASTL_RESTRICT pDestination, const char* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVsnprintf(char* EASTL_RESTRICT pDestination, size_t n, const char* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVscprintf(const char* EASTL_RESTRICT pFormat, va_list arguments);
 
-	EASTDC_API int OVcprintf(WriteFunction16 pWriteFunction16, void* EA_RESTRICT pContext, const char16_t* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVfprintf(FILE* EA_RESTRICT pFile, const char16_t* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVprintf(const char16_t* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVsprintf(char16_t* EA_RESTRICT pDestination, const char16_t* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVsnprintf(char16_t* EA_RESTRICT pDestination, size_t n, const char16_t* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVscprintf(const char16_t* EA_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVcprintf(WriteFunction16 pWriteFunction16, void* EASTL_RESTRICT pContext, const char16_t* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVfprintf(FILE* EASTL_RESTRICT pFile, const char16_t* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVprintf(const char16_t* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVsprintf(char16_t* EASTL_RESTRICT pDestination, const char16_t* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVsnprintf(char16_t* EASTL_RESTRICT pDestination, size_t n, const char16_t* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVscprintf(const char16_t* EASTL_RESTRICT pFormat, va_list arguments);
 
-	EASTDC_API int OVcprintf(WriteFunction32 pWriteFunction32, void* EA_RESTRICT pContext, const char32_t* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVfprintf(FILE* EA_RESTRICT pFile, const char32_t* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVprintf(const char32_t* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVsprintf(char32_t* EA_RESTRICT pDestination, const char32_t* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVsnprintf(char32_t* EA_RESTRICT pDestination, size_t n, const char32_t* EA_RESTRICT pFormat, va_list arguments);
-	EASTDC_API int OVscprintf(const char32_t* EA_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVcprintf(WriteFunction32 pWriteFunction32, void* EASTL_RESTRICT pContext, const char32_t* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVfprintf(FILE* EASTL_RESTRICT pFile, const char32_t* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVprintf(const char32_t* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVsprintf(char32_t* EASTL_RESTRICT pDestination, const char32_t* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVsnprintf(char32_t* EASTL_RESTRICT pDestination, size_t n, const char32_t* EASTL_RESTRICT pFormat, va_list arguments);
+	EASTDC_API int OVscprintf(const char32_t* EASTL_RESTRICT pFormat, va_list arguments);
 
 
 } // namespace StdC
