@@ -1,3 +1,6 @@
+
+# PLEASE NOTE: THIS IS A HEAVILY MODIFIED VERSION BASE ON THE ORIGINAL ONE! 
+
 # EAStdC
 
 [![Build Status](https://travis-ci.org/electronicarts/EAStdC.svg?branch=master)](https://travis-ci.org/electronicarts/EAStdC)
