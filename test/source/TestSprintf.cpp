@@ -3,11 +3,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EASprintf.h>
-#include <EAStdC/EASprintfOrdered.h>
-#include <EAStdC/EAString.h>
-#include <EAStdC/EADateTime.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <sprintf.h>
+#include <sprintf.rdered.h>
+#include <string.h>
+#include <datetime.h>
+#include <stdc.est/stdc.est.h>
 #include <eastl/string.h>
 #include <eastl/unique_ptr.h>
 #include <EATest/EATest.h>

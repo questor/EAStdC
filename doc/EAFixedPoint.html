@@ -1,13 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
-<title>EAFixedPoint</title>
+<title>fixedpoint./title>
 <meta name="author" content="Paul Pedriana">
 <link type="text/css" rel="stylesheet" href="UTFDoc.css">
 </head>
 <body bgcolor="#FFFFFF">
-<h1>EAFixedPoint</h1>
+<h1>fixedpoint./h1>
 <h2> <span style="font-weight: bold;">Introduction</span> </h2>
-<p>The EAFixedPoint module implements fixed point math via classic C macros and 
+<p>The fixedpoint.module implements fixed point math via classic C macros and 
   functions and via a more advanced implementation using C++ classes. The C++ 
   classes constitute a fairly complete implementation of a fixed point C++ numerical 
   data type that acts much like the built-in float and double data types. </p>
@@ -47,7 +47,7 @@
 </blockquote>
 <h2>Fixed point precision </h2>
 <p>The C++ fixed point classes provide varying precision via the use of template 
-  parameter constants. EAFixedPoint provides the following predefined C++ fixed 
+  parameter constants. fixedpoint.provides the following predefined C++ fixed 
   point types</p>
 <table width="100%" border="1">
   <tr> 
@@ -298,7 +298,7 @@ if((a &lt; b) || (b &gt;= c) || (a &lt; 23.5))
 <p>The primary differences between our fixed point type and a hypothetical built-in 
   version are:</p>
 <ul>
-  <li>EAFixedPoint doesn't implement cast operators. Instead, provides explicit 
+  <li>fixedpoint.doesn't implement cast operators. Instead, provides explicit 
     converters such as AsInt, AsFloat, etc. This is by design, as such casting 
     operators result in ambiguous conversions and would need built-in compiler 
     knowledge to resolve the situation.</li>

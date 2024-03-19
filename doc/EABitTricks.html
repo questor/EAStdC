@@ -1,15 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
     
-<title>EABitTricks</title>
+<title>bittricks./title>
     <link type="text/css" rel="stylesheet" href="UTFDoc.css">
     <meta name="author" content="Paul Pedriana">
 </head>
 <body bgcolor="#FFFFFF">
-<h1>EABitTricks</h1>
+<h1>bittricks./h1>
 
 <h2>Introduction</h2>
-<p>EABitTricks provides a number of integer bit-manipulation utilities that are 
+<p>bittricks.provides a number of integer bit-manipulation utilities that are 
   very fast and simple. For example, it is well-known that (x * 2) can be also 
   accomplished with (x << 1). And while this example may not be useful in practice, 
   there are many more such tricks which have real use, particularly for speeding 
@@ -35,7 +35,7 @@
   <li>Implementations here are written as standalone functions for readability. 
     However, the user may find that it's better in some cases to copy the implementation 
     to a macro or to simply copy the implementation directly inline into source 
-    code. EABitTricks is meant to be a reference for copy and paste as much as 
+    code. bittricks.is meant to be a reference for copy and paste as much as 
     it is meant to be used as-is.</li>
   <li>Many of these functions are templated instead of taking a given integer 
     type such as uint32_t. The reason for this is that we want 64 bit support 
@@ -45,7 +45,7 @@
 </ul>
 <h2>Example usage </h2>
 <p>All examples presume a <font face="Courier New, Courier, mono" size="-1">#include 
-  &quot;Foundation/EABitTricks.h&quot;</font> and assume the using of <font face="Courier New, Courier, mono" size="-1">namespace 
+  &quot;Foundation/bittricks.h&quot;</font> and assume the using of <font face="Courier New, Courier, mono" size="-1">namespace 
   EA</font>.</p>
 <p>TurnOffLowestBit</p>
 <pre class="code-example">int16_t i16 = 0x0005;           <span class="code-example-comment">// i16 =&gt; 000000101</span>
@@ -59,9 +59,9 @@ u32 = RoundUpToPowerOf2(u32);     <span class="code-example-comment">// u32 =&gt
 <p> UnsignedMultiplyWouldOverflow</p>
 <pre class="code-example">bool b = UnsignedMultiplyWouldOverflow(0xffffffff, 0xffffffff);  <span class="code-example-comment">// b =&gt; true</span> </pre>
 <h2>Interface</h2>
-<p>The following is a simple listing of EABitTricks functions as of January 2006. 
-  For an up to date listing of current functionality, see EABitTricks.h. Also, 
-  the EABitTricks.h file has documentation and example usage for each function.</p>
+<p>The following is a simple listing of bittricks.functions as of January 2006. 
+  For an up to date listing of current functionality, see bittricks.h. Also, 
+  the bittricks.h file has documentation and example usage for each function.</p>
 <p>Bit manipulation</p>
 <pre class="code-example">T        TurnOffLowestBit(T x);
 T        IsolateLowestBit(T x);

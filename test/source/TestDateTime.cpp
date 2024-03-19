@@ -3,12 +3,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EADateTime.h>
-#include <EAStdC/EAStopwatch.h>
-#include <EAStdC/EASprintf.h>
-#include <EAStdC/EAString.h>
-#include <EAStdC/EAMemory.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <datetime.h>
+#include <stopwatch.h>
+#include <sprintf.h>
+#include <string.h>
+#include <memory.h>
+#include <stdc.est/stdc.est.h>
 #include <eathread/eathread.h>
 #include <EATest/EATest.h>
 #include <string.h>
@@ -97,7 +97,7 @@
 	// TestGMTime
 	//
 	// Tests an individual univeral time value by comparing it to what the standard C gmtime and 
-	// localtime functions say on platforms that support these functions. The EAStdC DateTime class
+	// localtime functions say on platforms that support these functions. The stdc.DateTime class
 	// is somewhat like a C++ version of the tm struct, with member functions and finer precision (nanoseconds).
 	// The proper calculations for time can be tricky, and we use a conforming Standard C library 
 	// implementation as a benchmark for results. 

@@ -3,17 +3,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EAMemory.h>
-#include <EAStdC/EAString.h>
-#include <EAStdC/EAStopwatch.h>
-#include <EAStdC/EASprintf.h>
-#include <EAStdC/EARandom.h>
-#include <EAStdC/EARandomDistribution.h>
-#include <EAStdC/EABitTricks.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <memory.h>
+#include <string.h>
+#include <stopwatch.h>
+#include <sprintf.h>
+#include <random.h>
+#include <random.istribution.h>
+#include <bittricks.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 #include <string.h>
-#include <EAStdC/EAAlignment.h>
+#include <EAAlignment.h>
 #include <eastl/vector.h>
 
 #if defined(_MSC_VER)

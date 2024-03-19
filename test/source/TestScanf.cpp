@@ -3,12 +3,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EAScanf.h>
-#include <EAStdC/EAString.h>
-#include <EAStdC/EAMathHelp.h>
-#include <EAStdC/Int128_t.h>
-#include <EAStdC/internal/Config.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <scanf.h>
+#include <string.h>
+#include <mathhelp.h>
+#include <int128_t.h>
+#include <internal/config.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 #include <EAAssert/eaassert.h>
 #include <limits.h>
@@ -1140,7 +1140,7 @@ static int TestScanfMisc()
 				EATEST_VERIFY(v.char_[1] == -1);
 
 				v.Clear();
-				n = EA::StdC::Sscanf("1a01_", "%x_%c", &v.int_[0], &v.char_[1]);  // EAStdC was mistakenly reading this as 0x1a018 instead of 0x1a01
+				n = EA::StdC::Sscanf("1a01_", "%x_%c", &v.int_[0], &v.char_[1]);  // stdc.was mistakenly reading this as 0x1a018 instead of 0x1a01
 				EATEST_VERIFY(n == 1);
 				EATEST_VERIFY(v.int_[0] == 0x1a01);
 				EATEST_VERIFY(v.char_[1] == -1);
@@ -1160,7 +1160,7 @@ static int TestScanfMisc()
 				EATEST_VERIFY((uint16_t)v.char16_[1] == 0xffff);
 
 				v.Clear();
-				n = EA::StdC::Sscanf(EASTL_CHAR16("1a01_"), EASTL_CHAR16("%x_%I16c"), &v.int_[0], &v.char16_[1]);  // EAStdC was mistakenly reading this as 0x1a018 instead of 0x1a01
+				n = EA::StdC::Sscanf(EASTL_CHAR16("1a01_"), EASTL_CHAR16("%x_%I16c"), &v.int_[0], &v.char16_[1]);  // stdc.was mistakenly reading this as 0x1a018 instead of 0x1a01
 				EATEST_VERIFY(n == 1);
 				EATEST_VERIFY(v.int_[0] == 0x1a01);
 				EATEST_VERIFY((uint16_t)v.char16_[1] == 0xffff);
@@ -1180,7 +1180,7 @@ static int TestScanfMisc()
 				EATEST_VERIFY((uint32_t)v.char32_[1] == 0xffffffff);
 
 				v.Clear();
-				n = EA::StdC::Sscanf(EASTL_CHAR32("1a01_"), EASTL_CHAR32("%x_%I32c"), &v.int_[0], &v.char32_[1]);  // EAStdC was mistakenly reading this as 0x1a018 instead of 0x1a01
+				n = EA::StdC::Sscanf(EASTL_CHAR32("1a01_"), EASTL_CHAR32("%x_%I32c"), &v.int_[0], &v.char32_[1]);  // stdc.was mistakenly reading this as 0x1a018 instead of 0x1a01
 				EATEST_VERIFY(n == 1);
 				EATEST_VERIFY(v.int_[0] == 0x1a01);
 				EATEST_VERIFY((uint32_t)v.char32_[1] == 0xffffffff);

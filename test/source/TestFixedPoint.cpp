@@ -5,10 +5,10 @@
 
 
 #include <eastl/EABase/eabase.h>
-#include <EAStdC/EAFixedPoint.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <fixedpoint.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
-#include <EAStdC/Int128_t.h>
+#include <int128_t.h>
 
 
 static bool CompareValues(double a, double b)
@@ -27,12 +27,12 @@ static bool CompareValues(EA::StdC::SFixed16 a, double b)
 
 // In a DLL build, VC++ doesn't like it when you provide your own 
 // versions of functions. So we just skip testing this, for simplicity.
-// If we need this to work, we can just add these functions to EAFixedPoint.cpp.
+// If we need this to work, we can just add these functions to fixedpoint.cpp.
 #ifndef EA_DLL
 
 	namespace EA
 	{
-		namespace StdC
+		namespace eastdc
 		{
 			static bool CompareValues(SFixed24 a, double b){
 				#define Fixed24ToDouble(a) (((double)a) / 256.0)

@@ -1,36 +1,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
     
-<title>EADateTime</title>
+<title>datetime./title>
     <link type="text/css" rel="stylesheet" href="UTFDoc.css">
     <meta name="author" content="Paul Pedriana">
 </head>
 <body bgcolor="#FFFFFF">
-<h1>EADateTime</h1>
+<h1>datetime./h1>
 
 <h2>Introduction</h2>
-<p>EADateTime provides a unified implementation of date, time, and calendar functionality. 
+<p>datetime.provides a unified implementation of date, time, and calendar functionality. 
   The DateTime class represents date and time in a single class. Unlike other 
   date/time systems, this class doesn't have a strictly limited resolution, due 
   to its use of 64 bits (instead of 32 bits) of storage for the date/time value. 
 </p>
-<p> EADateTime supports the modern Gregorian calendar correctly, including such 
-  concepts as leap years. You can, for example, use EADateTime to implement proper 
+<p> datetime.supports the modern Gregorian calendar correctly, including such 
+  concepts as leap years. You can, for example, use datetime.to implement proper 
   calendar functionality for your application.</p>
 <p>The C standard library provides some time and date functionality, but it is 
   slow, has some limitations, is not very easy to use, and isn't supported by 
   all C/C++ compilers. Writing a calendar application with the C time and date 
   functions would be possible, but would be tedious and error-prone.</p>
-<p>EADateTime does not support the formatting of date and time strings for display 
+<p>datetime.does not support the formatting of date and time strings for display 
   to a users. Such functionality is outside the scope of this class, primarily 
   due to the issue of multiple string encodings (e.g. ASCII and Unicode) and due 
   to the existence of multiple locales (e.g. English and French) which use different 
   formats for time and date strings. A separate module -- EALocale -- exists which 
   implements string formatting of dates and times. You can use that module and 
-  EADateTime together to implement locale-savvy times, dates, and calendars.</p>
+  datetime.together to implement locale-savvy times, dates, and calendars.</p>
 <h2>Example usage </h2>
 <p>All examples presume a <font face="Courier New, Courier, mono" size="-1">#include 
-  &quot;Foundation/EADateTime.h&quot;</font> and assume the using of <font face="Courier New, Courier, mono" size="-1">namespace 
+  &quot;Foundation/datetime.h&quot;</font> and assume the using of <font face="Courier New, Courier, mono" size="-1">namespace 
   EA</font>.</p>
 <p>Basic usage of class DateTime:</p>
 <pre class="code-example">DateTime dt;   // Sets dt to the current date and time.
@@ -58,7 +58,7 @@ WriteToDisk64(ToBigEndian(n));        // Hypthetical disk writing function and e
 n = FromBigEndian(ReadFromDisk64());  // Hypothetical disk reading function and endian conversion function.
 
 dt = DateTime(n);                     // Restore the saved value to a DateTime instance.</span></pre>
-<p>Usage of standalone EADateTime utility functions, which are independent of 
+<p>Usage of standalone datetime.utility functions, which are independent of 
   class DateTime: </p>
 <pre class="code-example">bool b = IsLeapYear(2015);
  
@@ -77,8 +77,8 @@ asctime(&amp;ascTime);         // Get C time.
 DateTime dt;
 TmToDateTime(time, dt);    // Convert to DateTime.</pre>
 <h2>Interface</h2>
-<p>The following is defined in EADateTime.h. The latest versions of these definitions 
-  can be found in the current version of EADateTime.h</p>
+<p>The following is defined in datetime.h. The latest versions of these definitions 
+  can be found in the current version of datetime.h</p>
 <p>Enumerations</p>
 <pre class="code-example">enum Month
 {

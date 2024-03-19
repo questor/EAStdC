@@ -3,8 +3,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EABitTricks.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <bittricks.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 #include <EAAssert/eaassert.h>
 

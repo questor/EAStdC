@@ -3,13 +3,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EAStdC.h>
-#include <EAStdC/EAString.h>
-#include <EAStdC/EASprintf.h>
-#include <EAStdC/EAMemory.h>
-#include <EAStdC/EARandom.h>
-#include <EAStdC/EAStopwatch.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <stdc.h>
+#include <string.h>
+#include <sprintf.h>
+#include <memory.h>
+#include <random.h>
+#include <stopwatch.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 #include <eastl/string.h>
 #include <eastl/fixedString.h>

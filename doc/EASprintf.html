@@ -3,15 +3,15 @@
 <head>
   <meta http-equiv="content-type"
  content="text/html; charset=ISO-8859-1">
-  <title>EASprintf</title>
+  <title>sprintf./title>
   <link type="text/css" rel="stylesheet"
  href="UTFDoc.css">
   <meta name="author" content="Paul Pedriana">
 </head>
 <body style="background-color: rgb(255, 255, 255);">
-<h1>EASprintf</h1>
+<h1>sprintf./h1>
 <h2>Introduction</h2>
-<p>EAStdC provides a portable
+<p>stdc.provides a portable
 version of the C printf family of functions which improves on
 the C family in the following ways:</p>
 <ul>
@@ -32,19 +32,19 @@ traced/debugged by non-experts</li>
   <li>Is savvy to UTF8 Unicode</li>
 </ul>
 <p>The primary disadvantages of
-EAStdC's printf are:</p>
+stdc.s printf are:</p>
 <ul>
   <li>It doesn't use
 locale-specific formatting</li>
   <li>It isn't part of the C/C++
 standard library</li>
 </ul>
-<p>EAStdC doesn't attempt to
+<p>stdc.doesn't attempt to
 solve the locale formatting problem because users really are better off
 using serious locale libraries for such things rather than using the
 meager support provided by the C standard library. The EALocale library
 attempts to provide such functionality.</p>
-<p>EAStdC provides the
+<p>stdc.provides the
 following functions in 8, 16, and 32 bit versions:
 </p>
 <pre><span class="code-example">int Cprintf(WriteFunction8 pWriteFunction, void* pContext, const char8_t* pFormat, ...);
@@ -65,7 +65,7 @@ int StringPrintf(String&amp; s, const typename String::value_type* EASTL_RESTRIC
 int StringVcprintf(String&amp; s, const typename String::value_type* EASTL_RESTRICT pFormat, va_list arguments);</pre>
 <blockquote></blockquote>
 <h2>Snprintf uses C99 behavior</h2>
-<p> The EASprintf 'n' functions (Snprintf and Vsnprintf) follow the C99 standard 
+<p> The sprintf.'n' functions (Snprintf and Vsnprintf) follow the C99 standard 
   for return value, which is different from some C standard library implementations 
   such as VC++. These functions return the number of characters that would have 
   been written had n been sufficiently large, not counting the terminating null 
@@ -86,11 +86,11 @@ int StringVcprintf(String&amp; s, const typename String::value_type* EASTL_RESTR
   <li>Watch out for platform differences between format types. For example, %u 
     means unsigned int, and you can't use a size_t argument with it on 64 bit 
     platforms. Instead, explicitly cast your arguments to the expected type or 
-    use the EASprintf extended format types (see below).</li>
+    use the sprintf.extended format types (see below).</li>
   <li>Similarly, watch out when passing int8_t and int16_t arguments to EAPrintf 
     (and regular printf), as the compiler will promote them to int and they might 
     not print as you expected, depending on your output format.</li>
-  <li>Watch out for EASprintf's C99 behaviour. C99 behaviour is standard C and 
+  <li>Watch out for sprintf.s C99 behaviour. C99 behaviour is standard C and 
     is superior to previous C library behaviour, but the previous behaviour exists 
     in the C library today with compilers such as VC++. This behaviour affects 
     the return value of Snprintf/Vsnprintf, and affects the way some format specifiers 
@@ -167,7 +167,7 @@ modifier.</td>
   </tbody>
 </table>
 <h2>SprintfOrdered</h2>
-<p>EAStdC also provides an ordered sprintf</p>
+<p>stdc.also provides an ordered sprintf</p>
 <p>Ordered printf is like printf except it works on &quot;ordered&quot; printf specifiers. This means that instead of using &quot;%4d %f&quot; we give an order to the arguments via an index and colon, as with &quot;%1:4d %2:f&quot;. The point, however, is that you can reorder the indexes, as with &quot;%2:f %1:4d&quot;. This is particularly useful for formatted string localization, as different locales use subjects and verbs in different orders.<br>
 <br>
 User indexes can start at either 0 or 1. Oprintf detects which is in use as it goes. So the following have identical effect:</p>
@@ -215,7 +215,7 @@ OPrintf(&quot;%2:s&quot; %1:f&quot;, 3.0, &quot;hello&quot;);</pre>
   /////////////////////////////////////////////////////////////////////////////<br> 
 </p>
 <h2>Example usage</h2>
-<p>All examples presume the #include of EASprintf.h.</p>
+<p>All examples presume the #include of sprintf.h.</p>
 <p>Snprintf usage:</p>
 <pre><span class="code-example">char16_t buffer[80];
 int nStrlen = Snprintf16(buffer, 80, &quot;Columbus arrived in %d.&quot;, 1492);
@@ -223,7 +223,7 @@ int nStrlen = Snprintf16(buffer, 80, &quot;Columbus arrived in %d.&quot;, 1492);
 if((unsigned)nStrlen &lt; 80) // Cast to unsigned in order to make any negative values be positive and &gt; 80.
     puts(&quot;success&quot;);</span></pre>
 <p>How to write a function that takes variable arguments (e.g. ...) and passes 
-  them to EASprintf:</p>
+  them to sprintf.</p>
 <pre><span class="code-example">#include &lt;stdarg.h&gt;
 
 void CustomFormattedOutput(const char* pFormat, ...)

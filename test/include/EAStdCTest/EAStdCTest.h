@@ -62,7 +62,7 @@ extern volatile int gWriteToEnsureFunctionCalled;
 	#include <stdlib.h>
 	#include <string.h>
 	#include <eastl/map.h>
-	#include <EAStdC/EAString.h>
+	#include <string.h>
 
 	// This class has no purpose other than to convert 32 bit wchar_t strings to 16 bit char16_t strings.
 	// The code below probably wouldn't compile or make sense unless wchar_t was 32 bits or more.
@@ -127,7 +127,7 @@ extern volatile int gWriteToEnsureFunctionCalled;
 	#include <stdlib.h>
 	#include <string.h>
 	#include <eastl/map.h>
-	#include <EAStdC/EAString.h>
+	#include <string.h>
 
 	// This class has no purpose other than to convert 16 bit wchar_t strings to 32 bit char32_t strings.
 	// The code below probably wouldn't compile or make sense unless wchar_t was 16 bits or less.

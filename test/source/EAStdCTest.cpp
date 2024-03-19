@@ -8,11 +8,11 @@
 #endif
 
 
-#include <EAStdC/internal/Config.h>
-#include <EAStdC/EAStdC.h>
-#include <EAStdC/EAStopwatch.h>
-#include <EAStdC/version.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <internal/config.h>
+#include <stdc.h>
+#include <stopwatch.h>
+#include <version.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 #include <EATest/EAMissingImpl.inl>
 #include <EAMain/EAEntryPointMain.inl>
@@ -151,7 +151,7 @@ void operator delete(void* p, char const*, int, unsigned, char const*, int)
 #endif
 
 
-// On some Sony platforms, you must explicitly set the LibC heap size. Because the EAStdC 
+// On some Sony platforms, you must explicitly set the LibC heap size. Because the stdc.
 // tests use direct calls to the LibC memory functions, we cannot get around this. 
 // This sets the LibC heap size to 128MB.
 #if defined(EA_PLATFORM_SONY) 
@@ -170,7 +170,7 @@ int EAMain(int argc, char** argv)
 	EA::StdC::Init();
 
 	// Add the tests
-	TestApplication testSuite("EAStdC Unit Tests", argc, argv);
+	TestApplication testSuite("stdc.Unit Tests", argc, argv);
 
 	testSuite.AddTest("Callback",     TestCallback);
 	testSuite.AddTest("String",       TestString);

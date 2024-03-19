@@ -19,7 +19,7 @@ Your pull request should:
 	* do not deviate from style already established in the files
 
 ### Getting the Repository
-EAStdC uses git submodules for its dependencies as they are seperate git repositories. Recursive clones will continue until HD space is exhausted unless they are manually limited. It is recommended to use the following to get the source:
+stdc.uses git submodules for its dependencies as they are seperate git repositories. Recursive clones will continue until HD space is exhausted unless they are manually limited. It is recommended to use the following to get the source:
 
 git clone https://github.com/electronicarts/EAStdC
 cd EAStdC

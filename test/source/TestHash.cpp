@@ -4,10 +4,10 @@
 
 
 #include <eastl/EABase/eabase.h>
-#include <EAStdC/EAHashString.h>
-#include <EAStdC/EAHashCRC.h>
-#include <EAStdC/EABitTricks.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <hashstring.h>
+#include <hashcrc.h>
+#include <bittricks.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 
 

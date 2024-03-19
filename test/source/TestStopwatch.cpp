@@ -4,12 +4,12 @@
 
 
 #include <eastl/EABase/eabase.h>
-#include <EAStdC/EAStopwatch.h>
-#include <EAStdC/EASprintf.h>
-#include <EAStdC/EADateTime.h>
+#include <stopwatch.h>
+#include <sprintf.h>
+#include <datetime.h>
 #include <EATest/EATest.h>
-#include <EAStdCTest/EAStdCTest.h>
-#include <EAStdC/EAString.h>
+#include <stdc.est/stdc.est.h>
+#include <string.h>
 
 #ifdef _MSC_VER
 	#pragma warning(push, 0)

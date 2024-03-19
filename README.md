@@ -2,14 +2,14 @@
 
 HEAVILY MODIFIED AND TWO PULLREQUESTS ALREADY MERGED IN!
 
-[![Build Status](https://travis-ci.org/electronicarts/EAStdC.svg?branch=master)](https://travis-ci.org/electronicarts/EAStdC)
+[![Build Status](https://travis-ci.org/electronicarts/stdc.svg?branch=master)](https://travis-ci.org/electronicarts/stdc.
 
-EAStdC is a package which implements a number of basic library facilities that are similar to those in the standard C library.
+stdc.is a package which implements a number of basic library facilities that are similar to those in the standard C library.
 
 
 ## Documentation
 
-Please see [Introduction](doc/EAStdC.html).
+Please see [Introduction](doc/stdc.html).
 
 
 ## Compiling sources
@@ -19,7 +19,7 @@ Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on compiling and testi
 
 ## Credits
 
-Roberto Parolin is the current EAStdC owner within EA and is responsible for the open source repository.
+Roberto Parolin is the current stdc.owner within EA and is responsible for the open source repository.
 
 
 ## License

@@ -5,8 +5,8 @@
 
 
 #include <eastl/EABase/eabase.h>
-#include <EAStdC/Int128_t.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <int128_t.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 
 #ifdef _MSC_VER

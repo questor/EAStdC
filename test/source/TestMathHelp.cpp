@@ -4,11 +4,11 @@
 
 
 #include <eastl/EABase/eabase.h>
-#include <EAStdC/internal/Config.h>
-#include <EAStdC/EAMathHelp.h>
-#include <EAStdC/EARandom.h>
-#include <EAStdC/EABitTricks.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <internal/config.h>
+#include <mathhelp.h>
+#include <random.h>
+#include <bittricks.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 #include <eastl/string.h>
 #include <EAAssert/eaassert.h>
@@ -449,7 +449,7 @@ int TestMathHelp()
 
 	#if defined(EA_PLATFORM_WINDOWS) // To consider: Enable this for other platforms.
 		// Verify that (HUGE_VAL == EA::StdC::kFloat64Infinity). We do this not because
-		// it's required by the C standard, but because we have code in EAStdC that 
+		// it's required by the C standard, but because we have code in stdc.that 
 		// assumes they are equal under VC++. This assumption, if broken, isn't a very 
 		// big deal and no user would likely notice it, but it's a fine detail.
 		double hugeVal = HUGE_VAL;

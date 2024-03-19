@@ -3,15 +3,15 @@
 <head>
   <meta http-equiv="content-type"
  content="text/html; charset=ISO-8859-1">
-  <title>EAScanf</title>
+  <title>scanf./title>
   <link type="text/css" rel="stylesheet"
  href="UTFDoc.css">
   <meta name="author" content="Paul Pedriana">
 </head>
 <body style="background-color: rgb(255, 255, 255);">
-<h1>EAScanf</h1>
+<h1>scanf./h1>
 <h2>Introduction</h2>
-<p>EAScanf provides a portable
+<p>scanf.provides a portable
 version of the C scanf family of functions which improves on
 the C family in the following ways:</p>
 <ul>
@@ -32,19 +32,19 @@ traced/debugged by non-experts</li>
   <li>Is savvy to UTF8 Unicode</li>
 </ul>
 <p>The primary disadvantages of
-EAScanf are:</p>
+scanf.are:</p>
 <ul>
   <li>It doesn't use
 locale-specific formatting</li>
   <li>It isn't part of the C/C++
 standard library</li>
 </ul>
-<p>EAScanf doesn't attempt to
+<p>scanf.doesn't attempt to
 solve the locale formatting problem because users really are better off
 using serious locale libraries for such things rather than using the
 meager support provided by the C standard library. The EALocale library
 attempts to provide such functionality.</p>
-<p>EAScanf provides the
+<p>scanf.provides the
 following functions in 8 and 16 bit versions:
 </p>
 <pre><span class="code-example">int Cscanf(ReadFunction8 pReadFunction8, void* pContext, const char8_t* pFormat, ...);

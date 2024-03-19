@@ -3,8 +3,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EAByteCrackers.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <bytecrackers.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 
 

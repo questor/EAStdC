@@ -2,15 +2,15 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">  
-    <title>EAGlobal</title>
+    <title>global./title>
     <link type="text/css" rel="stylesheet" href="UTFDoc.css">
     <meta name="author" content="Paul Pedriana">
 </head>
 <body bgcolor="#FFFFFF">
-<h1>EAGlobal</h1>
+<h1>global./h1>
 
 <h2>Introduction</h2>
-<p>EAGlobal provides the GlobalPtr class. GlobalPtr acts as a reference to a pointer which is global throughout the process (includes the application and any loaded DLLs). The object pointed to must define a unique 32-bit kGlobalID if one is not given. The GlobalPtr class works in a way similar to a smart pointer, but note that it is not the same as your typical auto_ptr or anything else provided by C++ library vendors. The pointer is set to NULL on creation.<br>
+<p>global.provides the GlobalPtr class. GlobalPtr acts as a reference to a pointer which is global throughout the process (includes the application and any loaded DLLs). The object pointed to must define a unique 32-bit kGlobalID if one is not given. The GlobalPtr class works in a way similar to a smart pointer, but note that it is not the same as your typical auto_ptr or anything else provided by C++ library vendors. The pointer is set to NULL on creation.<br>
 <br>
  Global pointers may be used from multiple threads once initialized to point to an object, but are _not_ thread-safe when being set. If you have a situation where two threads may attempt to set a global pointer at the same time, you should use OS globals (See EAOSGlobal.h) instead to serialize the creators on the OS global lock and prevent race conditions.<br>
 <br>

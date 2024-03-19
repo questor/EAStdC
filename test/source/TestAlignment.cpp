@@ -3,8 +3,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EAAlignment.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <EAAlignment.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 
 // Conditionally include SSE headers which some of the tests conditionally rely upon.

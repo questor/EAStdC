@@ -3,12 +3,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/internal/Config.h>
-#include <EAStdCTest/EAStdCTest.h>
-#include <EAStdC/EACallback.h>
-#include <EAStdC/EAStopwatch.h>
-#include <EAStdC/EARandom.h>
-#include <EAStdC/EARandomDistribution.h>
+#include <internal/config.h>
+#include <stdc.est/stdc.est.h>
+#include <callback.h>
+#include <stopwatch.h>
+#include <random.h>
+#include <random.istribution.h>
 #include <EATest/EATest.h>
 #include <eathread/eathread.h>
 #include <EAAssert/eaassert.h>
@@ -376,7 +376,7 @@ int TestCallback()
 								// Since we are in a seperate thread from the callback manager and since we are updating On UserEvent
 								// ourselves here, it might be useful to sleep here to handle the case that our OnUserEvent calls get
 								// ahead of what the callback manager can keep up with and "CallbackTest low accuracy rate" reports 
-								// can result, though these reports wouldn't be indicative of bugs or failures of EACallback.
+								// can result, though these reports wouldn't be indicative of bugs or failures of callback.
 								if((mode == Callback::kModeAsync) && (ci.mType != EA::StdC::Callback::kTypeTime))
 									sleepTime = EA::Thread::ThreadTime(10);
 							#endif

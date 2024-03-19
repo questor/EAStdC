@@ -3,8 +3,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EACType.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <ctype.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 
 

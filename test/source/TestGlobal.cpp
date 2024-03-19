@@ -3,8 +3,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EAGlobal.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <global.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 
 #ifdef _MSC_VER

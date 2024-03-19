@@ -8,9 +8,9 @@
 #endif
 
 #include <eastl/EABase/eabase.h>
-#include <EAStdC/EARandom.h>
-#include <EAStdC/EARandomDistribution.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <random.h>
+#include <random.istribution.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 #include <eastl/bitset.h>
 

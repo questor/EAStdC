@@ -3,9 +3,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include <EAStdC/EATextUtil.h>
-#include <EAStdC/EAString.h>
-#include <EAStdCTest/EAStdCTest.h>
+#include <textutil.h>
+#include <string.h>
+#include <stdc.est/stdc.est.h>
 #include <EATest/EATest.h>
 #include <eastl/fixedString.h>
 #include <eastl/string.h>
