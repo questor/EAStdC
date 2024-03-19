@@ -1,7 +1,6 @@
-
-# PLEASE NOTE: THIS IS A HEAVILY MODIFIED VERSION BASE ON THE ORIGINAL ONE! 
-
 # EAStdC
+
+HEAVILY MODIFIED AND TWO PULLREQUESTS ALREADY MERGED IN!
 
 [![Build Status](https://travis-ci.org/electronicarts/EAStdC.svg?branch=master)](https://travis-ci.org/electronicarts/EAStdC)
 
