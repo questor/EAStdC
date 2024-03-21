@@ -80,8 +80,8 @@
 #define EASTDC_EAFIXEDPOINT_H
 
 
-#include <internal/config.h>
-#include <eastl/EABase/eabase.h>
+#include "eastdc/internal/config.h"
+#include "eastl/EABase/eabase.h"
 #include <math.h>
 
 
@@ -148,16 +148,17 @@ struct FPTemplate
 	typedef T type;
 	   
 	//Functions
-	FPTemplate() {}
-	FPTemplate(const FPTemplate&    newValue) { value = newValue.value; }
+	FPTemplate() = default;
+	FPTemplate(const FPTemplate&    newValue) = default;
+//	FPTemplate(const FPTemplate&    newValue) { value = newValue.value; }
 	FPTemplate(const int&           newValue) { value = (T)(newValue) << upShiftInt; }
 	FPTemplate(const unsigned int&  newValue) { value = (T)(newValue) << upShiftInt; }
 	FPTemplate(const long&          newValue) { value = (T)(newValue) << upShiftInt; }
 	FPTemplate(const unsigned long& newValue) { value = (T)(newValue) << upShiftInt; }
 	FPTemplate(const float&         newValue) { value = (T)(newValue * (float)upMulInt);  }
 	FPTemplate(const double&        newValue) { value = (T)(newValue * (double)upMulInt); }
-	void FromFixed(const int&       newValue) { value = newValue; }    // Accepts an int that is in fixed point format (i.e. shifted) already. 
-	T    AsFixed  ()                          { return value;     }    // Allows you to get the fixed point value itself and mess with it as you want. 
+	void fromFixed(const int&       newValue) { value = newValue; }    // Accepts an int that is in fixed point format (i.e. shifted) already.
+	T    asFixed  ()                          { return value;     }    // Allows you to get the fixed point value itself and mess with it as you want.
 
 	// We don't define the conversion operators because that would cause a lot of compiler
 	// errors complaining about not knowing what function to call. Thus, we have functions
@@ -169,12 +170,12 @@ struct FPTemplate
 	// operator float()         const { return (float)        (value /(float)upMulInt);     }
 	// operator double()        const { return (double)       (value /(double)upMulInt);    }
 
-	int           AsInt()         const { return (int)          (value>>upShiftInt);       }
-	unsigned int  AsUnsignedInt() const { return (unsigned int) (value>>upShiftInt);       }
-	long          AsLong()        const { return (long)         (value>>upShiftInt);       }
-	unsigned long AsUnsignedLong()const { return (unsigned long)(value>>upShiftInt);       }
-	float         AsFloat()       const { return (float)        (value /(float)upMulInt);  }
-	double        AsDouble()      const { return (double)       (value /(double)upMulInt); }
+	int           asInt()         const { return (int)          (value>>upShiftInt);       }
+	unsigned int  asUnsignedInt() const { return (unsigned int) (value>>upShiftInt);       }
+	long          asLong()        const { return (long)         (value>>upShiftInt);       }
+	unsigned long asUnsignedLong()const { return (unsigned long)(value>>upShiftInt);       }
+	float         asFloat()       const { return (float)        (value /(float)upMulInt);  }
+	double        asDouble()      const { return (double)       (value /(double)upMulInt); }
 
 	FPTemplate& operator=(const FPTemplate&    newValue) { value = newValue.value;                     return *this; }
 	FPTemplate& operator=(const int&           newValue) { value = newValue << upShiftInt;             return *this; }
